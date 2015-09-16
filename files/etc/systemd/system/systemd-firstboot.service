@@ -1,0 +1,25 @@
+#  This file is part of systemd.
+#
+#  systemd is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU Lesser General Public License as published by
+#  the Free Software Foundation; either version 2.1 of the License, or
+#  (at your option) any later version.
+
+[Unit]
+Description=First Boot Wizard
+Documentation=man:systemd-firstboot(1)
+DefaultDependencies=no
+Conflicts=shutdown.target
+After=systemd-remount-fs.service systemd-tmpfiles-setup.service
+Before=systemd-sysusers.service sysinit.target shutdown.target systemd-update-utmp.service
+ConditionPathIsReadWrite=/etc
+ConditionFirstBoot=yes
+
+[Service]
+Environment=SYSTEMCTL_OPTIONS=--ignore-dependencies TERM=linux
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/lib/jeos-firstboot
+StandardOutput=tty
+StandardInput=tty
+#StandardError=tty

@@ -1,0 +1,13 @@
+SUSE Linux Enterprise Server 12 x86_64 (64-bit)
+
+Please register this image using your existing SUSE entitlement.
+
+As "root" use either one of the following commands:
+ - SUSEConnect -e company@example.com -r YOUR_CODE
+
+to register the instance with SCC
+
+Without registration this instance does not have access to updates and
+security fixes.
+
+Have a lot of fun...

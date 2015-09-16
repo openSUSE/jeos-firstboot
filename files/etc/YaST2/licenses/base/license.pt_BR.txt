@@ -1,0 +1,309 @@
+SUSE Linux Enterprise Server 12
+
+Contrato de Licença de Usuário Final do SUSE
+
+LEIA ESTE CONTRATO COM ATENÇÃO.  AO COMPRAR, INSTALAR, FAZER DOWNLOAD OU DE 
+QUALQUER OUTRA FORMA UTILIZAR O SOFTWARE (INCLUINDO SEUS COMPONENTES), VOCÊ 
+CONCORDA COM OS TERMOS DESTE CONTRATO.  SE NÃO CONCORDAR COM ESTES TERMOS, NÃO 
+É PERMITIDO FAZER DOWNLOAD, INSTALAR OU USAR O SOFTWARE E DEVE-SE NOTIFICAR O 
+COMPRADOR DE QUEM O SOFTWARE FOI ADQUIRIDO PARA OBTER O REEMBOLSO.  UMA PESSOA 
+QUE ATUA EM NOME DE UMA ENTIDADE REPRESENTA QUE ELA TEM AUTORIZAÇÃO PARA 
+ACESSAR ESTE CONTRATO EM NOME DESSA ENTIDADE.
+
+Este Contrato de Licença de Usuário Final ("Contrato") é um acordo legal entre 
+Você (pessoa física ou jurídica) e a SUSE LLC ("Licenciadora").  O produto de 
+software identificado no título deste Contrato, para o qual Você adquiriu 
+licenças, qualquer mídia ou reproduções (físicas ou virtuais) e sua respectiva 
+documentação (coletivamente, o "Software") estão protegidos por leis e 
+tratados de direitos autorais dos Estados Unidos ("EUA") e de outros países, 
+estando sujeitos aos termos deste Contrato.  Se as leis do seu local principal 
+de atividade exigirem que os contratos estejam no idioma local para serem 
+assegurados, a versão do idioma local deverá ser obtida da Licenciadora 
+através de solicitação por escrito e deverá ser considerada para administrar a 
+compra de licenças do Software.  Qualquer complemento, atualização, aplicativo 
+móvel, módulo, adaptador ou versão de suporte do Software do qual Você possa 
+fazer download ou o qual possa receber e que não seja acompanhado por um 
+contrato de licença será um Software regido por este Contrato.  Se o Software 
+for uma versão de Atualização ou de Suporte, Você deverá ter licenciado de 
+forma válida a versão e as instalações do Software que estão sendo atualizadas 
+ou recebendo suporte para instalar ou usar a versão de Atualização ou de 
+Suporte. 
+
+USO LICENCIADO
+
+LICENÇAS. O Software e cada um de seus componentes são de propriedade da 
+Licenciadora ou de outros licenciadores e estão protegidos pelas leis de 
+direitos autorais e outras leis aplicáveis. Em conformidade com os termos e as 
+condições deste Contrato, a Licenciadora concede a Você uma licença global, 
+perpétua, não exclusiva e intransferível para reproduzir e usar cópias do 
+Software em sua Organização (conforme definido a seguir).  
+
+O termo "Organização" significa uma entidade jurídica, excluindo subsidiárias 
+e afiliadas cuja existência seja independente para fins tributários ou de 
+personalidade jurídica.  Um exemplo de Organizaçăo do setor privado seria uma 
+corporaçăo, uma sociedade ou um truste, excluindo quaisquer subsidiárias ou 
+afiliadas da organizaçăo com números separados de identificaçăo tributária ou 
+de registro comercial. No setor público, um exemplo de Organização seria um 
+órgão governamental específico ou autoridade governamental local.
+
+Software de terceiros/Código-fonte aberto.  Nada neste Contrato deve 
+restringir, limitar ou de forma alguma afetar os direitos e as obrigações que 
+Você possa ter, ou as condições às quais Você esteja sujeito, em relação a 
+qualquer licença aplicável a qualquer código-fonte aberto contido no Software. 
+ O Software pode incluir outros programas de software ou pode fazer parte de 
+um bundle com outros programas de software licenciados sob diferentes termos 
+e/ou por um terceiro que não seja a Licenciadora.  O uso de quaisquer 
+programas de software acompanhados de um contrato de licença separado é regido 
+por esse contrato separado.  
+
+SERVIÇOS DE INSCRIÇÃO.  A Licenciadora não tem nenhuma obrigação de oferecer 
+suporte ou manutenção, exceto se Você adquirir uma oferta de inscrição que 
+inclua expressamente tais serviços.  A Licenciadora vende ofertas de inscrição 
+para o Software que lhe concedem o direito a suporte técnico com base em taxas 
+e/ou ao uso interno das atualizações do Software fornecidas em determinado 
+período do ano ("Oferta de Inscrição"), estando sujeitas aos Termos e 
+Condições da Oferta de Inscrição disponíveis no site 
+http://www.suse.com/products/terms_and_conditions.pdf. 
+
+MARCAS. Nenhum direito ou licença, expresso ou implícito, é concedido neste 
+Contrato em relação a qualquer marca registrada, nome comercial ou marca de 
+serviço da Licenciadora ou de suas afiliadas ou licenciadores ("Marca"). Este 
+Contrato não permite a você distribuir o Software ou seus componentes usando 
+as marcas registradas da Licenciadora, mesmo que a cópia tenha sido 
+modificada.  Você poderá fazer uma redistribuição comercial dos Programas 
+apenas se (a) permitido mediante um contrato separado por escrito com a 
+Licenciadora autorizando tal redistribuição comercial, ou (b) você remover e 
+substituir todas as ocorrências de qualquer Marca.  
+
+RESTRIÇÕES
+
+Restrições da Licença. O Software e cada um de seus componentes são de 
+propriedade da Licenciadora e/ou de outros licenciadores e estão protegidos 
+pelas leis de direitos autorais e por outras leis aplicáveis. O título 
+referente ao Software e a qualquer componente, ou cópia, modificação ou parte 
+fundida, deverá permanecer com a Licenciadora e outros licenciadores, sujeito 
+à licença aplicável.  A Licenciadora se reserva ao direito não permitido 
+expressamente a você.  O Software é licenciado apenas para seu uso interno.  
+Salvo permissão expressa neste Contrato, Você não poderá (1) remover nenhuma 
+patente, marca registrada, copyright, segredo comercial ou outros avisos ou 
+rótulos sobre a propriedade do Software ou de sua documentação; ou (2) 
+divulgar os resultados de qualquer desempenho, função ou outra avaliação ou 
+benchmarking do Software para terceiros sem prévia permissão por escrito da 
+Licenciadora.
+
+Requisitos de Terceirização. Sua licença para usar o Software poderá ser 
+aplicada sob os termos deste Contrato por um terceiro que atue em seu nome, 
+como um provedor de nuvem contratado ou prestador terceirizado que administre 
+ou hospede (seja remota ou virtualmente) o Software para Você, sujeito e 
+condicionado ao seu cumprimento dos seguintes requisitos: (1) Você continua 
+sendo responsável por todas as suas obrigações de acordo com este Contrato e 
+deve celebrar um acordo executório com o terceiro que inclua termos e 
+condições para proteger os direitos da Licenciadora sobre o Software, que não 
+sejam menos restritivos do que os que constituem este Contrato, sem limitação 
+à seção de Verificação a seguir; (2) Você proíbe o uso do Software pelo 
+terceiro para qualquer finalidade que não seja de seu benefício exclusivo; (3) 
+Você é o único responsável pela Licenciadora em caso de qualquer violação 
+deste Contrato por parte do terceiro; e (4) Você está e sempre estará em dia 
+com as compras de inscrições que englobem todas as instalações e implantações 
+do Software pelo terceiro em seu nome. 
+
+Licença da Aplicação.  Se, diretamente da Licenciadora ou de um terceiro, você 
+receber qualquer hardware, software ou outra aplicação que use o Software, 
+Você reconhecerá e concordará em usar o Software unicamente para a finalidade 
+de execução da aplicação, e não como um sistema operacional para fins gerais.  
+
+DIREITOS DE PROPRIEDADE
+
+Nenhum direito de posse ou de propriedade do Software foi transferido a Você. 
+ A Licenciadora e/ou seus licenciadores terceirizados detêm todos os direitos, 
+titularidades e interesses referentes a todos os direitos de propriedade 
+intelectual do Software e dos Serviços, incluindo as respectivas adaptações ou 
+cópias.  Este Software não foi vendido, mas apenas adquirida sua licença 
+condicional de uso.  O título, os direitos de propriedade e os direitos de 
+propriedade intelectual sobre o conteúdo acessado através do Software são de 
+propriedade do proprietário de conteúdo aplicável e podem estar protegidos por 
+leis de direitos autorais ou outras leis aplicáveis.  Este Contrato não 
+concede a Você qualquer direito sobre tal conteúdo.
+
+GARANTIA LIMITADA
+
+A Licenciadora garante que a mídia na qual o Software é fornecido estará livre 
+de defeitos de materiais e fabricação sob uso normal pelo período de sessenta 
+(60) dias a partir da data de entrega para você.    A GARANTIA PRECEDENTE É 
+SEU ÚNICO E EXCLUSIVO RECURSO E SUBSTITUI TODAS AS OUTRAS GARANTIAS, EXPRESSAS 
+OU IMPLÍCITAS.  EXCETO PELA GARANTIA PRECEDENTE, O SOFTWARE É FORNECIDO "COMO 
+ESTÁ" SEM GARANTIAS DE NENHUM TIPO.
+
+Serviços. A Licenciadora garante que todos os Serviços adquiridos serão 
+fornecidos de forma profissional e de acordo com padrões geralmente aceitos 
+pelo setor. Esta garantia terá a validade de trinta (30) dias a contar da data 
+do fornecimento dos Serviços.  Caso haja qualquer violação desta garantia, a 
+única obrigação da Licenciadora será corrigir os Serviços para que eles 
+estejam em conformidade com esta garantia ou, a critério próprio, reembolsar o 
+valor pago por Você à Licenciadora pela parte dos Serviços que não estiver em 
+conformidade com esta garantia.  Você concorda em tomar as medidas apropriadas 
+para isolar e fazer backup do sistema.
+
+O SOFTWARE NÃO É DESENVOLVIDO, FABRICADO OU DESTINADO AO USO OU À DISTRIBUIÇÃO 
+COM EQUIPAMENTO DE CONTROLE ONLINE EM AMBIENTES PERIGOSOS QUE EXIJAM 
+DESEMPENHO LIVRE DE FALHAS, COMO OPERAÇÃO DE INSTALAÇÕES NUCLEARES, NAVEGAÇÃO 
+AÉREA, SISTEMAS DE COMUNICAÇÃO OU DE CONTROLE, MÁQUINAS DE SUPORTE DIRETO À 
+VIDA, SISTEMAS DE ARMAS OU OUTRAS UTILIZAÇÕES NAS QUAIS A FALHA DO SOFTWARE 
+POSSA CAUSAR MORTE, ACIDENTES PESSOAIS OU DANOS FÍSICOS OU AMBIENTAIS GRAVES.
+
+Produtos não pertencentes à Licenciadora.  O Software pode incluir ou ser 
+fornecido com hardware ou outros programas de software ou serviços licenciados 
+ou vendidos por terceiros que não seja a Licenciadora.  A LICENCIADORA NÃO 
+GARANTE PRODUTOS OU SERVIÇOS DE TERCEIROS.  QUALQUER UM DESSES PRODUTOS OU 
+SERVIÇOS É FORNECIDO "NO ESTADO EM QUE SE ENCONTRA".  QUALQUER SERVIÇO DE 
+GARANTIA, SE HOUVER, PARA PRODUTOS NÃO PERTENCENTES À LICENCIADORA É FORNECIDO 
+PELO LICENCIADOR DO PRODUTO, DE ACORDO COM AS GARANTIAS APLICÁVEIS DO PRÓPRIO 
+LICENCIADOR.
+
+EXCETO SE DE OUTRA FORMA RESTRITO POR LEI, A LICENCIADORA RENUNCIA E EXCLUI 
+QUALQUER E TODA GARANTIA IMPLÍCITA INCLUINDO QUALQUER GARANTIA DE 
+COMERCIALIZAÇÃO, ADAPTAÇÃO PARA UM PROPÓSITO PARTICULAR, TÍTULO OU NAO 
+INFRINGIMENTO NEM HÁ NENHUMA GARANTIA CRIADA POR NENHUMA NEGOCIAÇÃO EM CURSO, 
+CURSO DE DESEMPENHO OU USO COMERCIAL.  A LICENCIADORA NÃO CONCEDE QUALQUER 
+GARANTIA, REPRESENTAÇÃO OU COMPROMISSO ALÉM DAQUELES EXPRESSAMENTE 
+ESTABELECIDOS NESTA GARANTIA LIMITADA.  A LICENCIADORA NÃO GARANTE QUE O 
+SOFTWARE OU SERVIÇOS SATISFARÃO SEUS REQUERIMENTOS, SERÃO COMPATÍVEIS COM 
+TODOS OS SISTEMAS OPERACIONAIS OU QUE A OPERAÇÃO DO SOFTWARE OU SERVIÇOS NÃO 
+SERÃO INTERROMPIDOS OU LIVRES DE ERRO.  AS EXCLUSÕES E ISENÇÕES DE 
+RESPONSABILIDADE CITADAS SÃO UMA PARTE ESSENCIAL DESTE CONTRATO E COMPÕEM OS 
+CRITÉRIOS PARA DETERMINAÇÃO DO VALOR COBRADO PELOS PRODUTOS.  Algumas 
+jurisdições não permitem determinadas isenções de responsabilidade e 
+limitações de garantias; portanto, partes das limitações descritas acima podem 
+não se aplicar a Você.  Esta garantia limitada Lhe concede direitos 
+específicos, e Você também poderá ter outros direitos que variam de acordo com 
+o estado ou a jurisdição.  
+
+LIMITAÇÃO DE RESPONSABILIDADE
+
+Perdas Consequenciais.  NEM A LICENCIADORA NEM SEUS LICENCIADORES 
+TERCEIRIZADOS, SUBSIDIÁRIAS OU FUNCIONÁRIOS SERÃO, EM NENHUMA INSTÂNCIA, 
+RESPONSÁVEIS POR QUALQUER DANO ESPECIAL, INCIDENTAL, CONSEQUENCIAL, INDIRETO, 
+ILÍCITO, ECONÔMICO OU PUNITIVO, SEJA BASEADO EM CONTRATO, NEGLIGÊNCIA, DÉBITO 
+ESTRITO OU OUTRO ATO ILÍCITO, VIOLAÇÃO DE QUALQUER OBRIGAÇÃO LEGAL, 
+INDENIZAÇÃO OU CONTRIBUIÇÃO, INCLUINDO SEM SE LIMITAR A PERDAS DE GANHO, 
+NEGÓCIOS OU DADOS, MESMO SE INFORMADOS DAS POSSIBILIDADES DE DANOS.
+Danos Diretos. EM HIPÓTESE ALGUMA, A RESPONSABILIDADE AGREGADA DA LICENCIADORA 
+POR DANOS DIRETOS À PROPRIEDADE OU A PESSOAS (EM UMA INSTÂNCIA OU SÉRIE DE 
+INSTÂNCIAS) EXCEDERÁ 1,25 VEZ O VALOR PAGO PELO SOFTWARE OU PELOS SERVIÇOS A 
+PARTIR DOS QUAIS ESSA RECLAMAÇÃO SE ORIGINOU (OU US$ 50,00 SE VOCÊ RECEBEU O 
+SOFTWARE GRATUITAMENTE). As exclusões e limitações acima não se aplicarão a 
+reivindicações relacionadas a morte ou lesão pessoal causada por negligência 
+da Licenciadora ou seus funcionários, agentes ou contatados.  Nas jurisdições 
+que não permitem a exclusão ou limitação de danos, incluindo, mas sem se 
+limitar, a danos de quebra de nenhum dos termos implícitos como título ou 
+aproveitamento de qualquer Software obtido perante este Contrato ou 
+adulteração fraudulenta, a responsabilidade da Licenciadora deve ser limitada 
+ou excluída ao máximo permitido nessas jurisdições.
+
+TERMOS GERAIS
+
+Vigência.  Este Contrato entrará em vigor na data em que Você adquirir 
+legalmente o Software e terminará automaticamente se Você violar qualquer um 
+de seus termos. 
+Verificação. O Licenciador tem o direito de verificar o cumprimento do 
+presente Contrato. Você concorda em: 1) Implementar proteções internas para 
+evitar cópia, distribuição, instalação, uso ou acesso não autorizado ao 
+Software ou às Ofertas de Inscrição; 2) Manter registros suficientes para 
+certificar a sua conformidade com este Contrato e, mediante solicitação da 
+Licenciadora, fornecer e certificar as métricas e/ou relatórios baseados em 
+tais registros e incluir ambos os números de cópias (por produto e versão) e 
+arquiteturas de rede, pois eles podem se relacionar razoavelmente ao seu 
+licenciamento e implantação do Software ou das Ofertas de Inscrição; e (3) 
+Autorizar uma Licenciadora representante ou auditor independente ("Auditor") a 
+inspecionar e fazer a auditoria em relação a Você (incluindo qualquer 
+subsidiária, afiliada ou prestador de serviços com acesso), seus computadores 
+e registros, durante seu horário normal de trabalho, para constatar 
+conformidade com os termos de licenciamento dos produtos de software e/ou 
+Ofertas de Inscrição da Licenciadora. Mediante apresentação por parte da 
+Licenciadora e do Auditor de um formulário assinado de declaração de 
+confidencialidade por escrito, visando proteger suas informações 
+confidenciais, Você deverá colaborar integralmente com a auditoria e prestar 
+toda a assistência e o acesso necessários aos registros e computadores. Se uma 
+auditoria revelar que Você possui, ou a qualquer momento, possuiu uma 
+instalação não licenciada, uso ou acesso ao Software ou às Ofertas de 
+Inscrição, Você deverá, em 30 dias, comprar licenças ou Ofertas de Inscrição 
+suficientes para cobrir qualquer deficiência sem benefício de nenhum desconto 
+aplicável e sujeito a taxas refletindo a duração da deficiência. Se for 
+encontrada uma deficiência de de 5% ou mais, Você deverá reembolsar a 
+Licenciadora pelos custos incorridos na auditoria.
+Transferência.  Este Contrato e as licenças associadas compradas para iso do 
+Software não devem ser transferidas ou designadas sem aprovação prévia por 
+escrito da Licenciadora. Qualquer tentativa de transferência ou designação 
+deve ser anulada e sem nenhum efeito.  Entre em contato com CRC@suse.com para 
+solicitar a transferência das licenças e atribuição deste Contrato. 
+Lei. Qualquer assunto surgido fora ou relacionado a este Contrato será 
+administrado pelas leis independentes dos Estados Unidos e do Estado de Utah, 
+sem levar em consideração suas escolhas de provisões legais. Qualquer 
+processo, ação ou procedimento surgido fora ou relacionado a este Contrato 
+deve ser trazido somente perante tribunal federal ou estadual da jurisdição 
+apropriada em Utah.  Se uma parte iniciar procedimentos legais relacionados ao 
+Contrato, a parte vigente será designada a cobrir os honorários advocatícios 
+cabíveis.  Se, porém, o seu local principal de atividade for um estado membro 
+da União Europeia ou da Associação de Livre Comércio Europeu, (1) o tribunal 
+da Irlanda deverá possuir jurisdição exclusiva sobre qualquer ação da lei 
+relacionada a este Contrato; e (2) onde as leis de tal país de seu local 
+principal de atividade tiverem que ser aplicadas para qualquer ação da lei, a 
+lei desse país deverá ser aplicada.  A aplicação da Convenção de Contratos das 
+Nações Unidas para a Venda Internacional de Produtos está expressamente 
+excluída.
+Contrato Completo.  Este Contrato, juntamente com qualquer outro documento de 
+compra ou outro contrato entre Você e a Licenciadora, apresenta a compreensão 
+total e contrato entre Você e a Licenciadora e deve ser corrigido ou 
+modificado apenas por um contrato escrito e de acordo por Você e o 
+representante autorizado da Licenciadora.  NENHUM LICENCIADOR TERCEIRIZADO, 
+DISTRIBUIDOR, REPRESENTANTE, VAREJISTA, REVENDEDOR, VENDEDOR OU FUNCIONÁRIO 
+ESTÁ AUTORIZADO A MODIFICAR ESTE CONTRATO OU FAZER QUALQUER DECLARAÇãO OU 
+ASSUMIR COMPROMISSOS QUE SEJAM DIFERENTES OU ADICIONEM INFORMAÇŐES AOS TERMOS 
+DESTE CONTRATO.  
+Desistência.  Nenhuma desistência de qualquer direito deste Contrato será 
+efetiva, a não ser que seja feita por escrito e assinada por um representante 
+devidamente autorizado da parte responsável.  Nenhuma desistência a qualquer 
+direito passado ou presente decorrente de qualquer violação ou falha na 
+execução será considerada como uma desistência de qualquer direito futuro 
+decorrente deste Contrato.
+Divisão.  Se qualquer provisão deste Contrato for inválida ou se não puder ser 
+imposta, essa provisão será interpretada, limitada, modificada ou, se 
+necessário, dividida, de acordo com a necessidade, para eliminar a invalidade 
+ou a incapacidade de imposição, e as outras provisões deste Contrato 
+permanecerão inalteradas.  
+Conformidade com as Leis de Exportação.  Você reconhece que os produtos e/ou 
+tecnologia da Licenciadora estão sujeitos às Regulamentações Administrativas 
+de Exportação dos EUA (a "EAR") e Você concorda em cumprir com a EAR.  Você 
+não exportará ou reexportará os produtos da Licenciadora, diretamente ou 
+indiretamente, para: (1) qualquer país que esteja sujeito a restrições de 
+exportação dos EUA; (2) qualquer usuário final que Você conheça ou possua 
+razões para saber que utilizarão os produtos da Licenciadora para projeto, 
+desenvolvimento ou produção de armas nucleares, químicas ou biológicas, ou 
+sistemas de foguetes, veículos de lançamento espacial, e foguetes de sondagem, 
+ou sistemas de veículos aéreos não tripulados, exceto conforme autorizado pela 
+agência governamental relevante por regulamentação ou licença específica; ou 
+(3) qualquer usuário final que esteja proibido de participar em transações de 
+exportação dos EUA por qualquer agência federal do Governo dos EUA. Ao fazer 
+download ou usar o Software, Você concorda com o precedente e está 
+representando e garantindo que Você não está localizado em, sob controle de, 
+ou uma nação ou residente de qualquer país em qualquer lista relacionada. Além 
+disso, Você é responsável por estar de acordo com qualquer lei local em sua 
+jurisdição que possa impactar seu direito de importar, exportar ou usar os 
+produtos da Licenciadora.  Consulte a página do Bureau of Industry and 
+Security na Web em www.bis.doc.gov, antes de exportar os itens sujeitos ao 
+EAR. Para mais informações sobre exportação do Software, incluindo o Número de 
+Classificação de Controle de Exportação (ECCN) aplicável e a exceção de 
+licença associada (conforme aplicável), consulte www.suse.com/company/legal/. 
+Sob solicitação, o Departamento de Serviços de Comércio Internacional da 
+Licenciadora pode fornecer informação relacionada a restrições de exportação 
+aplicável para produtos da Licenciadora. A Licenciadora não se responsabiliza 
+pela falha em obter as aprovações necessárias para exportação.
+Direitos Restritos do Governo dos EUA.  O uso, a duplicação ou a divulgação de 
+qualquer produto pelo governo dos EUA estão sujeitos às restrições dos 
+regulamentos FAR 52.227-14 (dezembro de 2007) Alternativa III (dezembro de 
+2007), FAR 52.227-19 (dezembro de 2007) ou DFARS 252.227-7013 (b)(3) (novembro 
+de 1995), ou às cláusulas sucessoras aplicáveis.
+
+19-09-2014
+
+

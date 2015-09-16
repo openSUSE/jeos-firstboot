@@ -1,0 +1,135 @@
+#!/bin/bash
+# Copyright (c) 2015 SUSE LLC
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+set -e
+
+. /etc/os-release
+
+# for testing we may run as non root
+if [ -w /run ]; then
+    export TMPDIR=/run
+    # debugging
+    #set -x
+    #exec 2>/run/xxx
+else
+    dry=1
+fi
+
+if [ -n "$dry" ]; then
+    run() {
+	echo "$@"
+    }
+else
+    run() {
+	"$@"
+    }
+fi
+
+dialog_out=`mktemp -qt 'firstboot-XXXXXX'`
+cleanup() {
+	rm -f "$dialog_out"
+}
+trap cleanup EXIT
+
+systemd_firstboot_args=('--setup-machine-id')
+
+result=
+list=
+
+d(){
+    dialog --backtitle "$PRETTY_NAME" "$@" 2>"$dialog_out"
+    # need || true as dialog doesn't write newlines
+    read result < $dialog_out || true
+}
+
+menulist()
+{
+    list=()
+    local line
+    while read line; do
+	    list+=("$line" '')
+    done < <("$@"||true)
+    [ -n "$list" ]
+}
+
+# for some reason localectl doesn't work here
+#menulist localectl --no-pager list-keymaps
+findkeymaps()
+{
+    list=()
+    local line
+    while read line; do
+	    list+=("${line%.map.gz}" '')
+    done < <(find /usr/share/kbd/keymaps -name '*.map.gz' -printf "%f\n" | sort)
+    [ -n "$list" ]
+}
+
+findlocales()
+{
+    list=()
+    local l
+    for l in /usr/lib/locale/*; do
+	list+=("${l#/usr/lib/locale/}" '')
+    done
+    [ -n "$list" ]
+}
+
+if findkeymaps \
+    && d --menu  "Select Keyboard Layout" 0 0 0 "${list[@]}"; then
+	if [ -n "$result" ]; then
+	    #run localectl --no-ask-password set-keymap "$result"
+	    run sed -i -e "s/^KEYTABLE=.*/KEYTABLE=\"$result.map.gz\"/" /etc/sysconfig/keyboard
+	    run /usr/lib/systemd/systemd-vconsole-setup || true # true for nspawn
+	fi
+else
+	d --msgbox "error setting keyboard" 0 0
+fi
+
+if findlocales && d --menu  "Select System Locale" 0 0 0 "${list[@]}"; then
+	if [ -n "$result" ]; then
+	    systemd_firstboot_args+=("--locale=$result")
+	fi
+else
+	d --msgbox "error setting timezone" 0 0
+fi
+
+# timedatectl doesn't work as dbus is not up yet
+# menulist timedatectl --no-pager list-timezones
+if menulist awk \
+    'BEGIN{sort="sort"}/^#/{next;}{print $3|sort}END{close(sort)}' \
+    /usr/share/zoneinfo/zone.tab \
+    && d --menu  "Select Time Zone" 0 0 0 "${list[@]}"; then
+	if [ -n "$result" ]; then
+	    systemd_firstboot_args+=("--timezone=$result")
+	fi
+else
+	d --msgbox "error setting timezone" 0 0
+fi
+
+# NOTE: must be last as dialog file is used to set the password
+d --insecure --passwordbox  "Enter root Password" 0 0
+if [ -n "$result" ]; then
+    systemd_firstboot_args+=("--root-password-file=$dialog_out")
+fi
+
+run systemd-firstboot "${systemd_firstboot_args[@]}"
+
+# vim: sw=4
