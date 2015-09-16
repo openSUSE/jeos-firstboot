@@ -142,10 +142,33 @@ if [ -n "$result" ]; then
     systemd_firstboot_args+=("--root-password-file=$dialog_out")
 fi
 
+d --msgbox 'Please register this image using your existing SUSE entitlement.
+
+As "root" use the following command:
+
+ SUSEConnect -e company@example.com -r YOUR_CODE
+
+to register the instance with SCC
+
+Without registration this instance does not have access to updates and
+security fixes.' 0 0
+
+d --infobox "Creating snapper config ..." 3 40
+run snapper -c root create-config /
+run snapper create -d "Factory Status" --userdata "important=yes"
+
+sleep 1
+
+d --infobox "Applying firstboot settings ..." 3 40
 if [ -n "$keytable" ]; then
     run sed -i -e "s/^KEYTABLE=.*/KEYTABLE=\"$keytable\"/" /etc/sysconfig/keyboard
     run /usr/lib/systemd/systemd-vconsole-setup || true # true for nspawn
 fi
 run systemd-firstboot "${systemd_firstboot_args[@]}"
+sleep 1
+d --infobox "Creating snapshot ..." 3 40
+run snapper create -d "Initial Status" --userdata "important=yes"
+sleep 1
+d --infobox "`cat /etc/motd`" 3 40
 
 # vim: sw=4
