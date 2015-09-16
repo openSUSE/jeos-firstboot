@@ -23,6 +23,8 @@ set -e
 
 . /etc/os-release
 
+EULA_FILE=/etc/YaST2/licenses/base/license.txt
+
 # for testing we may run as non root
 if [ -w /run ]; then
     export TMPDIR=/run
@@ -59,9 +61,12 @@ list=
 keytable=''
 
 d(){
-    dialog --backtitle "$PRETTY_NAME" "$@" 2>"$dialog_out"
-    # need || true as dialog doesn't write newlines
-    read result < $dialog_out || true
+    if dialog --backtitle "$PRETTY_NAME" "$@" 2>"$dialog_out"; then
+	# need || true as dialog doesn't write newlines
+	read result < $dialog_out || true
+    else
+	return $?
+    fi
 }
 
 menulist()
@@ -95,6 +100,11 @@ findlocales()
     done
     [ -n "$list" ]
 }
+
+if ! d --textbox "$EULA_FILE" 0 0 --and-widget --yesno "Do you agree with the terms of the license?" 0 0; then
+    run halt -p
+    exit 1
+fi
 
 if findkeymaps \
     && d --menu  "Select Keyboard Layout" 0 0 0 "${list[@]}"; then
