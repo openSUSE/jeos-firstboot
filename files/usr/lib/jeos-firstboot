@@ -168,11 +168,11 @@ to register the instance with SCC
 Without registration this instance does not have access to updates and
 security fixes.' 0 0 || true
 
-d --infobox "Creating snapper config ..." 3 40 || true
-run snapper -c root create-config /
-run snapper create -d "Factory Status" --userdata "important=yes"
-
-sleep 1
+#d --infobox "Creating snapper config ..." 3 40 || true
+#run snapper -c root create-config /
+#run snapper create -d "Factory Status" --userdata "important=yes"
+#
+#sleep 1
 
 d --infobox "Applying firstboot settings ..." 3 40 || true
 if [ -n "$keytable" ]; then
@@ -185,9 +185,10 @@ if [ -n "$locale" ]; then
 fi
 run systemd-firstboot "${systemd_firstboot_args[@]}"
 sleep 1
-d --infobox "Creating snapshot ..." 3 40 || true
-run snapper create -d "Initial Status" --userdata "important=yes"
-sleep 1
+#run touch /run/snapper_create_initial_snapshot
+#d --infobox "Creating snapshot ..." 3 40 || true
+#run snapper create -d "Initial Status" --userdata "important=yes"
+#sleep 1
 d --infobox "`cat /etc/motd`" 3 40 || true
 
 # vim: sw=4
