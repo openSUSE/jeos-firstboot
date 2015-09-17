@@ -64,6 +64,7 @@ result=
 list=
 keytable=''
 locale=''
+password=''
 
 d(){
     if dialog --backtitle "$PRETTY_NAME" "$@" 2>"$dialog_out"; then
@@ -144,10 +145,11 @@ fi
 
 # NOTE: must be last as dialog file is used to set the password
 while true; do
+    password=
     if d --insecure --passwordbox  "Enter root Password" 0 0; then
-	pw="$result"
+	password="$result"
 	if d --insecure --passwordbox  "Confirm root Password" 0 0; then
-	    if [ "$pw" != "$result" ]; then
+	    if [ "$password" != "$result" ]; then
 		d --msgbox "Entered passwords don't match" 5 40 || true
 		continue
 	    fi
@@ -182,6 +184,10 @@ fi
 # FIXME: systemd sets /etc/locale.conf which is ignored
 if [ -n "$locale" ]; then
     run sed -i -e "s/^RC_LANG=.*/RC_LANG=\"$locale\"/" /etc/sysconfig/language
+fi
+# FIXME: systemd-firstboot doesn't set password if shadow present
+if [ -n "$password" ]; then
+    echo "root:$password" | /usr/sbin/chpasswd
 fi
 run systemd-firstboot "${systemd_firstboot_args[@]}"
 sleep 1
