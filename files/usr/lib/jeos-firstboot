@@ -99,8 +99,8 @@ findlocales()
 {
     list=('POSIX' '')
     local l
-    for l in /usr/lib/locale/*; do
-	list+=("${l#/usr/lib/locale/}" '')
+    for l in /usr/lib/locale/*_??; do
+	list+=("${l#/usr/lib/locale/}.UTF-8" '')
     done
     [ -n "$list" ]
 }
