@@ -63,6 +63,7 @@ systemd_firstboot_args=('--setup-machine-id')
 result=
 list=
 keytable=''
+locale=''
 
 d(){
     if dialog --backtitle "$PRETTY_NAME" "$@" 2>"$dialog_out"; then
@@ -97,10 +98,10 @@ findkeymaps()
 
 findlocales()
 {
-    list=('POSIX' '')
+    list=('en_US' '')
     local l
     for l in /usr/lib/locale/*_??; do
-	list+=("${l#/usr/lib/locale/}.UTF-8" '')
+	list+=("${l#/usr/lib/locale/}" '')
     done
     [ -n "$list" ]
 }
@@ -121,7 +122,8 @@ fi
 
 if findlocales && d --menu  "Select System Locale" 0 0 0 "${list[@]}"; then
 	if [ -n "$result" ]; then
-	    systemd_firstboot_args+=("--locale=$result")
+	    locale="$result.UTF-8"
+	    systemd_firstboot_args+=("--locale=$locale")
 	fi
 else
 	d --msgbox "Error setting timezone" 0 0
@@ -167,6 +169,10 @@ d --infobox "Applying firstboot settings ..." 3 40
 if [ -n "$keytable" ]; then
     run sed -i -e "s/^KEYTABLE=.*/KEYTABLE=\"$keytable\"/" /etc/sysconfig/keyboard
     run /usr/lib/systemd/systemd-vconsole-setup || true # true for nspawn
+fi
+# FIXME: systemd sets /etc/locale.conf which is ignored
+if [ -n "$locale" ]; then
+    run sed -i -e "s/^RC_LANG=.*/RC_LANG=\"$locale\"/" /etc/sysconfig/language
 fi
 run systemd-firstboot "${systemd_firstboot_args[@]}"
 sleep 1
