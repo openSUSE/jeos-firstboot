@@ -126,7 +126,7 @@ if findlocales && d --menu  "Select System Locale" 0 0 0 "${list[@]}"; then
 	    systemd_firstboot_args+=("--locale=$locale")
 	fi
 else
-	d --msgbox "Error setting timezone" 0 0
+	d --msgbox "Error setting locale" 0 0
 fi
 
 # timedatectl doesn't work as dbus is not up yet
@@ -143,10 +143,19 @@ else
 fi
 
 # NOTE: must be last as dialog file is used to set the password
-d --insecure --passwordbox  "Enter root Password" 0 0
-if [ -n "$result" ]; then
-    systemd_firstboot_args+=("--root-password-file=$dialog_out")
-fi
+while true; do
+    if d --insecure --passwordbox  "Enter root Password" 0 0; then
+	pw="$result"
+	if d --insecure --passwordbox  "Confirm root Password" 0 0; then
+	    if [ "$pw" != "$result" ]; then
+		d --msgbox "Entered passwords don't match" 5 40 || true
+		continue
+	    fi
+	    systemd_firstboot_args+=("--root-password-file=$dialog_out")
+	fi
+    fi
+    break
+done
 
 d --msgbox 'Please register this image using your existing SUSE entitlement.
 
@@ -157,15 +166,15 @@ As "root" use the following command:
 to register the instance with SCC
 
 Without registration this instance does not have access to updates and
-security fixes.' 0 0
+security fixes.' 0 0 || true
 
-d --infobox "Creating snapper config ..." 3 40
+d --infobox "Creating snapper config ..." 3 40 || true
 run snapper -c root create-config /
 run snapper create -d "Factory Status" --userdata "important=yes"
 
 sleep 1
 
-d --infobox "Applying firstboot settings ..." 3 40
+d --infobox "Applying firstboot settings ..." 3 40 || true
 if [ -n "$keytable" ]; then
     run sed -i -e "s/^KEYTABLE=.*/KEYTABLE=\"$keytable\"/" /etc/sysconfig/keyboard
     run /usr/lib/systemd/systemd-vconsole-setup || true # true for nspawn
@@ -176,9 +185,9 @@ if [ -n "$locale" ]; then
 fi
 run systemd-firstboot "${systemd_firstboot_args[@]}"
 sleep 1
-d --infobox "Creating snapshot ..." 3 40
+d --infobox "Creating snapshot ..." 3 40 || true
 run snapper create -d "Initial Status" --userdata "important=yes"
 sleep 1
-d --infobox "`cat /etc/motd`" 3 40
+d --infobox "`cat /etc/motd`" 3 40 || true
 
 # vim: sw=4
