@@ -190,11 +190,11 @@ if [ -n "$password" ]; then
     echo "root:$password" | /usr/sbin/chpasswd
 fi
 run systemd-firstboot "${systemd_firstboot_args[@]}"
-sleep 1
+#sleep 1
 #run touch /run/snapper_create_initial_snapshot
-d --infobox "Creating snapshot ..." 3 40 || true
-run snapper --no-dbus -v create -d "Initial Status" --userdata "important=yes" || d --msgbox "snapper failed" 0 0 || true
-sleep 1
+#d --infobox "Creating snapshot ..." 3 40 || true
+#run snapper --no-dbus -v create -d "Initial Status" --userdata "important=yes" || d --msgbox "snapper failed" 0 0 || true
+#sleep 1
 d --infobox "`cat /etc/motd`" 3 40 || true
 
 # vim: sw=4
