@@ -195,6 +195,16 @@ run systemd-firstboot "${systemd_firstboot_args[@]}"
 #d --infobox "Creating snapshot ..." 3 40 || true
 #run snapper --no-dbus -v create -d "Initial Status" --userdata "important=yes" || d --msgbox "snapper failed" 0 0 || true
 #sleep 1
-d --infobox "`cat /etc/motd`" 3 40 || true
+d --infobox 'Please register this image using your existing SUSE entitlement.
 
+As "root" use either one of the following commands:
+ - SUSEConnect -e company@example.com -r YOUR_CODE
+
+to register the instance with SCC
+
+Without registration this instance does not have access to updates and
+security fixes.
+
+Have a lot of fun...
+' 3 40 || true
 # vim: sw=4
