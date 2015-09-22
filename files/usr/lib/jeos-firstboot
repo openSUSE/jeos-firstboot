@@ -187,7 +187,7 @@ if [ -n "$locale" ]; then
 fi
 # FIXME: systemd-firstboot doesn't set password if shadow present
 if [ -n "$password" ]; then
-    echo "root:$password" | /usr/sbin/chpasswd
+    echo "root:$password" | run /usr/sbin/chpasswd
 fi
 run systemd-firstboot "${systemd_firstboot_args[@]}"
 #sleep 1
