@@ -1,0 +1,32 @@
+create_snapshot() {
+	local num="$1"
+	local desc="$2"
+	pushd /
+	if ! mountpoint -q .snapshots; then
+		echo "/.snapshots is not mounted!" >&2
+		return 1
+	fi
+	# we can't use snapper here due to missing dbus daemon in
+	# firstboot. So we have to create a snapshot manually.
+	#snapper --no-dbus -v create -d "Factory Status" --userdata "important=yes"
+	mkdir ".snapshots/$num"
+	btrfs subvolume snapshot / ".snapshots/$num/snapshot"
+	now="`date '+%Y-%m-%d %H:%M:%S'`"
+	cat > ".snapshots/$num/info.xml" <<-EOF
+	<?xml version="1.0"?>
+	<snapshot>
+	  <type>single</type>
+	  <num>$num</num>
+	  <uid>0</uid>
+	  <date>$now</date>
+	  <description>$desc</description>
+	  <userdata>
+	    <key>important</key>
+	    <value>yes</value>
+	  </userdata>
+	</snapshot>
+	EOF
+	popd
+}
+
+# vim: syntax=sh
