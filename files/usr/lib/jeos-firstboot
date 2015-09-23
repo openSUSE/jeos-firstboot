@@ -157,6 +157,12 @@ while true; do
 	    systemd_firstboot_args+=("--root-password-file=$dialog_out")
 	fi
     fi
+    if [ -z "$password" ]; then
+	d --msgbox "Warning: No root password set.
+
+You cannot log in that way. A debug shell will be started on tty9 just this time. Use it to e.g. import your ssh key." 0 0 || true
+	run systemctl start debug-shell.service
+    fi
     break
 done
 
@@ -170,12 +176,6 @@ to register the instance with SCC
 
 Without registration this instance does not have access to updates and
 security fixes.' 0 0 || true
-
-#d --infobox "Creating snapper config ..." 3 40 || true
-#run snapper -c root create-config /
-#run snapper create -d "Factory Status" --userdata "important=yes"
-#
-#sleep 1
 
 d --infobox "Applying firstboot settings ..." 3 40 || true
 if [ -n "$keytable" ]; then
@@ -192,20 +192,8 @@ if [ -n "$password" ]; then
 fi
 run systemd-firstboot "${systemd_firstboot_args[@]}"
 
-d --infobox "Creating snapshot ..." 3 40 || true
+#d --infobox "Creating snapshot ..." 3 40 || true
 #run snapper --no-dbus -v create -d "Initial Status" --userdata "important=yes" || d --msgbox "snapper failed" 0 0 || true
 run create_snapshot 2 "Initial Status"
 
-d --infobox 'Please register this image using your existing SUSE entitlement.
-
-As "root" use either one of the following commands:
- - SUSEConnect -e company@example.com -r YOUR_CODE
-
-to register the instance with SCC
-
-Without registration this instance does not have access to updates and
-security fixes.
-
-Have a lot of fun...
-' 3 40 || true
 # vim: sw=4
