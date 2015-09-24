@@ -180,7 +180,6 @@ security fixes.' 0 0 || true
 d --infobox "Applying firstboot settings ..." 3 40 || true
 if [ -n "$keytable" ]; then
     run sed -i -e "s/^KEYTABLE=.*/KEYTABLE=\"$keytable\"/" /etc/sysconfig/keyboard
-    run /usr/lib/systemd/systemd-vconsole-setup || true # true for nspawn
 fi
 # FIXME: systemd sets /etc/locale.conf which is ignored
 if [ -n "$locale" ]; then
@@ -191,6 +190,8 @@ if [ -n "$password" ]; then
     echo "root:$password" | run /usr/sbin/chpasswd
 fi
 run systemd-firstboot "${systemd_firstboot_args[@]}"
+# run vconsole setup again, just in case
+run /usr/lib/systemd/systemd-vconsole-setup || true # true for nspawn
 
 #d --infobox "Creating snapshot ..." 3 40 || true
 #run snapper --no-dbus -v create -d "Initial Status" --userdata "important=yes" || d --msgbox "snapper failed" 0 0 || true
