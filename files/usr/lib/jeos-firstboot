@@ -144,6 +144,20 @@ else
 	d --msgbox "error setting timezone" 0 0
 fi
 
+# we need to adjust the keyboard and locale before the password is typed, in
+# case umlauts are used
+if [ -n "$keytable" ]; then
+    echo "KEYMAP=$keytable" | tee /etc/vconsole.conf
+    run sed -i -e "s/^KEYTABLE=.*/KEYTABLE=\"$keytable\"/" /etc/sysconfig/keyboard
+fi
+# FIXME: systemd sets /etc/locale.conf which is ignored
+if [ -n "$locale" ]; then
+    run sed -i -e "s/^RC_LANG=.*/RC_LANG=\"$locale\"/" /etc/sysconfig/language
+    export LANG="$locale"
+fi
+run systemd-firstboot "${systemd_firstboot_args[@]}"
+run /usr/lib/systemd/systemd-vconsole-setup || true # true for nspawn
+
 # NOTE: must be last as dialog file is used to set the password
 while true; do
     password=
@@ -154,7 +168,8 @@ while true; do
 		d --msgbox "Entered passwords don't match" 5 40 || true
 		continue
 	    fi
-	    systemd_firstboot_args+=("--root-password-file=$dialog_out")
+	    # don't use that one as we need to switch locale
+	    #systemd_firstboot_args+=("--root-password-file=$dialog_out")
 	fi
     fi
     if [ -z "$password" ]; then
@@ -178,20 +193,10 @@ Without registration this instance does not have access to updates and
 security fixes.' 0 0 || true
 
 d --infobox "Applying firstboot settings ..." 3 40 || true
-if [ -n "$keytable" ]; then
-    run sed -i -e "s/^KEYTABLE=.*/KEYTABLE=\"$keytable\"/" /etc/sysconfig/keyboard
-fi
-# FIXME: systemd sets /etc/locale.conf which is ignored
-if [ -n "$locale" ]; then
-    run sed -i -e "s/^RC_LANG=.*/RC_LANG=\"$locale\"/" /etc/sysconfig/language
-fi
 # FIXME: systemd-firstboot doesn't set password if shadow present
 if [ -n "$password" ]; then
     echo "root:$password" | run /usr/sbin/chpasswd
 fi
-run systemd-firstboot "${systemd_firstboot_args[@]}"
-# run vconsole setup again, just in case
-run /usr/lib/systemd/systemd-vconsole-setup || true # true for nspawn
 
 #d --infobox "Creating snapshot ..." 3 40 || true
 #run snapper --no-dbus -v create -d "Initial Status" --userdata "important=yes" || d --msgbox "snapper failed" 0 0 || true
