@@ -9,8 +9,8 @@
 Description=SUSE JeOS First Boot Wizard
 DefaultDependencies=no
 Conflicts=shutdown.target
-After=systemd-remount-fs.service systemd-tmpfiles-setup.service systemd-vconsole-setup.service
-Before=systemd-sysusers.service sysinit.target shutdown.target systemd-update-utmp.service systemd-udev-trigger.service
+After=systemd-remount-fs.service systemd-tmpfiles-setup.service systemd-vconsole-setup.service systemd-udev-settle.service
+Before=systemd-sysusers.service sysinit.target shutdown.target
 ConditionPathIsReadWrite=/etc
 ConditionFirstBoot=yes
 
