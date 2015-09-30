@@ -108,10 +108,9 @@ findlocales()
     [ -n "$list" ]
 }
 
-if ! d --textbox "$EULA_FILE" 0 0 --and-widget --yesno "Do you agree with the terms of the license?" 0 0; then
-    run halt -p
-    exit 1
-fi
+while ! d --textbox "$EULA_FILE" 0 0 --and-widget --yesno "Do you agree with the terms of the license?" 0 0; do
+    d --msgbox "Well, we cannot continue then ..." 6 40
+done
 
 if findkeymaps \
     && d --menu  "Select Keyboard Layout" 0 0 0 "${list[@]}"; then
