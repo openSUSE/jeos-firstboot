@@ -180,16 +180,20 @@ You cannot log in that way. A debug shell will be started on tty9 just this time
     break
 done
 
-d --msgbox 'Please register this image using your existing SUSE entitlement.
+if [ $NAME = "SLES" ]; then
 
-As "root" use the following command:
+    d --msgbox 'Please register this image using your existing SUSE entitlement.
 
- SUSEConnect -e company@example.com -r YOUR_CODE
+    As "root" use the following command:
 
-to register the instance with SCC
+     SUSEConnect -e company@example.com -r YOUR_CODE
 
-Without registration this instance does not have access to updates and
-security fixes.' 0 0 || true
+    to register the instance with SCC
+
+    Without registration this instance does not have access to updates and
+    security fixes.' 0 0 || true
+
+fi
 
 d --infobox "Applying firstboot settings ..." 3 40 || true
 # FIXME: systemd-firstboot doesn't set password if shadow present
