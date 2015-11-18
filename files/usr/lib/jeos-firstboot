@@ -21,6 +21,8 @@
 
 set -e
 
+TEXTDOMAIN='jeos-firstboot'
+
 . /etc/os-release
 . "$0-functions"
 
@@ -108,7 +110,7 @@ findlocales()
     [ -n "$list" ]
 }
 
-if findlocales && d --menu  "Select System Locale" 0 0 0 "${list[@]}"; then
+if findlocales && d --menu  $"Select System Locale" 0 0 0 "${list[@]}"; then
 	if [ -n "$result" ]; then
 	    locale="$result.UTF-8"
 	    systemd_firstboot_args+=("--locale=$locale")
@@ -116,22 +118,22 @@ if findlocales && d --menu  "Select System Locale" 0 0 0 "${list[@]}"; then
 	    export LANG
 	fi
 else
-	d --msgbox "Error setting locale" 0 0
+	d --msgbox $"Error setting locale" 0 0
 fi
 
 if [ -e  "$EULA_FILE" -a ! -e "${EULA_FILE%/*}/no-acceptance-needed" ]; then
-    while ! d --textbox "$EULA_FILE" 0 0 --and-widget --yesno "Do you agree with the terms of the license?" 0 0; do
-	d --msgbox "Well, we cannot continue then ..." 6 40
+    while ! d --textbox "$EULA_FILE" 0 0 --and-widget --yesno $"Do you agree with the terms of the license?" 0 0; do
+	d --msgbox $"Well, we cannot continue then ..." 6 40
     done
 fi
 
 if findkeymaps \
-    && d --menu  "Select Keyboard Layout" 0 0 0 "${list[@]}"; then
+    && d --menu  $"Select Keyboard Layout" 0 0 0 "${list[@]}"; then
 	if [ -n "$result" ]; then
 	    keytable="$result"
 	fi
 else
-	d --msgbox "Error setting keyboard" 0 0
+	d --msgbox $"Error setting keyboard" 0 0
 fi
 
 # timedatectl doesn't work as dbus is not up yet
@@ -139,12 +141,12 @@ fi
 if menulist awk \
     'BEGIN{print "UTC"; sort="sort"}/^#/{next;}{print $3|sort}END{close(sort)}' \
     /usr/share/zoneinfo/zone.tab \
-    && d --menu  "Select Time Zone" 0 0 0 "${list[@]}"; then
+    && d --menu  $"Select Time Zone" 0 0 0 "${list[@]}"; then
 	if [ -n "$result" ]; then
 	    systemd_firstboot_args+=("--timezone=$result")
 	fi
 else
-	d --msgbox "error setting timezone" 0 0
+	d --msgbox $"error setting timezone" 0 0
 fi
 
 # we need to adjust the keyboard and locale before the password is typed, in
@@ -164,11 +166,11 @@ run /usr/lib/systemd/systemd-vconsole-setup || true # true for nspawn
 # NOTE: must be last as dialog file is used to set the password
 while true; do
     password=
-    if d --insecure --passwordbox  "Enter root Password" 0 0; then
+    if d --insecure --passwordbox  $"Enter root Password" 0 0; then
 	password="$result"
-	if d --insecure --passwordbox  "Confirm root Password" 0 0; then
+	if d --insecure --passwordbox  $"Confirm root Password" 0 0; then
 	    if [ "$password" != "$result" ]; then
-		d --msgbox "Entered passwords don't match" 5 40 || true
+		d --msgbox $"Entered passwords don't match" 5 40 || true
 		continue
 	    fi
 	    # don't use that one as we need to switch locale
@@ -176,7 +178,7 @@ while true; do
 	fi
     fi
     if [ -z "$password" ]; then
-	d --msgbox "Warning: No root password set.
+	d --msgbox $"Warning: No root password set.
 
 You cannot log in that way. A debug shell will be started on tty9 just this time. Use it to e.g. import your ssh key." 0 0 || true
 	run systemctl start debug-shell.service
@@ -185,19 +187,19 @@ You cannot log in that way. A debug shell will be started on tty9 just this time
 done
 
 if [ -x /usr/bin/SUSEConnect ]; then
-    d --msgbox 'Please register this image using your existing SUSE entitlement.
+    d --msgbox $"Please register this image using your existing SUSE entitlement.
 
-    As "root" use the following command:
+As \"root\" use the following command:
 
-     SUSEConnect -e company@example.com -r YOUR_CODE
+ SUSEConnect -e company@example.com -r YOUR_CODE
 
-    to register the instance with SCC
+to register the instance with SCC
 
-    Without registration this instance does not have access to updates and
-    security fixes.' 0 0 || true
+Without registration this instance does not have access to updates and
+security fixes." 0 0 || true
 fi
 
-d --infobox "Applying firstboot settings ..." 3 40 || true
+d --infobox $"Applying firstboot settings ..." 3 40 || true
 # FIXME: systemd-firstboot doesn't set password if shadow present
 if [ -n "$password" ]; then
     echo "root:$password" | run /usr/sbin/chpasswd
