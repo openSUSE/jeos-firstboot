@@ -108,6 +108,17 @@ findlocales()
     [ -n "$list" ]
 }
 
+if findlocales && d --menu  "Select System Locale" 0 0 0 "${list[@]}"; then
+	if [ -n "$result" ]; then
+	    locale="$result.UTF-8"
+	    systemd_firstboot_args+=("--locale=$locale")
+	    LANG="$locale"
+	    export LANG
+	fi
+else
+	d --msgbox "Error setting locale" 0 0
+fi
+
 if [ -e  "$EULA_FILE" -a ! -e "${EULA_FILE%/*}/no-acceptance-needed" ]; then
     while ! d --textbox "$EULA_FILE" 0 0 --and-widget --yesno "Do you agree with the terms of the license?" 0 0; do
 	d --msgbox "Well, we cannot continue then ..." 6 40
@@ -121,15 +132,6 @@ if findkeymaps \
 	fi
 else
 	d --msgbox "Error setting keyboard" 0 0
-fi
-
-if findlocales && d --menu  "Select System Locale" 0 0 0 "${list[@]}"; then
-	if [ -n "$result" ]; then
-	    locale="$result.UTF-8"
-	    systemd_firstboot_args+=("--locale=$locale")
-	fi
-else
-	d --msgbox "Error setting locale" 0 0
 fi
 
 # timedatectl doesn't work as dbus is not up yet
