@@ -121,7 +121,15 @@ else
 	d --msgbox $"Error setting locale" 0 0
 fi
 
-if [ -e  "$EULA_FILE" -a ! -e "${EULA_FILE%/*}/no-acceptance-needed" ]; then
+if [ -e "$EULA_FILE" -a ! -e "${EULA_FILE%/*}/no-acceptance-needed" ]; then
+    if [ -n "$locale" ]; then
+	for i in "${EULA_FILE%.txt}.$locale.txt" "${EULA_FILE%.txt}.${locale%%_*}.txt"; do
+	    if [ -e "$i" ]; then
+		EULA_FILE="$i"
+		break
+	    fi
+	done
+    fi
     while ! d --textbox "$EULA_FILE" 0 0 --and-widget --yesno $"Do you agree with the terms of the license?" 0 0; do
 	d --msgbox $"Well, we cannot continue then ..." 6 40
     done
