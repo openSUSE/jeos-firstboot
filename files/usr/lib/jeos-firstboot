@@ -180,8 +180,7 @@ You cannot log in that way. A debug shell will be started on tty9 just this time
     break
 done
 
-if [ $NAME = "SLES" ]; then
-
+if [ -x /usr/bin/SUSEConnect ]; then
     d --msgbox 'Please register this image using your existing SUSE entitlement.
 
     As "root" use the following command:
@@ -192,7 +191,6 @@ if [ $NAME = "SLES" ]; then
 
     Without registration this instance does not have access to updates and
     security fixes.' 0 0 || true
-
 fi
 
 d --infobox "Applying firstboot settings ..." 3 40 || true
