@@ -1,346 +1,127 @@
-SUSE(R) Linux Enterprise Server 12
+LIZENZVEREINBARUNG
+openSUSE(r) Leap 42.1
 
-SUSE-Endbenutzer-Lizenzvereinbarung
+Dies ist eine inoffizielle Übersetzung der openSUSE Leap 42.1-Lizenz
+ins Deutsche. Sie gibt nicht rechtlich bindend die
+Distributionsbedingungen für openSUSE Leap 42.1 an – nur der
+Originaltext in Englisch der openSUSE Leap 42.1-Lizenz gibt diese
+Bedingungen an. Wir hoffen jedoch, dass diese Übersetzung deutschen
+Muttersprachlern dabei helfen wird, die Lizenz besser zu verstehen.
 
-BITTE LESEN SIE DIESE VEREINBARUNG SORGFÄLTIG DURCH.  MIT DEM KAUF, DER 
-INSTALLATION, DEM HERUNTERLADEN ODER DER ANDERWEITIGEN NUTZUNG DER SOFTWARE 
-(BZW. IHRER KOMPONENTEN) STIMMEN SIE DEN BESTIMMUNGEN DIESER VEREINBARUNG ZU. 
-WENN SIE DIESEN BESTIMMUNGEN NICHT ZUSTIMMEN, SIND SIE NICHT BERECHTIGT, DIE 
-SOFTWARE HERUNTERZULADEN, ZU INSTALLIEREN ODER ZU VERWENDEN, UND SIE SOLLTEN 
-DIE PARTEI, BEI DER SIE DIE SOFTWARE ERWORBEN HABEN, DARÜBER INFORMIEREN, UM 
-DEN KAUFPREIS ZURÜCKERSTATTET ZU BEKOMMEN.  EINE EINZELPERSON, DIE IM AUFTRAG 
-EINER JURISTISCHEN PERSON HANDELT, BESTÄTIGT, DASS ER BZW. SIE BERECHTIGT IST, 
-DIESE VEREINBARUNG IM AUFTRAG DER JURISTISCHEN PERSON EINZUGEHEN.
+Diese Vereinbarung bildet die Grundlage für das Herunterladen, die
+Installation oder die Nutzung von openSUSE Leap 42.1 und dessen
+Updates unabhängig von der Art der Bereitstellung. openSUSE Leap 42.1
+ist eine Gemeinschaftsarbeit und unterliegt dem Urheberrechtsgesetz
+(Copyright Law) der USA. Vorbehaltlich der nachstehenden Bestimmungen
+gewährt Ihnen das openSUSE-Projekt eine Lizenz für diese
+Gemeinschaftsarbeit entsprechend der Allgemeinen Öffentlichen
+GNU-Lizenz Version 2. Indem Sie openSUSE Leap 42.1 herunterladen,
+installieren oder nutzen, stimmen Sie den Bedingungen dieser
+Vereinbarung zu.
 
-Diese Endbenutzer-Lizenzvereinbarung ("Vereinbarung") ist eine rechtsgültige 
-Vereinbarung zwischen Ihnen (als Unternehmen oder Einzelperson) und SUSE LLC 
-("Lizenzgeber"). Das im Titel dieser Vereinbarung bezeichnete Softwareprodukt, 
-für das Sie Lizenzen erworben haben, sämtliche Medien oder Reproduktionen 
-(physisch oder virtuell) und die Begleitdokumentation (kollektiv als 
-"Software" bezeichnet) sind durch die Urheberrechtsgesetze und -verträge der 
-Vereinigten Staaten ("USA") und anderer Länder geschützt und unterliegen den 
-Bedingungen dieser Vereinbarung. Sollten die Gesetze Ihres 
-Hauptgeschäftssitzes erfordern, dass Verträge für ihre Vollstreckbarkeit in 
-der jeweiligen Landessprache zu verfassen sind, so kann auf schriftliche 
-Anforderung beim Lizenzgeber eine Version in der jeweiligen Landessprache 
-angefordert werden, die für Ihren Erwerb der Lizenzen für die Software gilt. 
-Jedes Add-on, jede Aktualisierung, jede mobile Anwendung, jedes Modul, jeder 
-Adapter und jede Support-Version für die Software, die Sie herunterladen oder 
-erhalten und der keine Lizenzvereinbarung beigefügt ist, gilt als Software und 
-unterliegt dieser Vereinbarung. Falls es sich bei der Software um eine 
-Aktualisierung oder eine Support-Version handelt, benötigen Sie eine gültige 
-Lizenz für die Version und die Anzahl der Software-Aktualisierungen oder 
-Support-Versionen, um die Aktualisierung oder Support-Version installieren und 
-nutzen zu können. 
+openSUSE Leap 42.1 ist ein modulares Linux-Betriebssystem, das aus
+Hunderten von Softwarekomponenten besteht. Die Lizenzvereinbarung zu
+jeder Komponente befindet sich im Allgemeinen im Quellcode der
+jeweiligen Komponente. Mit Ausnahme bestimmter Dateien, die die
+nachstehend erläuterte Marke „openSUSE“ enthalten, ermöglichen es
+Ihnen die Lizenzbedingungen zu den Komponenten, die jeweilige
+Komponente zu kopieren und weiterzugeben. Mit der potenziellen
+Ausnahme bestimmter Firmware-Dateien ermöglichen es Ihnen die
+Lizenzbedingungen zu den Komponenten, die jeweilige Komponente sowohl
+in Quellcode- als auch in Binärcodeform zu kopieren, zu ändern und
+weiterzugeben. Diese Vereinbarung stellt weder eine Einschränkung
+Ihrer Rechte im Rahmen der Lizenzbedingungen zu einer bestimmten
+Komponente dar, noch gewährt Sie Ihnen Rechte, die an die Stelle
+dieser Lizenzbedingungen treten.
 
-LIZENZIERTE NUTZUNG
+openSUSE Leap 42.1 und alle Komponenten einschließlich Quellcode,
+Dokumentation, Aufmachung, Struktur und Anordnung wurden vom
+openSUSE-Projekt und anderen mit einem Copyright versehen und sind
+durch das Urheberrecht und andere Gesetze geschützt. Der
+Rechtsanspruch auf openSUSE Leap 42.1 und dessen Komponenten bzw. auf
+Kopien verbleibt bei den Vorgenannten oder ihren Lizenzgebern und
+unterliegt der jeweiligen Lizenz. Die Marke „openSUSE“ ist eine Marke
+von SUSE, LLC. in den USA und anderen Ländern und wird nach
+Genehmigung verwendet. Gemäß dieser Vereinbarung sind Sie zur
+Verteilung unveränderter oder veränderter Kopien von openSUSE
+Leap 42.1 mit der Marke „openSUSE“ unter der Bedingung berechtigt,
+dass Sie die Markenrichtlinien des openSUSE-Projekts befolgen. Diese
+sind unter http://en.opensuse.org/Legal zu finden. Diese
+Markenrichtlinien sind bei der Verteilung von openSUSE Leap 42.1
+unabhängig davon einzuhalten, ob openSUSE Leap 42.1 verändert wurde.
 
-LIZENZEN. Die Software und sämtliche Komponenten sind Eigentum des 
-Lizenzgebers und anderen Lizenzgebern und sind geschützt durch Urheberrechte 
-und andere geltende Gesetze. Unter Einhaltung der Bedingungen dieser 
-Vereinbarungen gewährt Ihnen der Lizenzgeber eine zeitlich unbegrenzte, nicht 
-exklusive, nicht übertragbare, weltweite Lizenz zur Erstellung und Verwendung 
-von Kopien der Software innerhalb Ihres Unternehmens (wie nachstehend 
-definiert).  
+Soweit in dieser Vereinbarung oder in einer Lizenz zu einer bestimmten
+Komponente nicht ausdrücklich erwähnt, WERDEN OPENSUSE Leap 42.1 UND
+DESSEN KOMPONENTEN GEMÄSS DEN ENTSPRECHENDEN GESETZEN IN DER
+VERFÜGBAREN FORM OHNE AUSDRÜCKLICHE ODER IMPLIZITE GEWÄHRLEISTUNG
+BEREITGESTELLT UND LIZENZIERT. HIERZU GEHÖREN DIE IMPLIZITEN
+GEWÄHRLEISTUNGEN FÜR MARKTGÄNGIGKEIT, EIGENTUMSRECHT,
+NICHTBEEINTRÄCHTIGUNG ODER EIGNUNG FÜR EINEN BESTIMMTEN ZWECK. Das
+openSUSE-Projekt garantiert nicht, dass die in openSUSE Leap 42.1
+enthaltenen Funktionen Ihren Anforderungen entsprechen und dass
+openSUSE Leap 42.1 völlig fehlerfrei ausgeführt wird oder genau wie in
+der Begleitdokumentation beschrieben funktioniert. DIE NUTZUNG VON
+OPENSUSE Leap 42.1 ERFOLGT AUF EIGENE GEFAHR.
 
-"Unternehmen" bezeichnet eine juristische Einheit, unter Ausschluss ihrer 
-Tochtergesellschaften und angegliederten Unternehmen, die steuerlich 
-eigenständig sind oder eine separate juristische Einheit bilden. Ein Beispiel 
-für ein Unternehmen im Privatsektor ist eine GmbH, eine Personengesellschaft 
-oder eine Treuhandgesellschaft, ausgenommen Tochterunternehmen oder 
-Zweigunternehmen des Unternehmens, die eine separate Steuernummer oder 
-Handelsregisternummer führen. Ein Beispiel für ein Unternehmen im öffentlichen 
-Sektor ist eine Regierungsbehörde oder ein Amt.
+SOWEIT UNTER DEN ENTSPRECHENDEN GESETZEN MÖGLICH, SIND DAS
+OPENSUSE-PROJEKT UND DESSEN LIZENZGEBER, TOCHTERGESELLSCHAFTEN ODER
+MITARBEITER NICHT FÜR IRGENDWELCHE SCHÄDEN HAFTBAR, EINSCHLIESSLICH
+DIREKTER, BEILÄUFIG ENTSTANDENER ODER FOLGESCHÄDEN SOWIE PROFIT- ODER
+ERSPARNISVERLUSTE, DIE SICH AUS DER NUTZUNG BZW. DER UNFÄHIGKEIT ZUR
+NUTZUNG VON OPENSUSE Leap 42.1 ERGEBEN KÖNNEN. DIES GILT AUCH DANN,
+WENN DAS OPENSUSE-PROJEKT ÜBER DIE MÖGLICHKEIT DERARTIGER SCHÄDEN IN
+KENNTNIS GESETZT WURDE.  IN LÄNDERN, IN DENEN DIE RECHTSPRECHUNG DEN
+AUSSCHLUSS ODER DIE EINSCHRÄNKUNG VON SCHADENSERSATZFORDERUNGEN
+BESCHRÄNKT, BETRÄGT DIE GESAMTHAFTUNG DES OPENSUSE-PROJEKTS UND SEINER
+LIZENZGEBER, TOCHTERGESELLSCHAFTEN ODER MITARBEITER MAXIMAL
+50 US-DOLLAR ODER, SOFERN EINE DERARTIGE EINSCHRÄNKUNG NICHT ERLAUBT
+IST, DEN MAXIMAL ZULÄSSIGEN BETRAG.
 
-Drittanbieter-Software /Open Source.  Durch keine der hier aufgeführten 
-Bedingungen werden Ihre Rechte oder Verpflichtungen sowie die für Sie 
-zutreffenden Bedingungen, die für Sie im Rahmen aller zutreffenden Open 
-Source-Lizenzen für den Open Source-Code in dieser Software gelten, 
-eingeschränkt oder anderweitig beeinflusst.  Andere Softwareprogramme, die 
-unter anderen Bestimmungen und/oder von Dritten (also nicht vom Lizenzgeber) 
-lizenziert werden, können in der Software selbst oder im Lieferumfang der 
-Software enthalten sein. Softwareprogramme mit einer separaten 
-Lizenzvereinbarung unterliegen den Regelungen dieser separaten 
-Lizenzvereinbarung.   
+Gemäß der Gesetzgebung der USA versichern und garantieren Sie, dass:
+(a) Ihnen bekannt ist, dass openSUSE Leap 42.1 Exportkontrollen den
+„Export Administration Regulations“ (EAR) unterliegt, die vom Bureau
+of Industry and Security des US-Wirtschaftsministeriums eingesetzt und
+durchgeführt werden; (b) Sie sich nicht in einem verbotenen
+Zielexportland befinden oder gemäß den Vorschriften und Bestimmungen
+der EAR oder der USA ausdrücklich verboten sind; (c) Sie openSUSE
+Leap 42.1 nicht ohne die erforderlichen Exportlizenzen oder
+-genehmigungen von der US-Regierung an verbotene Orte, Einheiten oder
+Privatpersonen exportieren oder rückexportieren; (d) Sie openSUSE
+Leap 42.1 nicht ohne Genehmigung der US-Regierung in Form von
+Bestimmungen oder spezieller Lizenzen zur Verwendung in Nuklear-,
+chemischen oder biologischen Waffen oder in der Raketentechnologie
+einsetzen oder übertragen; (e) Sie darüber informiert sind, dass
+andere Länder als die USA Import, Nutzung oder Export von
+Verschlüsselungsprodukten möglicherweise einschränken und Sie allein
+für die Einhaltung derartiger Import-, Nutzungs- oder
+Exporteinschränkungen verantwortlich sind.
 
-ABONNEMENTSERVICES. Der Lizenzgeber ist nicht verpflichtet, Wartungs- und 
-Support-Services für die Software zu leisten, es sei denn, Sie entscheiden 
-sich für ein Abonnementsangebot, in dem Support-Services ausdrücklich 
-enthalten sind. Der Lizenzgeber verkauft Abonnementangebote für die Software, 
-durch die Sie, auf der Grundlage einer entsprechenden Gebühr und im Rahmen 
-einer bestimmten Jahresfrist, Anspruch auf technischen Support und/oder die 
-interne Nutzung von Software-Updates haben ("Abonnementangebot"). Hierbei 
-finden die Bestimmungen und Bedingungen des Abonnementangebots Anwendung, die 
-unter http://www.suse.com/products/terms_and_conditions.pdf eingesehen werden 
-können. 
+Sollte sich eine Bestimmung in dieser Vereinbarung als nicht
+durchsetzbar erweisen, ist die Durchsetzbarkeit aller anderen
+Bestimmungen davon nicht betroffen. Diese Vereinbarung unterliegt den
+Gesetzen des US-Bundesstaats Utah und der USA, unabhängig von Gesetzen
+zur Regelung einander widersprechender Gesetze, mit der Ausnahme, dass
+die Konvention der Vereinten Nationen für den internationalen Verkauf
+von Gütern nicht zutrifft. Diese Vereinbarung stellt das gesamte
+Übereinkommen zwischen Ihnen und dem openSUSE-Projekt im Hinblick auf
+den Gegenstand der Vereinbarung dar und kann nur in einem von beiden
+Parteien unterschriebenen Schriftstück geändert werden. Ein Verzicht
+auf eines der in dieser Vereinbarung festgehaltenen Rechte wird erst
+wirksam, wenn dieser schriftlich erfolgt und von einem ordnungsgemäß
+bevollmächtigten Vertreter der zu bindenden Partei unterschrieben ist
+Ein Verzicht auf ein zuvor oder derzeit gültiges Recht, der auf einen
+Vertragsbruch oder eine Unterlassung zurückzuführen ist, kann nicht
+als Verzicht auf künftige Rechte erachtet werden, die sich aus dieser
+Vereinbarung ergeben. Die Nutzung, Vervielfältigung oder Offenlegung
+durch die US-Regierung unterliegt den Beschränkungen in FAR 52.227-14
+(Juni 1987), Alternate III (Juni 1987), FAR 52.227-19 (Juni 1987) oder
+DFARS 252. 227-7013 (b)(3) (November 1995) bzw. den zutreffenden
+Folgebestimmungen.
 
-ZEICHEN. Im Rahmen dieser Vereinbarung werden keine Rechte oder Lizenzen, ob 
-ausdrücklich oder stillschweigend, in Bezug auf Markenzeichen, Markennamen 
-oder Servicemarken des Lizenzgebers oder dessen angegliederten Unternehmen 
-oder Lizenzgebern gewährt ("Marken"). Diese Vereinbarung berechtigt Sie nicht 
-dazu, die Software oder ihre Komponenten mit den Marken des Lizenzgebers zu 
-vertreiben, unabhängig davon, ob die Kopie modifiziert wurde. Sie sind nur 
-dann zur kommerziellen Redistribution der Programme berechtigt, wenn (a) der 
-Lizenzgeber Ihnen in einer separaten schriftlichen Vereinbarung das Recht zu 
-einer solchen kommerziellen Redistribution gewährt hat oder (b) Sie die 
-Kennzeichnungen an sämtlichen Stellen entfernen und ersetzen.  
-
-EINSCHRÄNKUNGEN
-
-Lizenzbeschränkungen. Die Software sowie sämtliche Komponenten sind Eigentum 
-des Lizenzgebers und/oder dessen Lizenzgebern und durch Urheberrechte und 
-andere geltende Gesetze geschützt. Das Eigentum an der Software und an 
-jeglichen Komponenten sowie an jeglichen Kopien, Modifikationen oder 
-zusammengeführten Teilen verbleibt gemäß der einschlägigen Lizenz beim 
-Lizenzgeber bzw. den anderen Lizenzgebern. Der Lizenzgeber behält sich alle 
-Rechte vor, die Ihnen nicht ausdrücklich gewährt werden.  Die Software ist nur 
-für Ihre interne Benutzung lizenziert.  Ohne vorherige schriftliche 
-Genehmigung des Lizenzgebers sind Sie mit Ausnahme der in dieser Vereinbarung 
-ausdrücklich gestatteten Fälle nicht berechtigt, (1) jegliche Hinweise oder 
-Beschriftungen zu Patenten, Marken, Urheberrechten oder Handelsgeheimnissen 
-oder andere proprietäre Hinweise oder Beschriftungen von der Software oder der 
-zugehörigen Dokumentation zu entfernen oder (2) die Ergebnisse jeglicher 
-Leistungs-, Funktions- und anderer Tests oder Benchmark-Tests der Software 
-gegenüber Dritten offenzulegen.
-
-Outsourcing-Anforderungen. Ihre Lizenz zur Nutzung der Software darf durch 
-einen Dritten, der in Ihrem Namen handelt, gemäß den Bestimmungen dieser 
-Vereinbarung genutzt werden, beispielsweise ein externer Cloud- oder 
-Outsourcing-Anbieter, der die Software für Sie verwaltet oder hostet (im 
-Remote-Verfahren oder virtuell), dies unter der Maßgabe der folgenden Punkte: 
-(1) Sie sind weiterhin verpflichtet, alle Ihre Verpflichtungen aus dieser 
-Vereinbarung zu erfüllen und eine durchsetzbare Vereinbarung mit dem Dritten 
-einzugehen, deren Bestimmungen die Rechte des Lizenzgebers an der Software 
-schützen, wobei diese Bestimmungen nicht weniger restriktiv sein dürfen als 
-die Bestimmungen dieser Vereinbarung, beispielsweise der nachfolgende 
-Abschnitt "Überprüfung"; (2) Sie untersagen dem Dritten die Nutzung der 
-Software für andere Zwecke, die nicht ausschließlich zu Ihren eigenen Gunsten 
-gehen; (3) Sie allein sind dem Lizenzgeber gegenüber für jegliche Verstöße des 
-Dritten gegen diese Vereinbarung verantwortlich; und (4) Sie haben ein 
-Abonnement abgeschlossen, das alle Installationen und Bereitstellungen der 
-Software durch den Dritten in Ihrem Namen abdeckt, und Sie verlängern dieses 
-Abonnement entsprechend. 
-
-Appliance-Lizenz. Für den Fall, dass Sie, entweder direkt vom Lizenzgeber oder 
-von einem Drittanbieter, Hardware, Software oder eine andere Appliance 
-erhalten haben, die die Software nutzt, stimmen Sie zu, die Software 
-ausschließlich zum Ausführen der Appliance zu verwenden und nicht als 
-allgemeines Betriebssystem.  
-
-EIGENTÜMERSCHAFT
-
-Durch die Lizenz werden Ihnen keine Eigentumsrechte an der Software 
-übertragen.  Der Lizenzgeber und/oder seine Drittlizenzgeber besitzen alle 
-Rechte, Eigentums- und Nutzungsrechte an geistigem Eigentum an der Software 
-und den Services und behalten sich diese vor; dies gilt auch für Anpassungen 
-oder Kopien hiervon.  Die Software wird Ihnen nicht verkauft; Sie erhalten 
-lediglich eine bedingte Lizenz zur Nutzung der Software.  Jegliche 
-Rechtsansprüche, Eigentumsrechte, geistige Eigentumsrechte auf bzw. an den 
-Inhalten, auf die mithilfe der Software zugegriffen wird, sind das Eigentum 
-des jeweiligen Inhaltsanbieters und sind gegebenenfalls durch entsprechende 
-Urheberrechte oder andere Gesetze geschützt.  Diese Vereinbarung gewährt Ihnen 
-keine Rechte an derartigen Inhalten. 
-
-BESCHRÄNKTE GEWÄHRLEISTUNG
-
-Der Lizenzgeber gewährleistet, dass die Medien, auf der die Software bei 
-normalem Gebrauch über einen Zeitraum von 60 (sechzig) Tagen ab Lieferdatum 
-frei von Material- und Verarbeitungsfehlern ist.    DIE OBEN GENANNTE GARANTIE 
-STELLT IHREN EINZIGEN UND AUSSCHLIESSLICHEN RECHTSANSPRUCH DAR UND ERSETZT 
-ALLE ANDEREN AUSDRÜCKLICHEN ODER STILLSCHWEIGENDEN GEWÄHRLEISTUNGEN. ABGESEHEN 
-VON DER OBIGEN GEWÄHRLEISTUNG WIRD DIE SOFTWARE OHNE MÄNGELGEWÄHR UND OHNE 
-JEGLICHE GEWÄHRLEISTUNGEN BEREITGESTELLT.
-
-Services. Der Lizenzgeber gewährleistet, dass sämtliche erworbenen Services 
-auf professionelle Weise und gemäß den allgemein anerkannten Branchenstandards 
-erbracht werden.  Diese Gewährleistung gilt für einen Zeitraum von dreißig 
-(30) Tagen ab der Bereitstellung der Services.  Bei jeglichem Verstoß gegen 
-diese Gewährleistung ist der Lizenzgeber lediglich verpflichtet, entweder die 
-Services so zu verändern, dass sie mit dieser Gewährleistung übereinstimmen, 
-oder Ihnen den Betrag zu erstatten, den Sie für den Teil der Services an den 
-Lizenzgeber bezahlt haben, der nicht mit dieser Gewährleistung übereinstimmt. 
-Sie erklären sich damit einverstanden, entsprechende Maßnahmen zur Isolierung 
-und Sicherung Ihres Systems vorzunehmen.
-
-DIE SOFTWARE WURDE NICHT FÜR DIE VERWENDUNG ODER DIE VERTEILUNG MIT 
-ONLINE-STEUERUNGSHARDWARE IN GEFÄHRLICHEN UMGEBUNGEN, FÜR DIE STÖRUNGSSICHERER 
-BETRIEB ERFORDERLICH IST, ENTWICKELT, HERGESTELLT ODER KONZIPIERT, 
-BEISPIELSWEISE FÜR DEN BETRIEB VON KERNENERGIEANLAGEN, FLUGNAVIGATION, 
-KOMMUNIKATIONS- ODER STEUERUNGSSYSTEMEN, LEBENSERHALTENDEN GERÄTEN ODER 
-WAFFENSYSTEMEN ODER ANDERE VERWENDUNGSZWECKE, BEI DENEN SOFTWARE-AUSFÄLLE 
-DIREKT ZU TOD, KÖRPERVERLETZUNG ODER SCHWEREN PHYSISCHEN ODER UMWELTSCHÄDEN 
-FÜHREN KÖNNEN.
-
-Nicht vom Lizenzgeber stammende Produkte.  In der Software oder im 
-Lieferumfang können weitere Hardware oder Softwareprogramme bzw. Services, die 
-von anderen Unternehmen als dem Lizenzgeber lizenziert oder verkauft werden, 
-enthalten sein.  DER LIZENZGEBER ÜBERNIMMT KEINE GARANTIE FÜR PRODUKTE ODER 
-SERVICES, DIE NICHT VOM LIZENZGEBER ENTWICKELT WURDEN BZW. BEREITGESTELLT 
-WERDEN.  PRODUKTE BZW. SERVICES DIESER ART WERDEN IN DER VERFÜGBAREN FORM 
-BEREITGESTELLT.  EIN ETWAIGER GARANTIESERVICE FÜR PRODUKTE, DIE NICHT VOM 
-LIZENZGEBER STAMMEN, WIRD VOM PRODUKTLIZENZGEBER GEMÄSS DER ZUTREFFENDEN 
-GARANTIE ZUR VERFÜGUNG GESTELLT.
-
-SOFERN NICHT ANDERWEITIG VOM GESETZ BESCHRÄNKT, SCHLIESST DER LIZENZGEBER 
-SÄMTLICHE IMPLIZIERTEN GEWÄHRLEISTUNGEN AUS, EINSCHLIESSLICH SÄMTLICHER 
-GEWÄHRLEISTUNGEN IN BEZUG AUF MARKTFÄHIGKEIT, EIGNUNG FÜR EINEN BESTIMMTEN 
-ZWECK, GEWÄHRLEISTUNGEN AUS EIGENTUMSRECHTEN ODER DER NICHTVERLETZUNG VON 
-RECHTEN; FERNER BESTEHEN KEINE GEWÄHRLEISTUNGEN, DIE SICH AUS DER VERHANDLUNG, 
-LEISTUNG ODER DEM HANDELSGEBRAUCH ERGEBEN.  DER LIZENZGEBER LEISTET KEINE 
-GARANTIEN, ANGABEN ODER ZUSAGEN, DIE NICHT IN DIESER BESCHRÄNKTEN 
-GEWÄHRLEISTUNG FESTGELEGT SIND.  DER LIZENZGEBER GARANTIERT NICHT, DASS DIE 
-SOFTWARE BZW. DIE DIENSTE IHREN ANFORDERUNGEN ENTSPRECHEN, MIT SÄMTLICHEN 
-BETRIEBSSYSTEMEN KOMPATIBEL SIND BZW. DASS DER BETRIEB DER SOFTWARE BZW. 
-DIENSTE FREI VON UNTERBRECHUNGEN ODER FEHLERN SEIN WIRD.  DIE VORSTEHENDEN 
-AUSSCHLÜSSE UND HAFTUNGSAUSSCHLÜSSE SIND EIN WESENTLICHER BESTANDTEIL DIESER 
-VEREINBARUNG UND STELLEN DIE GRUNDLAGE FÜR DIE BESTIMMUNG DER PRODUKTPREISE 
-DAR. Manche Rechtsprechungen lassen bestimmte Haftungsausschlüsse und 
-Haftungseinschränkungen nicht zu, sodass Teile der oben genannten 
-Einschränkungen für Sie möglicherweise nicht relevant sind. Diese 
-eingeschränkte Gewährleistung verleiht Ihnen bestimmte Rechte; abhängig von 
-Bundesstaat oder Rechtssystem ergeben sich möglicherweise weitere Rechte.  
-
-EINSCHRÄNKUNG DER HAFTBARKEIT
-
-Folgeschäden.  WEDER DER LIZENZGEBER NOCH EINER SEINER DRITTEN LIZENZGEBER, 
-EINES SEINER TOCHTERUNTERNEHMEN ODER EINER SEINER MITARBEITER SIND IN 
-IRGENDEINEM FALL HAFTBAR FÜR BESONDERE, ZUFÄLLIGE ODER FOLGESCHÄDEN, INDIREKTE 
-SCHÄDEN, BEI UNERLAUBTEN HANDLUNGEN, WIRTSCHAFTLICHEM SCHADEN ODER 
-SCHADENSERSATZVERPFLICHTUNGEN, UNABHÄNGIG DAVON, OB DIESE DURCH 
-VERTRAGSGEMÄSSE HANDLUNGEN, FAHRLÄSSIGKEIT, GEFÄHRDUNGSHAFTUNG ODER ANDERE 
-UNERLAUBTE HANDLUNGEN, VERLETZUNG VON GESETZLICHEN PFLICHTEN, ENTSCHÄDIGUNG 
-ODER BEITRAG ENTSTANDEN SIND, EINSCHLIESSLICH VERLUST VON GEWINNEN, 
-GESCHÄFTSMÖGLICHKEITEN ODER DATEN, AUCH WENN AUF DIE MÖGLICHKEIT SOLCHER 
-SCHÄDEN HINGEWIESEN WURDE.
-Unmittelbare Schäden.  DIE GESAMTHAFTUNG DES LIZENZGEBERS FÜR DIREKTE SCHÄDEN 
-AN EIGENTUM ODER PERSONEN (SOWOHL IM EINZELFALL ALS AUCH IN WIEDERHOLTEN 
-FÄLLEN) ÜBERSTEIGT IN KEINEM FALL DEN 1,25-FACHEN WERT DES FÜR DIE SOFTWARE 
-ODER DIE SERVICES, DIE GRUND FÜR DIESE FORDERUNG IST/SIND, BEZAHLTEN PREISES 
-(ODER 50 US-DOLLAR, FALLS SIE DIE SOFTWARE KOSTENFREI ERHALTEN HABEN).  Die 
-oben genannten Ausschlüsse und Beschränkungen gelten nicht für Ansprüche in 
-Bezug auf Tod oder Körperverletzung, die durch die Fahrlässigkeit des 
-Lizenzgebers oder dessen Mitarbeiter, Vertreter oder Auftragnehmer verursacht 
-wurden.  In den Rechtssystemen, die keinen Ausschluss bzw. keine Einschränkung 
-von Schadenersatzansprüchen zulassen, einschließlich Schadenersatzansprüchen 
-bei Verletzung von implizierten Bedingungen in Bezug auf Eigentumsrechte bzw. 
-den stillen Besitz beliebiger Software, die im Rahmen dieser Vereinbarung 
-erworben wurde, bzw. bei arglistiger Täuschung wird die Haftung des 
-Lizenzgebers im maximal zulässigen Umfang dieser Rechtssysteme beschränkt bzw. 
-ausgeschlossen.
-
-ALLGEMEINE BESTIMMUNGEN
-
-Laufzeit.  Diese Vereinbarung tritt an dem Tag in Kraft, an dem Sie die 
-Software rechtmäßig erwerben, und wird automatisch aufgehoben, wenn Sie gegen 
-eine der Bestimmungen verstoßen. 
-Überprüfung. Der Lizenzgeber hat das Recht zur Überprüfung Ihrer Einhaltung 
-dieser Vereinbarung. Sie stimmen zu, Folgendes zu tun: (1) Implementierung 
-interner Sicherungen, um nicht autorisiertes Kopieren, Verteilen, Installieren 
-oder die nicht autorisierte Nutzung der Software und der Abonnementsangebote 
-sowie den Zugriff darauf zu verhindern; (2) Erstellen von Unterlagen, die 
-ausreichend die Einhaltung dieser Vereinbarung belegen sowie nach Aufforderung 
-durch den Lizenzgeber die Bereitstellung und Zertifizierung von Metriken 
-und/oder Berichten, die auf diesen Unterlagen basieren und sowohl die Anzahl 
-der Kopien (nach Produkt und Version) als auch die Netzwerkarchitekturen 
-berücksichtigen, in dem Maß, wie sie sich auf Ihre Lizenzierung und 
-Bereitstellung der Software oder der Abonnementsangebote beziehen; (3) 
-Ermöglichen der Überprüfung und Auditierung Ihrer Computer und Unterlagen 
-(schließt auch die Computer und Unterlagen jeglicher Tochtergesellschaften und 
-angegliederten Unternehmen mit Zugriff ein) durch einen Vertreter des 
-Lizenzgebers oder einen unabhängigen Prüfer ("Prüfer") auf Einhaltung der 
-Lizenzierungsbestimmungen für Softwareprodukte und/oder Abonnementsangebote 
-des Lizenzgebers während der üblichen Geschäftszeiten. Nachdem Ihnen der 
-Lizenzgeber und ein Prüfer schriftlich bestätigt haben, dass Ihre 
-Informationen vertraulich behandelt werden, sind Sie zur vollen Kooperation 
-bei diesem Audit bereit und unterstützen es durch Gewährung des Zugriffs auf 
-die Unterlagen und Computer. Wenn im Rahmen einer Überprüfung festgestellt 
-wird, dass die Software oder das Abonnementsangebot ohne Lizenz installiert 
-ist oder verwendet wird bzw. darauf zugegriffen wird bzw. dies in der 
-Vergangenheit der Fall war, müssen Sie innerhalb von 30 Tagen die 
-erforderlichen Lizenzen oder Abonnementsangebote erwerben, um den Fehlbetrag 
-zu decken ohne die Inanspruchnahme anderweitig geltender Ermäßigungen und 
-gemäß den Gebühren, die die Dauer der Deckungslücke widerspiegeln. Im Falle 
-eines Defizits von 5 % oder mehr müssen Sie dem Lizenzgeber die durch diese 
-Prüfung entstandenen Kosten zurückerstatten.
-Übertragung. Diese Vereinbarung und die damit verbundenen Lizenzen, die Sie 
-für die Nutzung der Software erworben haben, dürfen ohne die vorherige 
-schriftliche Genehmigung des Lizenzgebers nicht übertragen oder abgetreten 
-werden.  Sämtliche versuchten Übertragungen oder Abtretungen sind null und 
-nichtig und nicht wirksam.  Die Übertragung von Lizenzen und die Abtretung 
-dieser Vereinbarung können unter CRC@suse.com beantragt werden. 
-Gesetze. Sämtliche Streitigkeiten, die sich aus oder im Zusammenhang mit 
-dieser Vereinbarung ergeben, unterliegen dem materiellen Recht der Vereinigten 
-Staaten und dem Bundesstaat Utah ohne Rücksicht auf dessen Auswahl von 
-Gesetzesbestimmungen. Jegliche Verfahren, Klagen oder Rechtssachen, die sich 
-aus oder im Zusammenhang mit dieser Vereinbarung ergeben, werden 
-ausschließlich von einem zuständigen Bundes- oder Bundesstaatsgericht in Utah 
-entschieden.  Sollte eine Partei ein Rechtsverfahren in Bezug auf die 
-Vereinbarung einleiten, so hat die obsiegende Partei Anrecht auf Erstattung 
-angemessener Anwaltsgebühren.  Sollte jedoch das Land Ihres 
-Hauptgeschäftssitzes ein Mitgliedsstaat der Europäischen Union oder der 
-Europäischen Freihandelsassoziation (EFTA) sein, (1) sind ausschließlich die 
-Gerichte in Irland für alle Rechtsstreitigkeiten in Bezug auf diese 
-Vereinbarung zuständig; und (2) sofern die Gesetze eines solchen Landes mit 
-Ihrem Hauptgeschäftssitz für solche Rechtsstreitigkeiten gelten, finden die 
-Gesetze dieses Landes Anwendung.  Die Anwendung der Vertragskonventionen der 
-Vereinten Nationen für den internationalen Verkauf von Gütern wird 
-ausdrücklich ausgeschlossen.
-Gesamtvereinbarung.  Diese Vereinbarung, zusammen mit sämtlichen anderen 
-Kaufbelegen bzw. anderen Vereinbarungen zwischen Ihnen und dem Lizenzgeber, 
-enthält die gesamten Abreden und Vereinbarungen zwischen Ihnen und dem 
-Lizenzgeber und kann nur durch eine von Ihnen und einem befugten Vertreter des 
-Lizenzgebers vereinbarte schriftliche Vereinbarung ergänzt bzw. modifiziert 
-werden.  KEIN DRITTER LIZENZGEBER, DISTRIBUTOR, FACHHÄNDLER, EINZELHÄNDLER, 
-WIEDERVERKÄUFER, VERKAUFSPERSONAL ODER MITARBEITER IST ZUM ÄNDERN DIESER 
-VEREINBARUNG ODER ZU ANGABEN ODER ZUSAGEN BERECHTIGT, DIE VON DEN BESTIMMUNGEN 
-DIESER VEREINBARUNG ABWEICHEN ODER DIESE ERGÄNZEN. 
-Aufhebung.  In dieser Vereinbarung festgehaltene Rechte können nur mittels 
-eines von einem entsprechend berechtigten Vertreter der zu bindenden Partei 
-unterschriebenen Schriftstücks rechtsgültig aufgehoben werden. Die Aufhebung 
-eines zuvor oder derzeit gültigen Rechts, die auf jedweden Vertragsbruch oder 
-Durchführungsfehler zurückzuführen ist, kann nicht als Ungültigkeitserklärung 
-für zukünftige Rechte unter dieser Vereinbarung betrachtet werden.
-Abtrennbarkeit.  Ist eine Bestimmung dieser Vereinbarung ungültig oder nicht 
-anwendbar, so wird diese Bestimmung im notwendigen Umfang ausgelegt, 
-beschränkt, geändert oder notfalls aufgehoben, um die Ungültigkeit oder 
-Nichtdurchführbarkeit der Bestimmung zu beseitigen; die übrigen Bestimmungen 
-dieser Vereinbarung bleiben unberührt.  
-Exportbestimmungen.  Sie erkennen an, dass die Produkte und/oder Technologie 
-des Lizenzgebers den US Export Administration Regulations (EAR) unterliegen, 
-und Sie erklären sich mit deren Einhaltung einverstanden. Sie unterlassen es, 
-die Produkte des Lizenzgebers direkt oder indirekt folgendermaßen zu 
-exportieren bzw. zu reexportieren: (1) in Länder, die den 
-US-Exportbeschränkungen unterliegen; (2) für jeden Endbenutzer, bei dem Ihnen 
-bekannt ist oder Sie den begründeten Verdacht haben, dass er die Produkte des 
-Lizenzgebers für die Konstruktion, Entwicklung oder Produktion von nuklearen, 
-chemischen oder biologischen Waffen, Raketensystemen, Trägerraketen, 
-Höhenforschungsraketen oder unbemannten Luftfahrzeugsystemen einsetzt, es sei 
-denn, dies wurde durch die zuständige Behörde per Verordnung oder im Rahmen 
-einer speziellen Lizenz autorisiert; oder (3) für jeden Endbenutzer, dem die 
-Teilnahme an US-Exporttransaktionen durch eine Behörde der US-Regierung 
-untersagt wurde. Indem Sie die Software herunterladen oder verwenden, stimmen 
-Sie den vorstehenden Bedingungen zu. Ferner erklären und garantieren Sie, dass 
-Sie sich nicht in einem solchen Land befinden, unter der Kontrolle eines 
-solchen Landes stehen oder ein Einwohner oder Staatsbürger eines solchen 
-Landes sind und dass Sie nicht auf einer solchen Liste stehen. Ferner sind Sie 
-für die Einhaltung lokaler Gesetze in Ihrer Gerichtsbarkeit verantwortlich, 
-die sich möglicherweise auf Ihr Recht zum Import, Export oder zur Nutzung der 
-Produkte des Lizenzgebers auswirken.  Lesen Sie die Website des Amts für 
-Industrie und Sicherheit unter www.bis.doc.gov, bevor Sie Produkte 
-exportieren, die den EAR unterliegen. Weitere Informationen zum Export von 
-Software, einschließlich der gültigen Exportkontroll-Klassifizierungsnummer 
-(ECCN) und damit verbundener Lizenzausnahmen (sofern zutreffend), sind unter 
-www.suse.com/company/legal/ zu finden. Auf Anforderung kann die 
-Außenhandelsabteilung des Lizenzgebers Informationen bezüglich geltender 
-Exportbeschränkungen für die Produkte des Lizenzgebers bereitstellen. Der 
-Lizenzgeber haftet nicht für Ihr Versäumnis, die erforderlichen 
-Exportgenehmigungen einzuholen.
-Von der US-Regierung eingeschränkte Rechte.  Die Nutzung, Vervielfältigung und 
-Offenlegung der Liefergegenstände durch die US-Regierung unterliegen den 
-Beschränkungen in FAR 52.227-14 (Dez. 2007) Alternate III (Dez. 2007), FAR 
-52.227-19 (Dez. 2007) oder DFARS 252.227-7013(b)(3) (Nov. 995) bzw. den 
-zutreffenden nachfolgenden Bestimmungen.
-
-19.09.2014
-
-
+Copyright (c) 2008-2015 The openSUSE Project. Alle Rechte
+vorbehalten. „SUSE“ und „openSUSE“ sind eingetragene Marken von
+SUSE, LLC. oder ihren Schwestergesellschaften. Diese sind auch die
+ausgewiesenen Gründer und Förderer des openSUSE-Projekts.
+„Linux“ ist eine eingetragene Marke von Linus
+Torvalds. Alle anderen Marken sind das Eigentum der jeweiligen
+Besitzer.

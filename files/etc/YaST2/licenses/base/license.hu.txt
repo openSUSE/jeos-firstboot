@@ -1,0 +1,115 @@
+LICENCMEGÁLLAPODÁS
+openSUSE® Leap 42.1
+
+Ez az openSUSE Leap 42.1 Licencmegállapodás nem hivatalos magyar fordítása. A
+fordítást jogi értelemben nem határozza meg az openSUSE Leap 42.1 terjesztési
+feltételeit – e tekintetben csak az openSUSE Leap 42.1 Licencmegállapodás angol
+nyelvű verziója irányadó. Mindazonáltal reméljük, hogy ez a fordítás segít
+az openSUSE Leap 42.1 Licencmegállapodás jobb megértésében.
+
+Ez a megállapodás szabályozza az openSUSE Leap 42.1 letöltését, telepítését,
+vagy használatát, függetlenül a szállítás módjától. Az openSUSE Leap 42.1 egy
+közös munka eredménye, amelyet az USA Copyright törvény véd a következő
+feltételekkel. Az openSUSE projekt átadja közös munkájának eredményét a GNU
+General Public License 2-es verziója alapján. Az openSUSE Leap 42.1
+letöltésével, telepítésével, vagy használatával elfogadja a jelen
+megállapodás feltételeit.
+
+Az openSUSE Leap 42.1 egy moduláris Linux operációs rendszer, amely több száz
+szoftverkomponensből áll. Az egyes komponensek licencmegállapodásai
+többnyire az egyes komponensek forráskódjában találhatók. A bizonyos
+"openSUSE" védjegyeket tartalmazó fájlokat kivéve az összetevők másolása és
+terjesztése engedélyezett. Bizonyos firmware fájlok kivételével a
+licencfeltételek lehetővé teszik a komponensek másolását, módosítását és
+közreadását forráskód, vagy bináris formátumban. Ezen licencmegállapodás
+nem korlátozza és nem is ad további jogokat, mint amelyek az egyes
+komponensek licencmegállapodásában szerepelnek.
+
+Az openSUSE Leap 42.1 megnevezést és egyes komponenseit, beleértve a
+forráskódot, a dokumentációt, a megjelenést, a felépítést és az
+összeállítást, a szerzői jog és más törvények védik. Az openSUSE Leap 42.1
+nevére, bármely komponensére, annak másolatára, vagy összevont részeire is
+fent említett licencek vonatkoznak. Az "openSUSE" az Egyesült Államokban és
+más országokban, a SUSE Inc. által bejegyzett védjegy, amelynek
+használata a tulajdonos engedélyével történhet. Ez a megállapodás lehetővé
+teszi a nem módosított openSUSE Leap 42.1 másolatát az "openSUSE" védjegy
+használatával, azzal a feltétellel, hogy Ön az openSUSE projekt védjeggyel
+kapcsolatos iránymutatását betartja a http://en.opensuse.org/Legal oldalon
+találhatóak szerint. Az openSUSE Leap 42.1 módosításától függetlenül is
+tiszteletben kell tartani ezeket az iránymutatásokat.
+
+A kifejezetten ebben a megállapodásban, vagy az adott komponens licencében
+megállapított módot kivéve AZ ALKALMAZHATÓ JOGSZABÁLYOK ÁLTAL BIZTOSÍTOTT
+MAXIMÁLIS MÉRTÉKBEN VISSZAUTASÍTJUK A PROGRAMHOZ A GARANCIA BIZTOSÍTÁSÁT.
+AMENNYIBEN A SZERZŐI JOGOK TULAJDONOSAI ÍRÁSBAN MÁSKÉNT NEM NYILATKOZNAK, A
+PROGRAM A "JELEN ÁLLAPOTÁBAN" KERÜL KIADÁSRA, MINDENFÉLE GARANCIAVÁLLALÁS
+NÉLKÜL, LEGYEN AZ KIFEJEZETT VAGY BELEÉRTETT, BELEÉRTVE, DE NEM
+KIZÁRÓLAGOSAN A FORGALOMBA HOZHATÓSÁGRA VAGY ALKALMAZHATÓSÁGRA VONATKOZÓ
+GARANCIÁKAT. Az openSUSE projekt nem garantálja, hogy az openSUSE Leap 42.1
+verzióban található funkciók megfelelnek a követelményeknek, vagy hogy a
+működése az openSUSE Leap 42.1 verzióban teljesen hibamentes, vagy hogy
+pontosan a kísérő dokumentációban leírt módon működik. 
+AZ OPENSUSE Leap 42.1 VERZIÓT CSAK A SAJÁT FELELŐSSÉGÉRE HASZNÁLJA.
+
+AZ ALKALMAZHATÓ JOGSZABÁLYOK ÁLTAL BIZTOSÍTOTT MAXIMÁLIS MÉRTÉKBEN AZ
+OPENSUSE PROJEKT (ÉS LICENCADÓI, LEÁNYVÁLLALATAI ÉS ALKALMAZOTTAI) NEM
+TEHETŐK FELELŐSSÉ A KÁROKÉRT, BELEÉRTVE MINDEN AZ OPENSUSE Leap 42.1
+HASZNÁLATÁBÓL, VAGY A HASZNÁLAT MEGAKADÁLYOZÁSÁBÓL EREDŐ VÉLETLEN, VAGY
+KÖVETKEZMÉNYES KÁRT, ELMARADT HASZNOT VAGY MEGTAKARÍTÁST, MÉG AKKOR SEM, HA
+AZ OPENSUSE PROJEKT TUDATÁBAN IS VAN, HOGY ILYEN KÁROK KELETKEZHETNEK. AZ
+OLYAN JOGHATÓSÁGNÁL, AMELY KORLÁTOZZA A KÁRTÉRÍTÉS KIZÁRÁSÁT VAGY
+KORLÁTOZÁSÁT AZ OPENSUSE PROJEKT (ÉS LICENCTULAJDONOSAI, LEÁNYVÁLLALATAI ÉS
+ALKALMAZOTTAI) ÖSSZESÍTETT FELELŐSSÉGE 50$ ÉRTÉKRE KORLÁTOZÓDIK, VAGY
+AMENNYIBEN A KORLÁTOZÁS NEM ENGEDÉLYEZETT, AKKOR AZ A MEGENGEDETT MINIMÁLIS
+MÉRTÉKRE KORLÁTOZÓDIK.
+
+Az USA törvényeinek előírásai értelmében Ön kijelenti és garantálja, hogy
+Ön: (a) megértette, hogy az openSUSE Leap 42.1 verzióra exportkorlátozások
+vonatkoznak az Egyesült Államok Kereskedelmi Minisztériumának az Exportálással
+kapcsolatos igazgatási feladatai (Export Administration Regulations, "EAR")
+szerint, amelyeket a Kereskedelmi Minisztérium Ipari és Biztonsági Hivatala
+(Bureau of Industry & Security, BIS) hajt végre és tartat be (b) Ön nem az EAR
+vagy az USA embargója által tiltott célországában található; (c) nem fogja
+exportálni, újraexportálni vagy továbbítani az openSUSE Leap 42.1 verziót
+egyetlen tiltott célországba, természetes vagy jogi személy számára sem
+anélkül, hogy az USA kormányától beszerezné a szükséges exportengedély(eke)t
+vagy felhatalmazás(oka)t; (d) nem fogja használni vagy használatra átadni az
+openSUSE Leap 42.1 verziót semmilyen kényes nukleáris, vegyi vagy biológiai
+fegyver- vagy rakétatechnológiai végfelhasználással kapcsolatban, kivéve, ha
+ezt az USA kormánya kifejezetten rendelettel vagy speciális licenccel
+engedélyezte; (e) megértette és elfogadja, hogy ha Ön az USA-ban van és exportálja
+vagy továbbítja az openSUSE Leap 42.1 verziót a megfelelő végfelhasználók számára,
+akkor az EAR 741.17(e) szakaszának értelmében félévente jelentést kell 
+benyújtania a Kereskedelmi Minisztérium Ipari és Biztonsági Hivatala
+(Bureau of Industry & Security, BIS) felé, amelyben szerepelnie kell minden
+egyes fogadó fél nevének és címének (országgal együtt); (e) félévente jelentést
+tesz a Kereskedelmi Minisztérium Ipari és Biztonsági Hivatala
+(Bureau of Industry & Security, BIS), amely tartalmazza a kedvezményezettek
+nevét, címét (országgal együtt); valamint (f) megértette, hogy az USA-n kívül
+más országok is korlátozhatják a titkosítási termékek importálását, használatát
+és exportálását, és ebben az esetben kizárólag Ön lesz a felelős az ilyen
+importálási, használati és exportálási korlátozások betartásáért.
+
+Amennyiben a jelen szerződés bármely pontja be nem tarthatónak bizonyul, ez
+nem befolyásolja a maradék rendelkezések betarthatóságát. A jelen
+szerződésre Utah állam és az USA törvényei vonatkoznak, függetlenül minden
+egyéb ütköző törvény előírásaitól, kivéve, hogy az Egyesült Nemzeteknek a
+nemzetközi árukereskedelemmel kapcsolatos konvenciója nem érvényes. Ön és
+az openSUSE projekt között a jelen szerződés képezi a teljes megállapodást
+és szerződést az adott tárggyal kapcsolatban, és ezt a felek kizárólag
+együttesen, írásban módosíthatják. A jelen szerződéssel kapcsolatos bármely
+jog lemondása csak akkor érvényes, ha az írásban történik, a kötött fél
+jogosult képviselője által aláírva. A nemteljesítésből vagy
+szerződésszegésből származó semmilyen múltbéli vagy jelen joglemondás nem
+tekinthető a jelen szerződés kapcsán felmerülő bármely jövőbeni jog
+lemondásának. Az USA kormánya általi másolást, többszörözést és
+nyilvánosságra hozást a FAR 52.227-14 (1987. június) Alternate III (1987.
+június), FAR 52.227-19 (1987. június), vagy DFARS 252.227-7013 (b)(3)
+(1995. november), illetve az alkalmazható jogutód rendelkezések
+szabályozzák.
+
+Copyright © 2008-2015 The openSUSE Project. Minden jog fenntartva. A "SUSE"
+és az "openSUSE" a SUSE, LLC. védjegyei, amely  az openSUSE projekt
+megalapítója, támogatója, és elnevezője. A "Linux" Linus Torvalds
+bejegyzett védjegye. Minden más védjegy a megfelelő tulajdonos birtokát
+képezi.

@@ -1,336 +1,125 @@
-SUSE(R) Linux Enterprise Server 12
+ACCORD DE LICENCE
+openSUSE® Leap 42.1
 
-Accord de licence utilisateur final SUSE
+Ce document est la traduction non officielle vers le français de la
+licence d'openSUSE Leap 42.1. Cette traduction ne constitue pas la
+déclaration juridique des conditions de distribution
+d'openSUSE Leap 42.1. Seul le texte anglais d'origine de la licence
+d'openSUSE Leap 42.1 fait foi. Nous espérons toutefois que cette
+traduction aidera les personnes parlant français à mieux comprendre
+les dispositions de cette licence.
 
-VEUILLEZ LIRE ATTENTIVEMENT LE PRÉSENT ACCORD.  EN ACHETANT, EN INSTALLANT, EN 
-TÉLÉCHARGEANT OU EN UTILISANT DE TOUTE AUTRE MANIÈRE CE LOGICIEL (Y COMPRIS 
-SES COMPOSANTS), VOUS ACCEPTEZ LES TERMES DU PRÉSENT ACCORD.  SI VOUS NE 
-MARQUEZ PAS VOTRE ACCORD SUR CES DERNIERS, VOUS N'ÊTES PAS AUTORISÉ À 
-TÉLÉCHARGER, INSTALLER OU UTILISER LE LOGICIEL ET DEVEZ AVERTIR LE REVENDEUR 
-DU LOGICIEL AFIN D'OBTENIR UN REMBOURSEMENT.  UNE PERSONNE AGISSANT AU NOM 
-D'UNE ENTITÉ DÉCLARE DISPOSER DE L'AUTORITÉ REQUISE POUR CONCLURE CET ACCORD 
-AU NOM DE LADITE ENTITÉ.
+Cet accord régit le téléchargement, l'installation et l'utilisation
+d'openSUSE Leap 42.1 et de ses mises à jour, quel que soit le mode de
+livraison. openSUSE Leap 42.1 est une œuvre collective protégée par
+les lois sur les droits d'auteur en vigueur aux
+États-Unis. Conformément aux termes suivants, le Projet openSUSE vous
+concède une licence d'utilisation de cette œuvre collective dans le
+cadre de la Licence Publique Générale de GNU version 2. En
+téléchargeant, en installant ou en utilisant openSUSE Leap 42.1, vous
+acceptez les termes du présent accord.
 
-Le présent Accord de licence utilisateur final (ci-après l'" Accord ") est un 
-contrat légal entre Vous (entité ou personne) et SUSE LLC (le " Fournisseur de 
-licence "). Le logiciel identifié dans le titre de cet Accord pour lequel Vous 
-avez acquis des licences, des supports ou reproductions [physiques ou 
-virtuel(le)s] et la documentation qui l'accompagne (ci-après collectivement 
-dénommés le " Logiciel ") est protégé par les lois et traités sur les droits 
-d'auteur en vigueur aux États-Unis et dans d'autres pays, et sont soumis aux 
-termes du présent Accord. Si les lois du pays de votre établissement principal 
-exigent pour rendre les contrats exécutoires, qu'ils soient rédigés dans la 
-langue locale, une version dans cette langue peut être obtenue auprès du 
-Fournisseur de licence en lui adressant une demande écrite et sera réputée 
-régir votre achat de licences du Logiciel.  Toute mise à jour ou application 
-mobile ou tout produit complémentaire, adaptateur, module ou encore version de 
-support du Logiciel que Vous pouvez télécharger ou recevoir et qui n'est 
-accompagné d'aucun Accord de licence est considéré comme étant le Logiciel et 
-est dès lors régi par le présent Accord.  Si le Logiciel est une version de 
-mise à jour ou de support, Vous devez disposer d'une licence acquise de 
-manière licite pour la version et le nombre de Logiciels mis à jour ou pris en 
-charge, afin d'installer ou d'utiliser la version de mise à jour ou de 
-support. 
+openSUSE Leap 42.1 est un système d'exploitation Linux modulaire qui
+inclut des centaines de composants logiciels. L'accord de licence de
+chaque composant se trouve généralement dans le code source du
+composant. À l'exception de certains fichiers contenant la marque
+« openSUSE » décrite ci-dessous, les termes de l'accord de licence de
+ces composants vous autorisent à copier et à redistribuer le
+composant. À l'exception de certains fichiers de micrologiciels, les
+termes de l'accord de licence des composants vous autorisent à copier,
+modifier et redistribuer le composant, à la fois sous la forme de code
+source et de code binaire. Cet accord ne limite pas les droits qui
+vous sont concédés par les termes d'un accord de licence d'un
+composant spécifique et ne vous concède pas de droits qui annulent et
+remplacent lesdits termes.
 
-UTILISATION SOUS LICENCE
+openSUSE Leap 42.1 et chacun de ses composants, y compris le code
+source, la documentation, l'apparence, la structure et l'organisation,
+sont protégés par des droits d'auteur du Projet openSUSE et autres,
+ainsi que par des lois sur les droits d'auteur et autres lois. Le
+titre de propriété d'openSUSE Leap 42.1 et de ses composants, ou de
+toute copie, restera la propriété de la partie susmentionnée ou de ses
+concédants, conformément aux termes de l'accord de licence
+applicables. « openSUSE » est une marque de SUSE, LLC. aux
+États-Unis et dans d'autres pays, utilisée sous autorisation. Le
+présent accord vous autorise à distribuer des copies modifiées ou non
+d'openSUSE Leap 42.1 en utilisant la marque « openSUSE » sous réserve
+que vous respectiez les directives relatives à la marque du Projet
+openSUSE disponibles à l'adresse suivante :
+http://en.opensuse.org/Legal. Vous devez vous conformer à ces
+directives lorsque vous distribuez openSUSE Leap 42.1,
+qu'openSUSE Leap 42.1 ait été modifié ou non.
 
-LICENCES. Le Logiciel et chacun de ses composants sont la propriété du 
-Fournisseur de licence ou d'autres fournisseurs de licence et sont protégés 
-par les droits d'auteur et autres lois applicables. Sous réserve du respect 
-des conditions générales du présent Accord, le Fournisseur de licence Vous 
-octroie une licence perpétuelle, non exclusive, non cessible et de portée 
-mondiale vous permettant de reproduire le Logiciel et d'en utiliser des copies 
-au sein de Votre Entreprise (telle que définie ci-dessous).  
+À l'exception de ce qui est prévu dans le présent accord ou dans un
+accord de licence d'un composant spécifique, DANS LA LIMITE AUTORISÉE
+PAR LA LOI, OPENSUSE Leap 42.1 ET LES COMPOSANTS SONT FOURNIS ET
+CONCÉDÉS SOUS LICENCE « EN L'ÉTAT » SANS GARANTIE DE QUELQUE NATURE
+QUE CE SOIT, EXPLICITE OU IMPLICITE, Y COMPRIS LES GARANTIES
+IMPLICITES DE QUALITÉ MARCHANDE, DE PROPRIÉTÉ, D'ABSENCE DE
+CONTREFAÇON OU D'ADÉQUATION À UN BUT PARTICULIER. Le Projet openSUSE
+ne garantit pas que les fonctionnalités d'openSUSE Leap 42.1
+répondront à vos besoins ou qu'openSUSE Leap 42.1 fonctionnera sans
+erreur ou tel que décrit dans la documentation qui
+l'accompagne. L'USAGE QUE VOUS FEREZ D'OPENSUSE Leap 42.1 ENGAGE VOTRE
+SEULE RESPONSABILITÉ.
 
-" Organisation " désigne une entité juridique, à l'exclusion des filiales et 
-autres sociétés affiliées ayant une existence propre en termes fiscaux ou de 
-personnalité juridique. Dans le secteur privé, une société, un partenariat ou 
-un trust, à l'exclusion de leurs filiales ou autres sociétés affiliées dotées 
-d'un numéro de TVA ou de SIRET propre, sont autant d'exemples d'Organisation. 
-Dans le secteur public, un organisme gouvernemental spécifique ou une autorité 
-publique locale sont des exemples d'organisation.
+DANS LA LIMITE AUTORISÉE PAR LA LOI, LE PROJET OPENSUSE ET SES
+CONCÉDANTS, FILIALES ET EMPLOYÉS NE POURRONT EN AUCUN CAS ÊTRE TENUS
+POUR RESPONSABLES DES PRÉJUDICES DIRECTS, ACCESSOIRES, INDIRECTS, DE
+PERTE FINANCIÈRE OU DE MANQUE À GAGNER RÉSULTANT DE L'UTILISATION
+D'OPENSUSE Leap 42.1 OU DE L'IMPOSSIBILITÉ DE L'UTILISER ET CE, MÊME
+DANS LE CAS OÙ ILS SERAIENT INFORMÉS DE L'ÉVENTUALITÉ DE TELS
+PRÉJUDICES. DANS UNE JURIDICTION QUI LIMITE L'EXCLUSION OU LA
+LIMITATION DES PRÉJUDICES, LA RESPONSABILITÉ GLOBALE DU PROJET
+OPENSUSE, DE SES CONCÉDANTS, FILIALES ET EMPLOYÉS, NE POURRA EXCÉDER
+50 USD, OU SI UNE TELLE LIMITATION EST INTERDITE, LA LIMITE AUTORISÉE
+PAR LA LOI.
 
-Logiciels tiers/Open Source.  Rien dans le présent accord ne peut restreindre, 
-limiter ou affecter tout droit dont vous disposez, ou toute obligation ou 
-condition à laquelle vous pouvez être soumis, aux termes de toute licence 
-relative aux sources ouvertes applicable pour tout code source ouvert contenu 
-dans le Logiciel.  Le Logiciel peut inclure ou faire partie d'une offre 
-groupée qui comprend d'autres logiciels concédés sous licence régis par 
-d'autres clauses et/ou concédés sous licence par un tiers autre que le 
-Fournisseur de licence.  L'utilisation de logiciels faisant l'objet d'accords 
-de licence distincts est régie par ces accords.  
+Conformément à la législation américaine, vous déclarez ce qui suit :
+(a) openSUSE Leap 42.1 est soumis aux Export Administration
+Regulations (« EAR ») du Département américain du Commerce, Bureau of
+Industry and Security en matière de contrôle des exportations ;
+(b) vous ne résidez pas dans un pays de destination faisant l'objet
+d'une interdiction dans le cadre des EAR ou des réglementations
+américaines en matière de sanctions ; (c) vous n'exporterez, ne
+réexporterez ou ne transférerez pas openSUSE Leap 42.1 vers toute
+destination, entité ou tout individu faisant l'objet de restrictions
+sans obtenir la ou les licences ou autorisations d'exportation
+nécessaires de la part de l'administration américaine ; (d) vous
+n'utiliserez pas ni ne transférerez openSUSE Leap 42.1 pour des
+utilisations finales dans une technologie de missile, d'armes
+nucléaires, chimiques ou biologiques sauf autorisation par
+l'administration américaine dans le cadre d'une réglementation ou
+d'une licence spécifique ; (e) vous acceptez que des pays autres que
+les États-Unis puissent restreindre l'importation, l'utilisation ou
+l'exportation de logiciels de chiffrement et vous assumez l'entière
+responsabilité du respect desdites restrictions.
 
-SERVICES À ABONNEMENT.  Le Fournisseur de licence n'est en aucun cas tenu de 
-fournir une maintenance ni une assistance, sauf si Vous avez souscrit à une 
-offre d'abonnement qui inclut expressément de tels services.  Le Fournisseur 
-de licence vend des offres d'abonnement pour le Logiciel, qui Vous permettent 
-de bénéficier du support technique contre paiement et/ou d'une utilisation 
-interne des mises à jour du Logiciel fournies pour une période annuelle 
-spécifiée (" Offre d'abonnement ") et soumises aux termes contractuels de 
-l'Offre d'abonnement disponibles en ligne sur 
-http://www.suse.com/products/terms_and_conditions.pdf. 
+Si une quelconque stipulation du présent accord est jugée
+inapplicable, elle n'affectera pas la force exécutoire des autres
+stipulations. Le présent accord sera régi par les lois de l'État de
+l'Utah et des États-Unis, nonobstant les conflits de principes
+juridiques, à l'exception du fait que la Convention des Nations Unies
+sur les contrats de vente internationale de marchandises ne s'applique
+pas au présent contrat. Cet accord constitue la totalité de l'accord
+existant entre vous et le Projet openSUSE, et ne peut être modifié
+qu'au moyen d'un document écrit signé par les deux parties. Toute
+renonciation à un droit prévu par le présent accord devra, pour
+prendre effet, être formulée par écrit et signée par un représentant
+dûment autorisé de la partie concernée. Une renonciation à un droit
+passé ou présent, en relation avec la violation d'une clause ou un
+manquement, ne saurait être interprétée comme une renonciation à un
+droit futur découlant des termes du présent accord. Toute utilisation,
+reproduction ou divulgation par l'administration des États-Unis est
+soumise aux limitations prévues par les dispositions légales
+suivantes : FAR 52.227-14 (juin 1987) Alternate III (juin 1987), FAR
+52.227-19 (juin 1987) ou DFARS 252.227-7013 (b)(3) (novembre 1995), ou
+par les clauses ultérieures appliquées en remplacement des
+dispositions légales précitées.
 
-MARQUES. Le présent accord ne saurait accorder aucun droit ou licence, 
-explicite ou implicite, relatif à une marque commerciale, appellation 
-commerciale ou marque de service appartenant au Fournisseur de licence ou à 
-ses filiales ou fournisseurs de licence (les " Marques "). Il ne vous permet 
-pas de distribuer le Logiciel ou ses composants sous les marques commerciales 
-du Fournisseur de licence, que la copie ait été modifiée ou non.  Vous pouvez 
-assurer une redistribution commerciale des Programmes uniquement si (a) cela 
-est autorisé par un accord écrit distinct précisant que le Fournisseur de 
-licence autorise ladite redistribution commerciale ou que (b) vous supprimez 
-et remplacez toutes les occurrences de toutes les Marques.  
-
-LIMITATIONS
-
-Limitations de l'Accord de Licence.  Le Logiciel et chacun de ses composants 
-sont la propriété du Fournisseur de licence et/ou de ses fournisseurs de 
-licence et sont protégés par les droits d'auteur et autres lois en vigueur. Le 
-titre du Logiciel et de tout composant ou de toute copie, modification ou 
-partie fusionnée demeurent la propriété du Fournisseur de licence et des 
-autres fournisseurs de licence et sont soumis à la licence applicable.  Le 
-Fournisseur de licence se réserve tous les droits qui ne Vous sont pas 
-expressément concédés. Le Logiciel vous est fourni sous licence pour votre 
-usage strictement interne.  À moins que le présent Accord ne vous y autorise 
-expressément, Vous n'êtes pas autorisé à (1) retirer des mentions de brevet, 
-de marque commerciale, de copyright, de secret commercial ou autres mentions 
-de propriété ou encore les étiquettes sur le Logiciel ou sa documentation, ni 
-à (2) dévoiler les résultats de tests de performances, tests fonctionnels ou 
-de toute autre forme d'évaluation ou d'étalonnage du Logiciel à des tiers sans 
-l'autorisation préalable écrite du Fournisseur de licence.
-
-Conditions requises pour la sous-traitance. Votre licence d'utilisation du 
-Logiciel peut être utilisée selon les termes du présent Accord par un tiers 
-agissant pour Votre compte, tel qu'un fournisseur de Cloud tiers ou un 
-sous-traitant qui gère ou héberge (à distance ou virtuellement) le Logiciel 
-pour Vous, pour autant que Vous respectiez les modalités suivantes : (1) Vous 
-restez responsables de toutes Vos obligations aux termes du présent Accord et 
-souscrivez avec ce tiers à un accord exécutoire contenant des conditions 
-générales qui veillent à la protection des droits du Fournisseur de licence 
-concernant le Logiciel et ne sont pas moins restrictives que celles contenues 
-dans le présent Accord, y compris et sans limitation, la section Vérification 
-ci-dessous ; (2) Vous interdisez l'utilisation du Logiciel par ce tiers 
-lorsqu'il ne travaille pas pour votre compte ; (3) Vous assumez seul la 
-responsabilité à l'égard du Fournisseur de licence de toute violation 
-éventuelle du présent Accord par ce tiers et (4) Vous êtes et restez en ordre 
-de paiement de vos achats d'abonnements pour couvrir toutes les installations 
-et tous les déploiements du Logiciel par ce tiers pour Votre compte. 
-
-Licence applicative.  Si, que ce soit directement par le Fournisseur de 
-licence ou via une tierce partie, vous avez reçu du matériel, un logiciel ou 
-tout autre applicatif qui utilise le Logiciel, Vous reconnaissez et acceptez 
-d'utiliser le Logiciel uniquement aux fins d'exécution de l'applicatif et non 
-en tant que système d'exploitation global.  
-
-DROITS DE PROPRIÉTÉ
-
-Aucun titre de propriété du Logiciel ne Vous est cédé.  Le Fournisseur de 
-licence et/ou ses fournisseurs de licences tiers conservent tous les droits, 
-titres et intérêts de propriété intellectuelle attachés au Logiciel et aux 
-Services, y compris ceux portant sur toute adaptation ou copie dudit Logiciel 
-et desdits Services.  Le Logiciel ne vous est pas vendu, Vous faites 
-uniquement l'acquisition d'une licence conditionnelle d'utilisation du 
-Logiciel.  Le titre, les droits de propriété et de propriété intellectuelle du 
-contenu disponible via le Logiciel demeurent la propriété de l'éditeur de 
-contenu et peuvent être protégés par le droit sur le copyright ou d'autres 
-lois applicables.  Le présent Accord ne vous concède aucun droit sur ce type 
-de contenu. 
-
-GARANTIE LIMITÉE
-
-Le Fournisseur de licence garantit que les supports sur lesquels figure le 
-Logiciel sont et seront exempts de défauts matériels ou de fabrication dans le 
-cadre d'une utilisation normale pour une période de soixante (60) jours à 
-compter de la date à laquelle ils vous sont fournis.   LA GARANTIE 
-SUSMENTIONNÉE CONSTITUE VOTRE SEUL ET UNIQUE RECOURS ET REMPLACE TOUTE AUTRE 
-GARANTIE, EXPRESSE OU IMPLICITE.  À L'EXCEPTION DE LA GARANTIE SUSMENTIONNÉE, 
-LE LOGICIEL EST FOURNI " EN L'ÉTAT " SANS GARANTIE D'AUCUNE SORTE.
-
-Services.  Le Fournisseur de licence garantit que les Services acquis seront 
-fournis de façon professionnelle et dans les règles de l'art.  La présente 
-garantie reste valable pendant trente (30) jours à compter de la date de 
-fourniture des Services.  En cas de manquement à la garantie, la seule 
-obligation du Fournisseur de licence est soit de corriger les Services de 
-sorte qu'ils soient conformes à la présente garantie, soit de vous rembourser 
-le montant perçu pour ces services non conformes. Vous acceptez de prendre les 
-mesures appropriées pour isoler et sauvegarder Vos systèmes.
-
-LE LOGICIEL N'A PAS ÉTÉ CONÇU, FABRIQUÉ OU PRÉVU POUR UNE UTILISATION OU UNE 
-DISTRIBUTION SUR UN ÉQUIPEMENT FONCTIONNANT DANS UN ENVIRONNEMENT DANGEREUX ET 
-QUI NÉCESSITE DES PERFORMANCES N'OFFRANT PLUS TOUTE LA SÉCURITÉ NÉCESSAIRE : 
-FONCTIONNEMENT SUR DES INSTALLATIONS NUCLÉAIRES, NAVIGATION AÉRIENNE, 
-COMMUNICATIONS OU SYSTÈMES DE CONTRÔLE, ÉQUIPEMENTS DE SAUVETAGE, SYSTÈMES 
-D'ARMES OU AUTRES UTILISATIONS AU COURS DESQUELLES UNE PANNE DU LOGICIEL 
-POURRAIT ENTRAÎNER DIRECTEMENT LA MORT, DES BLESSURES CORPORELLES OU UNE 
-DÉTÉRIORATION GRAVE DE L'ENVIRONNEMENT.
-
-Produits d'un autre éditeur.  Le Logiciel peut inclure ou faire partie d'une 
-offre groupée qui inclut du matériel ou d'autres logiciels ou services 
-concédés sous licence ou vendus par une entité autre que le Fournisseur de 
-licence.  LE FOURNISSEUR DE LICENCE NE GARANTIT PAS LES PRODUITS OU SERVICES 
-FOURNIS PAR UN AUTRE ÉDITEUR. CES PRODUITS OU SERVICES SONT FOURNIS PAR NOVELL 
-" TELS QUELS ".  TOUTE GARANTIE ÉVENTUELLE SUR CES PRODUITS D'UN AUTRE ÉDITEUR 
-NE PEUT ÊTRE OFFERTE QUE PAR LE FOURNISSEUR DE LICENCE DE CES PRODUITS EN 
-VERTU DE SES PROPRES CONDITIONS DE GARANTIE APPLICABLES.
-
-SOUS RÉSERVE DE RESTRICTIONS CONTRAIRES PRÉVUES PAR LA LOI, LE FOURNISSEUR DE 
-LICENCE EXCLUT TOUTE GARANTIE GÉNÉRALEMENT QUELCONQUE ET TOUTE GARANTIE 
-IMPLICITE NOTAMMENT TOUTE GARANTIE DE QUALITÉ MARCHANDE OU D'ADÉQUATION À UN 
-USAGE PARTICULIER, TOUT DROIT DE PROPRIÉTÉ OU DE NON-CONTREFAÇON AINSI QUE 
-TOUTE GARANTIE DÉCOULANT D´ÉCHANGES COMMERCIAUX OU D'UNE UTILISATION 
-COMMERCIALE OU TOUTE GARANTIE DE PERFORMANCES. LE FOURNISSEUR DE LICENCE 
-N'APPORTE AUCUNE GARANTIE ET N'ENGAGE AUCUNE RESPONSABILITÉ NON EXPRESSÉMENT 
-DÉFINIE DANS LA PRÉSENTE GARANTIE LIMITÉE.  IL NE GARANTIT PAS QUE LE LOGICIEL 
-OU LES SERVICES SATISFERONT À VOS EXIGENCES, QU'ILS SERONT COMPATIBLES AVEC 
-TOUS LES SYSTÈMES D'EXPLOITATION OU QU'ILS FONCTIONNERONT DE MANIÈRE 
-ININTERROMPUE OU SANS ERREUR. LES CLAUSES ET EXCLUSIONS DE GARANTIE 
-PRÉCÉDENTES CONSTITUENT UNE PARTIE ESSENTIELLE DE CET ACCORD ET SERVENT DE 
-BASE POUR DÉTERMINER LE PRIX DES PRODUITS. Certaines juridictions n'autorisent 
-pas certaines exclusions ou limitations de garantie. Par conséquent, il se 
-peut qu'une partie des limitations susmentionnées ne vous soient pas 
-applicables.  La présente garantie limitée Vous confère des droits 
-spécifiques, auxquels peuvent s'ajouter d'autres droits variables en fonction 
-de la législation en vigueur dans l'État ou la juridiction dont Vous relevez. 
- 
-
-LIMITATION DE RESPONSABILITÉ
-
-Préjudices indirects.  LE FOURNISSEUR DE LICENCE OU SES FOURNISSEURS TIERS, 
-SES FILIALES OU SES EMPLOYÉS NE POURRONT EN AUCUN CAS ÊTRE TENUS POUR 
-RESPONSABLES DES PRÉJUDICES INDIRECTS, ACCESSOIRES, SPÉCIAUX, DÉLICTUELS, 
-ÉCONOMIQUES OU PÉNAUX, QU'ILS REPOSENT SUR UN CONTRAT, RÉSULTENT DE LA 
-NÉGLIGENCE, DE LA RESPONSABILITÉ STRICTE OU DE TOUT AUTRE DÉLIT, INFRACTION À 
-UNE OBLIGATION STATUTAIRE, INDEMNITÉ OU CONTRIBUTION, Y COMPRIS, MAIS DE FAÇON 
-NON LIMITATIVE, EN CAS DE PERTE FINANCIÈRE, DE MANQUE À GAGNER OU DE PERTE DE 
-DONNÉES, ET CE INDÉPENDAMMENT DU CARACTÈRE PRÉVISIBLE OU NON DE TELS 
-PRÉJUDICES. 
-Préjudices directs.  EN AUCUN CAS LA RESPONSABILITÉ GLOBALE DU FOURNISSEUR DE 
-LICENCE EN MATIÈRE DE PRÉJUDICES DIRECTS MATÉRIELS OU IMMATÉRIELS (QU'IL 
-S'AGISSE D'UN CAS UNIQUE OU RÉPÉTÉ) NE POURRA ÊTRE ENGAGÉE AU-DELÀ DE 125 % DU 
-MONTANT QUE VOUS AVEZ PAYÉ POUR LE LOGICIEL OU LES SERVICES [OU 40 EUROS 
-(50 USD) SI LE LOGICIEL VOUS A ÉTÉ FOURNI À TITRE GRACIEUX].  Les exclusions 
-et limitations stipulées plus haut ne s'appliquent pas en cas de décès ou de 
-dommage corporel causé par la négligence du Fournisseur de licence, de ses 
-employés, agents ou sous-traitants.  Dans les juridictions où la loi rend 
-inapplicables les exclusions ou limitations de responsabilité de ces dommages, 
-y compris, mais sans limitation, les dommages découlant d'une violation des 
-termes implicites quant au droit de propriété ou à la jouissance paisible du 
-Logiciel concédé sous licence en vertu du présent Accord ou d'une présentation 
-frauduleuse, la responsabilité du Fournisseur de licence sera exclue ou 
-limitée dans la mesure maximale permise par la législation de ces 
-juridictions.
-
-CONDITIONS GÉNÉRALES
-
-Durée.  Le présent Accord entre en vigueur à la date à laquelle Vous acquérez 
-légalement le Logiciel. Il sera automatiquement résilié si Vous ne respectez 
-pas l'une de ses conditions.  
-Vérification. Le concédant du Logiciel a le droit de vérifier que Vous vous 
-conformez au présent Accord. Vous acceptez : (1) d'appliquer les mesures de 
-sécurité nécessaires en interne afin d'éviter toute copie, distribution, 
-installation, utilisation ou accès illicite au présent Logiciel ou aux 
-présentes Offres d'abonnement ; (2) de conserver des enregistrements attestant 
-que Vous vous conformez au présent Accord et de fournir, à la demande du 
-Fournisseur de licence, des statistiques et/ou rapports basés sur ces 
-enregistrements et qui justifient le nombre de copies (par produit et version) 
-et les architectures réseau dans la mesure où celles-ci sont liées d'une 
-manière ou d'une autre aux octrois de licence et au déploiement du Logiciel ou 
-des offres d'abonnement ; (3) d'autoriser un représentant du Fournisseur de 
-licence ou un auditeur indépendant (ci-après " Auditeur ") à inspecter et 
-auditer Vos ordinateurs et enregistrements (y compris ceux de vos filiales et 
-sociétés affiliées ainsi que ceux de vos sous-traitants bénéficiant d'un 
-accès), pendant Vos heures de bureau, à des fins de vérification de la 
-conformité avec les conditions d'octroi de licence pour les produits logiciels 
-et/ou Offres d'abonnement du Fournisseur de licence. Pour autant que le 
-Fournisseur de licence et l'Auditeur se soient engagés par écrit à préserver 
-la confidentialité de Vos données, Vous êtes tenu de vous montrer coopératif 
-dans le cadre de ce type d'audit et de fournir l'assistance nécessaire et 
-l'accès requis à tous les enregistrements et ordinateurs. Si un audit révèle 
-que Vous avez, à un moment donné, eu ou utilisé une installation qui n'était 
-pas concédée sous licence ou que Vous avez accédé au Logiciel ou aux Offres 
-d'abonnement sans licence, Vous êtes tenu d'acquérir, dans un délai de 
-30 jours, un nombre suffisant de licences ou d'Offres d'abonnement pour 
-pallier à ce manquement sans bénéficier d'une éventuelle remise applicable et 
-devrez supporter les frais de licence pour la durée dudit manquement. Si un 
-défaut supérieur ou égal à 5 % est identifié, Vous êtes tenu de rembourser au 
-Fournisseur de licence les frais encourus pour l'audit.
-Cession de licence.  Le présent Accord et les licences associées achetées dans 
-le cadre de l'utilisation du Logiciel ne peuvent en aucun cas faire l'objet 
-d'une cession ou d'une assignation sans l'accord préalable écrit du 
-Fournisseur de licence. Toute tentative de cession ou d'assignation sera 
-considérée comme nulle et non avenue.  Si vous souhaitez demander la cession 
-de licences et l'assignation du présent Accord, écrivez à CRC@suse.com. 
-Droit. Tout litige découlant ou concernant le présent Accord sera soumis aux 
-principales lois des États-Unis et de l'État de l'Utah indépendamment de ses 
-dispositions concernant le choix de la loi applicable. Tout procès, action ou 
-procédure découlant ou concernant le présent Accord peut uniquement être porté 
-devant les tribunaux fédéraux ou fédérés de la juridiction compétente de 
-l'Utah.    Si une partie entame une procédure légale eu égard au présent 
-Accord, la partie qui remporte le procès sera en droit de se voir dédommager, 
-dans la mesure du raisonnable, de ses frais d'avocat.  Toutefois, si votre 
-établissement principal est situé dans un État membre de l'Union européenne ou 
-de l'Association européenne de libre-échange, (1) les tribunaux irlandais 
-seront l'unique juridiction habilitée à recevoir toute action juridique au 
-titre du présent Accord et (2) lorsque les lois du pays de votre établissement 
-principal exigent d'être appliquées pour ce type d'action devant les 
-tribunaux, ce sont les lois dudit pays qui s'appliquent.  L'application de la 
-Convention des Nations Unies sur les contrats de vente internationale de 
-marchandises est expressément exclue.
-Accord complet.  Le présent Accord ainsi que tous les autres documents d'achat 
-ou tout autre accord entre Vous et le Fournisseur de licence définissent la 
-totalité des conventions entre Vous et le Fournisseur de licence et ne peuvent 
-être amendés ou modifiés que par un accord écrit conclu entre Vous et un 
-représentant autorisé du Fournisseur de licence.  AUCUN FOURNISSEUR DE LICENCE 
-TIERS, DISTRIBUTEUR, VENDEUR, DÉTAILLANT, REVENDEUR, REPRÉSENTANT OU EMPLOYÉ 
-N'EST AUTORISÉ À MODIFIER CET ACCORD OU À ENGAGER DES RESPONSABILITÉS AUTRES 
-QUE CELLES INCLUSES DANS LES PRÉSENTES CLAUSES DE L'ACCORD. 
-Renonciation.  Toute renonciation à l'un des droits octroyés par le présent 
-Accord devra, pour prendre effet, être formulée par écrit et signée par un 
-représentant dûment autorisé de la partie concernée.  Toute renonciation du 
-droit passé ou présent causé par la violation de l'une des clauses du présent 
-Accord représentera une renonciation des droits futurs liés à cet Accord.
-Rupture de l'Accord.  Si l'une des clauses de cet Accord perd sa valeur 
-juridique ou sa force exécutoire, ladite disposition sera analysée, limitée, 
-modifiée ou, le cas échéant, résiliée afin d'éliminer son inapplicabilité ; 
-par contre, les autres dispositions conserveront leur applicabilité.  
-Conformité aux exigences d'exportation.  Vous reconnaissez que les produits 
-et/ou la technologie du Fournisseur de licence sont soumis à la réglementation 
-régissant les exportations aux États-Unis (ci-après la réglementation " EAR ") 
-et acceptez de Vous y conformer. Vous acceptez de ne pas exporter ni 
-réexporter les produits du Fournisseur de licence, de manière directe ou 
-indirecte : (1) vers des pays soumis à des restrictions en matière 
-d'exportation de la part des États-Unis ; (2) vers tout utilisateur dont Vous 
-savez ou avez des raisons de penser qu'il utilisera les produits du 
-Fournisseur de licence pour concevoir, développer ou produire des armes 
-nucléaires, chimiques ou biologiques, des systèmes de fusée, des lanceurs 
-spatiaux, des fusées sondes ou des systèmes de véhicules aériens sans pilote, 
-hormis s'il y est autorisé par l'agence gouvernementale compétente par une 
-réglementation ou licence spécifique ; (3) vers tout utilisateur frappé 
-d'embargo par le Gouvernement fédéral des États-Unis en matière de 
-transactions à l'exportation. En téléchargeant ou en utilisant le Logiciel, 
-Vous acceptez ce qui précède et Vous déclarez et garantissez que Vous n'êtes 
-pas situé dans un tel pays, subordonné à ce dernier, originaire ou résident de 
-ce pays ou d'un pays de cette liste. Par ailleurs, Vous êtes tenu de respecter 
-toute législation locale de votre juridiction susceptible d'avoir un impact 
-sur votre droit à l'importation, l'exportation ou l'utilisation des produits 
-du Fournisseur de licence.  Avant d'exporter des produits soumis à la 
-réglementation EAR, consultez la page Web (en anglais) du Bureau of Industry 
-and Security www.bis.doc.gov. Pour plus d'informations sur l'exportation du 
-Logiciel ainsi que sur son numéro ECCN (numéro de classification du contrôle à 
-l'exportation) et les exceptions de licence associées (le cas échéant), 
-consultez le site Web www.suse.com/company/legal/. Sur demande, le ministère 
-du Commerce international du Fournisseur de licence peut fournir des 
-informations relatives aux restrictions applicables aux produits du 
-Fournisseur de licence en matière d'exportation. Le Fournisseur de licence 
-décline toute responsabilité en cas de refus d'obtention des autorisations 
-d'exportation nécessaires.
-Droits du Gouvernement des États-Unis.  Toute utilisation, reproduction ou 
-divulgation d'éventuels livrables par le Gouvernement des États-Unis est 
-soumise aux limitations prévues par les dispositions légales suivantes : FAR 
-52.227-14 (déc. 2007) Alternate III (déc. 2007), FAR 52.227-19 (déc. 2007) ou 
-DFARS 252.227-7013 (b)(3) (nov. 1995) ou par les clauses ultérieures 
-appliquées en remplacement des dispositions légales ci-avant.
-
-2014-09-19
-
-
+Copyright © 2008-2015 Projet openSUSE. Tous droits
+réservés. « SUSE » et « openSUSE » sont des marques de SUSE, LLC.,
+ou des membres de son groupe, qui les ont créées et les sponsorisent, 
+et sont désignées par l'expression Projet openSUSE. 
+« Linux » est une marque déposée de Linus Torvalds. 
+Toutes les autres marques sont la propriété de leurs détenteurs respectifs.

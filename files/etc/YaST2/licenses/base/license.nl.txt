@@ -1,0 +1,111 @@
+LICENTIEOVEREENKOMST
+openSUSE® Leap 42.1
+
+Dit is een niet-officiële vertaling van de licentie van openSUSE Leap 42.1
+in het Nederlands. Het heeft geen rechtskracht als bepalingen voor het
+gebruik van openSUSE Leap 42.1 - alleen de originele Engelse tekst van de
+licentie van openSUSE Leap 42.1 heeft die. We hopen echter dat deze
+vertaling de Nederlands sprekenden helpen bij het beter begrijpen van de
+licentie.
+
+Deze overeenkomst dekt wat u van openSUSE Leap 42.1 hebt gedownload, 
+geïnstalleerd en gebruikt en later hebt bijgewerkt, ongeacht de methode
+van verkrijging. openSUSE Leap 42.1 is een gezamenlijk werk onder de "US 
+Copyright Law". Onder de volgende bepalingen, geeft Het openSUSE Project
+u een licentie voor dit gezamenlijke werk volgens de "GNU General
+Public License version 2". Met downloaden, installeren of gebruik van
+openSUSE Leap 42.1, gaat u akkoord met de bepalingen van deze overeenkomst.
+
+openSUSE Leap 42.1 is een modulair Linux besturingssysteem bestaande uit
+honderden softwarecomponenten. De licentieovereenkomst voor elke
+component is in het algemeen gelokaliseerd in de broncode van de component. 
+Met uitzondering van bepaalde bestanden die het handelsmerk “openSUSE”
+bevatten, zoals hieronder besproken, geven de bepalingen voor de componenten
+u het recht om de component te kopiëren en te distribueren. Met de
+potentiële uitzondering van bepaalde bestanden met firmware, geven de 
+licentiebepalingen voor de componenten u het recht om de componenten te 
+kopiëren, te wijzigen en opnieuw te distribueren, zowel in de vorm van
+broncode als binaire code. Deze overeenkomst beperkt niet uw rechten onder
+of geeft u rechten die uitstijgen boven de licentiebepalingen van elke 
+specifieke component.
+
+openSUSE Leap 42.1 en elk van zijn componenten, inclusief de broncode, 
+documentatie, uiterlijk, structuur en organisatie, vallen onder het 
+copyright van Het openSUSE Project en anderen en worden beschermd onder
+copyright- en andere wetten. Het eigendom van openSUSE Leap 42.1 en elke
+component of van elke kopie, blijft bij de hiervoor genoemden of zijn
+licentienemers, onderworpen aan de van toepassing zijnde licentie. Het
+handelsmerk "openSUSE" is een handelsmerk van SUSE, LLC. in de VS en andere 
+landen en mag met toestemming gebruikt worden. Deze overeenkomst geeft u 
+toestemming om ongewijzigde of gewijzigde kopieën van openSUSE Leap 42.1 te
+distribueren met het handelsmerk “openSUSE” onder de voorwaarde dat u de 
+richtlijnen voor het handelsmerk van Het openSUSE Project volgt, te vinden
+op http://en.opensuse.org/Legal. U moet deze richtlijnen voor het handelsmerk
+volgen bij het distribueren van openSUSE Leap 42.1, ongeacht of openSUSE 
+Leap 42.1 is gewijzigd.
+
+Behalve zoals specifiek aangegeven in deze overeenkomst of een licentie voor
+een specifieke component, TOT HET MAXIMUM OPGEREKT TOEGESTAAN ONDER
+VAN TOEPASSING ZIJNDE WETTEN, WORDEN OPENSUSE Leap 42.1 EN DE COMPONENTEN 
+GELEVERD EN IN LICENTIE GEGEVEN "AS IS (zoals ze zijn)" ZONDER GARANTIE VAN 
+WELKE DAN OOK, BESCHREVEN OF IMPLICIET, INCLUSIEF DE IMPLICIETE GARANTIES 
+VAN VERKOOPBAARHEID, EIGENDOM, GEEN INBREUK MAKEND OF GESCHIKTHEID VOOR EEN 
+BEPAALD DOEL. Het openSUSE Project geeft geen garantie dat de functies gevat 
+in openSUSELeap 42.1 overeenkomen met uw vereisten of dat het werken van 
+openSUSE Leap 42.1 volledig zonder fouten is of precies overeenkomst zoals is 
+beschreven in de bijgeleverde documentatie. GEBRUIK VAN OPENSUSE Leap 42.1 IS 
+OP EIGEN RISICO.
+
+TOT HET MAXIMUM OPGEREKT ONDER VAN TOEPASSING ZIJNDE WETTEN, ZULLEN HET 
+OPENSUSE PROJECT (EN ZIJN LICENTIENEMERS, ONDERAANNEMERS EN MEDEWERKERS) NIET
+VOOR U AANSPRAKELIJK ZIJN VOOR ELKE SCHADE, INCLUSIEF DIRECTE, INCIDENTELE,
+OF GEVOLGSCHADE, GEDERFDE INKOMSTEN OF VERLOREN BESPARINGEN VOLGEND UIT HET
+GEBRUIK OF ONMOGELIJKHEID VAN GEBRUIK VAN OPENSUSE Leap 42.1, ZELFS ALS HET 
+OPENSUSE PROJECT IS GEWAARSCHUWD VOOR DE MOGELIJKHEID VAN ZULKE SCHADE.  IN 
+EEN JURISDICTIE DIE DE UITSLUITING OF BEPERKING VAN SCHADES BEPERKT, WORDT
+DE AANSPRAKELIJKHEID VAN HET OPENSUSE PROJECT (EN ZIJN LICENTIENEMERS, 
+ONDERAANNEMERS EN MEDEWERKERS) BEPERKT TOT EEN GEZAMENLIJKE AANSPRAKELIJKHEID
+VAN $50US OF, ALS ZO'N BEPERKING NIET IS TOEGESTAAN, WORDT DEZE BEPERKT TOT 
+HET MAXIMAAL TOEGESTANE.
+
+Zoals vereist door de wet in de VS, geeft u aan en garandeert u dat u: (a)
+begrijpt dat openSUSE Leap 42.1 onderworpen is aan exportcontrole onder
+de Export Administration Regulations ("EAR") die geïmplementeerd en 
+afgedwongen worden door de US Department of Commerce, Bureau of Industry and
+Security; (b) zich niet bevindt in een verboden land of het u specifiek is 
+verboden onder de EAR of VS-sanctiebepalingen; (c) openSUSE Leap 42.1 niet 
+zult exporteren, opnieuw exporteren of overbrengen naar een verboden 
+bestemming, entiteit of individu zonder de noodzakelijke exportvergunning(en)
+of autorisatie(s) van de US Government; (d) openSUSE Leap 42.1 niet zal 
+gebruiken of overbrengen voor gebruik in een gevoelige technologie, 
+uiteindelijk voor nucleaire, chemische of biologische wapens of raketten, 
+tenzij geautoriseerd door de US Government door regulering of specifieke 
+licentie; (e) begrijpt dat landen anders dan de VS het importeren, gebruik 
+of exporteren van versleutelingsproducten kan beperken en dat u alleen zelf
+verantwoordelijk bent voor het voldoen aan zulk beperkingen voor importeren, 
+gebruik of exporteren.
+
+Als het voldoen aan een deel van deze overeenkomst niet is af te dwingen, 
+dan heeft dat geen gevolg voor het afdwingen van de overige bepalingen. 
+Deze overeenkomst gaat gepaard met de wetten van de State of Utah en
+van de VS, zonder rekening te houden met enig conflict in wettelijke 
+bepalingen, behalve dan dat de United Nations Convention on the International
+Sale of Goods niet van toepassing is. Deze overeenkomst laat het gehele
+begrip en de overeenkomst tussen u en Het openSUSE Project zien met 
+betrekking tot zijn onderwerp en kan alleen schriftelijk aangepast worden
+getekend door beide partijen. Geen afwijking van welk recht ook onder deze 
+overeenkomst zal van kracht zijn tenzij schriftelijk, getekend door een 
+rechtmatig geautoriseerde vertegenwoordiger van de bindende partij. Geen 
+afwijking in een recht in het verleden of heden voortkomend uit een gebrek 
+of niet voldoen aan, zal beschouwd worden als een afwijking van welk 
+toekomstig recht dan ook, voortkomend uit deze overeenkomst. Gebruik, 
+duplicering of openbaarmaking door de U.S. Government is onderworpen aan de
+beperkingen in FAR 52.227-14 (June 1987) Alternate III (June 1987), FAR 
+52.227-19 (June 1987) of DFARS 252.227-7013 (b)(3) (November 1995) of van 
+toepassing zijnde vervolgbepalingen.
+
+Copyright © 2008-2015 Het openSUSE Project. Alle rechten voorbehouden.
+"SUSE" en "openSUSE" zijn geregistreerde handelsmerken van SUSE LLC, of 
+aanverwanten, die Het openSUSE Project hebben opgericht, gesponsord en naam 
+gegeven. "Linux" is een geregistreerd handelsmerk van Linus Torvalds. Alle 
+andere handelsmerken zijn het eigendom van hun respectievelijke eigenaars.
