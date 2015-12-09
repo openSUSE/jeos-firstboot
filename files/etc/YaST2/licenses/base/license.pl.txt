@@ -1,0 +1,109 @@
+UMOWA LICENCYJNA
+openSUSE® Tumbleweed
+
+Niniejszy dokument jest oficjalnym przekładem licencji openSUSE Tumbleweed na
+język polski. Nie określa on prawomocnie warunków rozpowszechniania openSUSE
+Tumbleweed zapewnia to tylko pierwotny zapis licencji openSUSE Tumbleweed w języku
+angielskim. Niemniej jednak wierzymy, iż przekład niniejszy pomoże lepiej
+zrozumieć licencję osobom władającym językiem polskim.
+
+Niniejsza umowa określa zasady pobierania, wdrażania i użytkowania dystrybucji
+openSUSE Tumbleweed oraz jej pakietów aktualizacji niezależnie od sposobu ich
+dostarczenia. Dystrybucja openSUSE Tumbleweed jest pracą zbiorową w myśl prawa
+autorskiego Stanów Zjednoczonych Ameryki. W granicach określonych poniżej
+projekt openSUSE udziela Wam licencji na niniejszą pracę zbiorową według zasad
+Publicznej Licencji GNU odmiany 2. Poprzez pobranie, wdrożenie i użytkowanie
+dystrybucji openSUSE Tumbleweed wyrażacie zgodę na postanowienia niniejszej
+umowy.
+
+Dystrybucja openSUSE Tumbleweed jest wieloskładnikowym ustrojem czynnym opartym
+na jądrze Linux i składa się z wielu składników oprogramowania. Umowa licencyjna
+dla każdego składnika znajduje się przeważnie w kodzie źródłowym danego
+składnika. Za wyjątkiem pewnych plików zawierających znak handlowy "openSUSE"
+omówionych poniżej, postanowienia licencji dla poszczególnych składników
+zezwalają na powielanie i rozpowszechnianie tych składników.  Za możliwym
+wyjątkiem pewnych plików obsługi sprzętu postanowienia licencji dla
+poszczególnych składników zezwalają na powielanie, zmianę i rozpowszechnianie
+tych składników, zarówno w postaci źródłowej jak i maszynowej. Niniejsza umowa
+nie ogranicza Waszych praw wynikających z postanowień licencji poszczególnych
+składników ani nie udziela Wam praw które zastępują te postanowienia.
+
+Dystrybucja openSUSE Tumbleweed i każdy z jej składników, włączając w to kod
+źródłowy, dokumentację, wygląd, układ i sposób powiązania, objęte są ochroną
+prawa autorskiego projektu openSUSE i innych i innych przepisów prawa.
+Dystrybucja openSUSE Tumbleweed oraz każdy jej składnik, jak również każdy
+egzemplarz, pozostaje własnością wyżej wymienionych oraz wystawców
+poszczególnych licencji w ramach odpowiednich postanowień. Znak "openSUSE" jest
+zastrzeżonym znakiem handlowym korporacji SUSE w Stanach Zjednoczonych Ameryki
+i w innych krajach i używa się za zezwoleniem.  Niniejsza umowa zezwala Wam na
+rozpowszechnianie egzemplarzy dystrybucji openSUSE Tumbleweed ze zmianami lub bez
+zmian z użyciem znaku handlowego "openSUSE" pod warunkiem że przestrzegacie
+wytycznych projektu openSUSE dostępnych na stronie
+http://pl.opensuse.org/openSUSE:Trademark_guidelines. Do wytycznych tych musicie
+się stosować rozpowszechniając egzemplarze dystrybucji openSUSE Tumbleweed bez
+względu na to czy wprowadziliście zmiany do dystrybucji openSUSE Tumbleweed.
+
+Za wyjątkiem szczególnych postanowień niniejszej umowy lub licencji na
+poszczególne składniki, W NAJSZERSZYM ZAKRESIE DOZWOLONYM PRZEZ ODNOŚNE PRAWO,
+USTRÓJ OPENSUSE Tumbleweed I TE SKŁADNIKI DOSTARCZAJĄ SIĘ I UDOSTĘPNIAJĄ W STANIE
+OBECNYM BEZ ZAPEWNIENIA ŻADNEGO RODZAJU, WYRAŹNEGO LUB DOMNIEMANEGO, WŁĄCZAJĄC
+DOMNIEMANE ZAPEWNIENIE POPYTU, WŁASNOŚCI, NIENARUSZENIA LUB PRZYDATNOŚCI DO
+OKREŚLONEGO CELU.  Projekt openSUSE nie zapewnia, że czynności zawarte w ustroju
+openSUSE Tumbleweed odpowiadają Waszym wymaganiom ani że działanie ustroju
+openSUSE Tumbleweed będzie całkowicie wolne od błędów, ani że okaże się dokładnie
+takie jak opisano w towarzyszącej dokumentacji. UŻYWACIE USTROJU OPENSUSE
+Tumbleweed NA WASZĄ WŁASNĄ ODPOWIEDZIALNOŚĆ.
+
+W NAJSZERSZYM ZAKRESIE DOPUSZCZONYM PRZEZ ODNOŚNE PRAWO PROJEKT OPENSUSE (ANI
+JEGO DOSTAWCY, WSPÓŁPRACOWNICY ANI PRACOWNICY) NIE OPDOWIADA PRZED WAMI ZA ŻADNE
+SZKODY, WŁĄCZAJĄC BEZPOŚREDNIE, PRZYPADKOWE I WYNIKOWE, UTRATĘ ZYSKÓW ANI UTRATĘ
+OSZCZĘDNOŚCI POWSTAŁE WSKUTEK UŻYCIA LUB NIEZDOLNOŚCI DO UŻYCIA USTROJU OPENSUSE
+Tumbleweed, NAWET JEŚLI PROJEKT OPENSUSE Tumbleweed OTRZYMAŁ WSKAZÓWKI CO DO
+MOŻLIWOŚCI TAKICH SZKÓD.  POD PRAWODAWSTWEM KTÓRE OGRANICZA WYŁĄCZENIE LUB
+OGRANICZENIE ODSZKODOWANIA, CAŁKOWITA ODPOWIEDZIALNOŚĆ PROJEKTU OPENSUSE (ORAZ
+JEGO DOSTAWCÓW, WSPÓŁPRACOWNIKÓW I PRACOWNIKÓW) BĘDZIE OGRANICZONA DO 50 DOLARÓW
+AMERYKAŃSKICH, WZGLĘDNIE, JEŚLI TAKIE OGRANICZENIE NIE JEST DOZWOLONE, BĘDZIE
+OGRANICZONA W NAJWIĘKSZYM DOPUSZCZONYM ZAKRESIE.
+
+Zgodnie z wymaganiem prawa Stanów Zjednoczonych Ameryki Północnej oświadczacie i
+zapewniacie, że:
+(a) rozumiecie, że ustrój openSUSE Tumbleweed podlega kontroli eksportu w myśl
+Prawideł Administracji Eksportu ("EAR"), które wdraża i wymusza Wydział Handlu
+Stanów Zjednoczonych, Biuro do spraw Przemysłu i Bezpieczeństwa;
+(b) nie znajdujecie się w kraju o zabronionym odbiorze ani nie macie
+szczególnego zakazu w myśl prawideł sankcji EAR ani Stanów Zjednoczonych;
+(c) nie będziecie wysyłać ani przenosić ustroju openSUSE Tumbleweed w żadnym
+zabronionym kierunku do osoby prawnej ani fizycznej bez koniecznych zezwoleń lub
+upoważnień od rządu Stanów Zjednoczonych;
+(d) nie będziecie używać ani przenosić ustroju openSUSE Tumbleweed do użycia dla
+żadnych wrażliwych celów ostatecznych związanych z bronią jądrową, chemiczną ani
+biologiczną ani z technologią pocisków, chyba że za zezwoleniem rządu Stanów
+Zjednoczonych prawidłowym lub szczególnym;
+(e) rozumiecie, że kraje inne niż Stany Zjednoczone mogą ograniczać
+sprowadzanie, użycie i wysyłkę wyrobów szyfrujących i że będziecie wyłącznie
+odpowiedzialni za dostosowanie się do wszelkich takich ograniczeń sprowadzania,
+użycia i wysyłki.
+
+Jeśli jakiekolwiek postanowienie niniejszej umowy okaże się niewymagalne, nie
+wpłynie to na wymagalność pozostałych postanowień. Niniejsza umowa będzie
+podlegać prawom stanu Utah i Stanów Zjednoczonych Ameryki Północnej, bez względu
+na jakiekolwiek postanowienia co do sprzeczności praw, z wyłączeniem
+zastosowania Konwencji Narodów Zjednoczonych co do międzynarodowej sprzedaży
+towarów.  Niniejsza umowa stanowi całkowite porozumienie i umowę pomiędzy Wami i
+projektem openSUSE co do jej przedmiotu i może być poprawiona tylko na piśmie
+podpisanym przez obie strony. Żadne uchylenie żadnego prawa w myśl niniejszej
+umowy nie będzie skuteczne jeśli nie będzie pisemne, podpisane przez odpowiednio
+umocowanego przedstawiciela strony przyjmującej zobowiązanie.  Żadne uchylenie
+jakiegokolwiek przeszłego lub bieżącego prawa wynikające z jakiegokolwiek
+naruszenia lub niepowodzenia w wykonaniu nie będzie uważane za uchylenie żadnego
+przyszłego prawa wynikającego z niniejszej umowy. Użycie, powielanie lub
+ujawnienie przez rząd Stanów Zjednoczonych podlega ograniczeniom w
+postanowieniach FAR 52.227-14 (czerwiec 1987) Alternate III (czerwiec 1987), FAR
+52.227-19 (czerwiec 1987) lub DFARS 252.227-7013 (b)(3) (listopad 1995), lub
+odnośnym postanowieniom następnym.
+
+Prawa autorskie © 2008-2014 projektu openSUSE. Wszelkie prawa zastrzeżone.
+"SUSE" i "openSUSE" są znakami handlowymi korporacji SUSE lub jej oddziałów, 
+która założyła, utrzymuje i jest wyznaczona przez projekt openSUSE. "Linux" jest 
+zastrzeżonym znakiem handlowym Linusa Torvaldsa. Wszelkie inne znaki handlowe 
+stanowią własność ich odnośnych właścicieli.
