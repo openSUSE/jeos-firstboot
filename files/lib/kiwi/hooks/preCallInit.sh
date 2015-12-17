@@ -11,3 +11,9 @@ if [ "$rootfs" = 'btrfs' ]; then
 	mount .snapshots
 	create_snapshot 1 "Factory status"
 fi
+#
+# Fix btrfs subvolumes
+chattr +C /var/lib/mysql
+chattr +C /var/lib/mariadb
+chattr +C /var/lib/pgsql
+chattr +C /var/lib/libvirt/images
