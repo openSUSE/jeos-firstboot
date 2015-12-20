@@ -55,9 +55,9 @@ rm -fv "$MNT"/etc/YaST2/licenses/base/no-acceptance-needed
 # Copy files/dirs first, then patch them
 for file in `ls --group-directories-first ${CONTRIB}`; do
   if [[ "$file" =~ .*\.patch$ ]]; then
-    patch -d "$MNT" -p1 < "$CONTRIB"/"$file"
+    patch -d "$MNT" -p2 < "$CONTRIB"/"$file"
   else
     # Do not overwrite existing files
-    cp -nvr "$CONTRIB""$file" "$MNT"
+    cp -nvra "$CONTRIB""$file" "$MNT"
   fi
 done
