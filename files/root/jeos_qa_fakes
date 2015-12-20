@@ -1,0 +1,6 @@
+qa_fakes_cnt=1
+qa_fakes_locale="en_US" # dialog #1
+# dialog #2 is license yes/no
+qa_fakes_keytable="us" # dialog #3
+qa_fakes_timezone="Europe/Prague" # dialog #4
+qa_fakes_password="YoH@cka" # dialog #5 + #6
