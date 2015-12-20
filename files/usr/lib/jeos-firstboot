@@ -70,7 +70,9 @@ locale=''
 password=''
 
 JEOS_QA_FAKES="/root/jeos_qa_fakes"
-. $JEOS_QA_FAKES || true
+if [ -e "$JEOS_QA_FAKES" ]; then
+    . $JEOS_QA_FAKES
+fi
 
 d(){
     if [ -e "$JEOS_QA_FAKES" ]; then
