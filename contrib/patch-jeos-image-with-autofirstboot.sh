@@ -1,7 +1,14 @@
 #!/bin/sh
 
 clean(){
-  umount $MNT
+  sync
+  for waitn in `seq 1 3`; do
+    if ! umount $MNT; then
+      sleep 5
+    else
+      break
+    fi
+  done
   qemu-nbd -d /dev/nbd${DEV}
   rmmod nbd
 }
@@ -11,7 +18,7 @@ set -e
 
 # Defaults to zero, or one, respectively, unless set explicitly
 DEV=${DEV-0}
-PARTITION=${PARTITION-1}
+PARTITION=${PARTITION-3}
 IMG="$1"
 MNT="$2"
 CONTRIB="$3"
@@ -47,6 +54,13 @@ fi
 
 modprobe nbd max_part="10"
 qemu-nbd -c /dev/nbd${DEV} "$IMG"
+for waitn in `seq 1 3`; do
+  if [ ! -e /dev/nbd${DEV}p${PARTITION} ]; then
+    sleep 5
+  else
+    break
+  fi
+done
 mount /dev/nbd${DEV}p${PARTITION} $MNT
 trap clean EXIT
 
