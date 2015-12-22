@@ -22,6 +22,7 @@
 set -e
 
 TEXTDOMAIN='jeos-firstboot'
+FIRSTBOOT_DEBUG=1 # temp
 
 . /etc/os-release
 . "$0-functions"
@@ -69,12 +70,31 @@ keytable=''
 locale=''
 password=''
 
+JEOS_QA_FAKES="/root/jeos_qa_fakes"
+if [ -e "$JEOS_QA_FAKES" ]; then
+    . $JEOS_QA_FAKES
+fi
+
 d(){
-    if dialog --backtitle "$PRETTY_NAME" "$@" 2>"$dialog_out"; then
-	# need || true as dialog doesn't write newlines
-	read result < $dialog_out || true
+    if [ -e "$JEOS_QA_FAKES" ]; then
+        case $qa_fakes_cnt in
+            1) result="$qa_fakes_locale" ;;
+            2) true	;;
+            3) result="$qa_fakes_keytable" ;;
+            4) result="$qa_fakes_timezone" ;;
+            [5-6]) result="$qa_fakes_password" ;;
+            7) true ;;
+            8) true ;;
+            *) echo "[BUG in autofirstboot changes] No prebaked answer: qa_fakes_cnt = $qa_fakes_cnt !!!"; false ;;
+        esac
+        qa_fakes_cnt=$(( $qa_fakes_cnt + 1 ))
     else
-	return $?
+        if dialog --backtitle "$PRETTY_NAME" "$@" 2>"$dialog_out"; then
+            # need || true as dialog doesn't write newlines
+            read result < $dialog_out || true
+        else
+            return $?
+        fi
     fi
 }
 
