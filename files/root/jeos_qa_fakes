@@ -4,3 +4,5 @@ qa_fakes_locale="en_US" # dialog #1
 qa_fakes_keytable="us" # dialog #3
 qa_fakes_timezone="Europe/Prague" # dialog #4
 qa_fakes_password="YoH@cka" # dialog #5 + #6
+# dialog #7 is SUSEConnect info (SLES specific)
+# dialog #8 is about applying provided settings

@@ -84,7 +84,8 @@ d(){
             4) result="$qa_fakes_timezone" ;;
             [5-6]) result="$qa_fakes_password" ;;
             7) true ;;
-            *) echo "!!! No prebaked answer: qa_fakes_cnt = $qa_fakes_cnt !!!"; false ;;
+            8) true ;;
+            *) echo "[BUG in autofirstboot changes] No prebaked answer: qa_fakes_cnt = $qa_fakes_cnt !!!"; false ;;
         esac
         qa_fakes_cnt=$(( $qa_fakes_cnt + 1 ))
     else
