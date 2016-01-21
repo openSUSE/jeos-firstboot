@@ -96,7 +96,7 @@ findkeymaps()
     local line
     while read line; do
 	    list+=("${line%.map.gz}" '')
-    done < <(find /usr/share/kbd/keymaps -name '*.map.gz' -printf "%f\n" | sort)
+    done < <(find /usr/share/kbd/keymaps -name '*.map.gz' -printf "%f\n" | sort -u)
     [ -n "$list" ]
 }
 
