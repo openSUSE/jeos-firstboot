@@ -11,8 +11,15 @@ create_snapshot() {
 	#snapper --no-dbus -v create -d "Factory Status" --userdata "important=yes"
 	mkdir ".snapshots/$num"
 	btrfs subvolume snapshot / ".snapshots/$num/snapshot"
+	retrofit_snapper_info "$num" "$desc"
+	popd
+}
+
+retrofit_snapper_info() {
+	local num="$1"
+	local desc="$2"
 	now="`date '+%Y-%m-%d %H:%M:%S'`"
-	cat > ".snapshots/$num/info.xml" <<-EOF
+	cat > "/.snapshots/$num/info.xml" <<-EOF
 	<?xml version="1.0"?>
 	<snapshot>
 	  <type>single</type>
@@ -27,7 +34,6 @@ create_snapshot() {
 	  </userdata>
 	</snapshot>
 	EOF
-	popd
 }
 
 # vim: syntax=sh

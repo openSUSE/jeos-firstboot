@@ -5,11 +5,13 @@ set -x
 rootfs="`stat -f -c %T /`"
 if [ "$rootfs" = 'btrfs' ]; then
 	echo "creating initial snapper config ..."
-	snapper --no-dbus -v -c root create-config /
-	# add fstab entry for .snapshots
-	sed -i -e '/@\/tmp/{p;s/tmp/.snapshots/g}' /etc/fstab
+	# we can't call snapper here as the .snapshots subvolume
+	# already exists and snapper create-config doens't like
+	# that.
+	cp /etc/snapper/config-templates/default /etc/snapper/configs/root
+	sed -i -e '/^SNAPPER_CONFIGS=/s/"/"root/' /etc/sysconfig/snapper
 	mount .snapshots
-	create_snapshot 1 "Factory status"
+	retrofit_snapper_info 1 "Factory status"
 fi
 #
 # Fix btrfs subvolumes
