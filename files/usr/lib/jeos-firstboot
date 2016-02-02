@@ -215,8 +215,8 @@ fi
 
 #d --infobox "Creating snapshot ..." 3 40 || true
 #run snapper --no-dbus -v create -d "Initial Status" --userdata "important=yes" || d --msgbox "snapper failed" 0 0 || true
-if [ ! -e /.snapshots/2 ]; then
-    run create_snapshot 2 "Initial Status" || true
+if [ ! -e /.snapshots/3 ]; then
+    run create_snapshot 3 "Initial Status" || true
 fi
 
 # vim: sw=4
