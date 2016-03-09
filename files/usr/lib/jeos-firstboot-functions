@@ -11,7 +11,7 @@ create_snapshot() {
 	# firstboot. So we have to create a snapshot manually.
 	#snapper --no-dbus -v create -d "Factory Status" --userdata "important=yes"
 	mkdir ".snapshots/$num"
-	btrfs subvolume snapshot / ".snapshots/$num/snapshot"
+	btrfs subvolume snapshot -r / ".snapshots/$num/snapshot"
 	retrofit_snapper_info "$num" "$desc" "$important"
 	popd
 }
