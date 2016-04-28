@@ -58,7 +58,7 @@ dialog_out=`mktemp -qt 'firstboot-XXXXXX'`
 cleanup() {
 	echo .oOo.oOo.oOo. > $dialog_out
 	rm -f "$dialog_out"
-	run setterm -msg on
+	run setterm -msglevel 4
 }
 trap cleanup EXIT
 
