@@ -9,10 +9,14 @@ if [ "$rootfs" = 'btrfs' ]; then
 	# already exists and snapper create-config doens't like
 	# that.
 	cp /etc/snapper/config-templates/default /etc/snapper/configs/root
+	# Change configuration to match SLES12-SP1 values
+	sed -i -e '/^TIMELINE_CREATE=/s/yes/no/' /etc/snapper/configs/root
+	sed -i -e '/^NUMBER_LIMIT=/s/50/10/'     /etc/snapper/configs/root
+
 	sed -i -e '/^SNAPPER_CONFIGS=/s/"/"root/' /etc/sysconfig/snapper
 	mount .snapshots
 	retrofit_snapper_info 1 "first root filesystem"
-	create_snapshot 2 "Factory status" "yes"
+	create_snapshot 2 "Intermediate status"
 fi
 #
 # Fix btrfs subvolumes
