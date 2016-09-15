@@ -18,9 +18,14 @@ if [ "$rootfs" = 'btrfs' ]; then
 	retrofit_snapper_info 1 "first root filesystem"
 	create_snapshot 2 "Intermediate status"
 fi
-#
+
 # Fix btrfs subvolumes
 chattr +C /var/lib/mysql
 chattr +C /var/lib/mariadb
 chattr +C /var/lib/pgsql
 chattr +C /var/lib/libvirt/images
+
+if hash jeos-tool 2>/dev/null; then
+	echo "Adding repositories ..."
+	jeos-tool do_create_repos
+fi
