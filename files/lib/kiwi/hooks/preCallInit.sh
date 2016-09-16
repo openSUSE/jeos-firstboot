@@ -28,5 +28,5 @@ chattr +C /var/lib/libvirt/images
 # Add repositories on opensuse
 if hash jeos-tool 2>/dev/null; then
 	echo "Adding repositories ..."
-	jeos-tool do_create_repos
+	jeos-tool create_repos
 fi
