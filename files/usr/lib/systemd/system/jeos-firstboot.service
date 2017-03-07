@@ -22,3 +22,6 @@ ExecStart=/usr/lib/jeos-firstboot
 StandardOutput=tty
 StandardInput=tty
 #StandardError=tty
+
+[Install]
+WantedBy=default.target
