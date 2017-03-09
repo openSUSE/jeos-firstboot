@@ -1,0 +1,46 @@
+#!/bin/bash
+#
+# Copyright (c) 2017 SUSE Linux GmbH
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+# Process the default YaST2 control.xml with an XSL stylesheet to generate zypper commands and run them
+
+cmds=$(xsltproc - /etc/YaST2/control.xml << EOF
+<?xml version='1.0' encoding='utf-8' ?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:y="http://www.suse.com/1.0/yast2ns">
+  <xsl:output method="text"/>
+  <xsl:template match="/">
+    <xsl:for-each select="y:productDefines/y:software/y:extra_urls/y:extra_url[y:enabled='true']">
+      <xsl:text>zypper addrepo -f</xsl:text>
+      <xsl:text> -n "</xsl:text><xsl:value-of select="y:name"/><xsl:text>"</xsl:text>
+      <xsl:text> </xsl:text><xsl:value-of select="y:baseurl"/>
+      <xsl:text> </xsl:text><xsl:value-of select="y:alias"/>
+      <xsl:text>;
+</xsl:text>
+    </xsl:for-each>
+  </xsl:template>
+</xsl:stylesheet>
+EOF
+)
+if [ "$?" -ne 0 ]; then
+	echo "Could not process control.xml" >&2
+else
+	eval "$cmds"
+fi
