@@ -27,10 +27,14 @@ cmds=$(xsltproc - /etc/YaST2/control.xml << EOF
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:y="http://www.suse.com/1.0/yast2ns">
   <xsl:output method="text"/>
   <xsl:template match="/">
-    <xsl:for-each select="y:productDefines/y:software/y:extra_urls/y:extra_url[y:enabled='true']">
-      <xsl:text>zypper addrepo -f</xsl:text>
+    <xsl:for-each select="y:productDefines/y:software/y:extra_urls/y:extra_url">
+      <xsl:text>zypper addrepo</xsl:text>
+      <xsl:if test="y:enabled != 'true'"> -d </xsl:if>
+      <xsl:if test="y:autorefresh = 'true'"> -f </xsl:if>
+      <xsl:text> -p </xsl:text><xsl:value-of select="y:priority"/><xsl:text></xsl:text>
       <xsl:text> -n "</xsl:text><xsl:value-of select="y:name"/><xsl:text>"</xsl:text>
       <xsl:text> </xsl:text><xsl:value-of select="y:baseurl"/>
+      <xsl:if test="y:prod_dir != '/'"><xsl:value-of select="y:prod_dir"/></xsl:if>
       <xsl:text> </xsl:text><xsl:value-of select="y:alias"/>
       <xsl:text>;
 </xsl:text>
