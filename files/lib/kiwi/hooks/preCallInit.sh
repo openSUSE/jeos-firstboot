@@ -26,7 +26,8 @@ chattr +C /var/lib/pgsql
 chattr +C /var/lib/libvirt/images
 
 # Add repositories on opensuse
-if hash jeos-tool 2>/dev/null; then
+# (jeos-add-repos is not installed on SLE)
+if hash jeos-add-repos 2>/dev/null; then
 	echo "Adding repositories ..."
-	jeos-tool create_repos
+	jeos-add-repos
 fi
