@@ -8,8 +8,8 @@
 [Unit]
 Description=SUSE JeOS First Boot Wizard
 DefaultDependencies=no
-Conflicts=shutdown.target emergency.service
-After=systemd-remount-fs.service systemd-tmpfiles-setup.service systemd-vconsole-setup.service systemd-udev-settle.service
+Conflicts=shutdown.target
+After=systemd-remount-fs.service
 Before=systemd-sysusers.service sysinit.target shutdown.target
 ConditionPathIsReadWrite=/etc
 ConditionFirstBoot=yes
