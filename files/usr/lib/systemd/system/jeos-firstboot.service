@@ -11,6 +11,7 @@ DefaultDependencies=no
 Conflicts=shutdown.target
 After=systemd-remount-fs.service
 Before=systemd-sysusers.service sysinit.target shutdown.target
+Wants=systemd-udev-settle.service
 ConditionPathIsReadWrite=/etc
 ConditionFirstBoot=yes
 
