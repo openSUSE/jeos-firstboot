@@ -30,6 +30,12 @@ EULA_FILE=/etc/YaST2/licenses/base/license.txt
 
 stty_size() {
     set -- `stty size`; LINES=$1; COLUMNS=$2
+    # stty size can return zero when not ready or
+    # its a serial console
+    if [ "$COLUMNS" = "0" -o "$LINES" = "0" ]; then
+        LINES=24
+        COLUMNS=80
+    fi
 }; stty_size
 
 # for testing we may run as non root
@@ -218,6 +224,13 @@ d --infobox $"Applying firstboot settings ..." 3 40 || true
 # FIXME: systemd-firstboot doesn't set password if shadow present
 if [ -n "$password" ]; then
     echo "root:$password" | run /usr/sbin/chpasswd
+fi
+
+EFI_SYSTAB="/sys/firmware/efi/systab"
+# Look for EFI dir to see if the machine is booted in UEFI mode
+modprobe efivars
+if ! [ -f "$EFI_SYSTAB" ]; then
+    run sed -i -e "s/LOADER_TYPE=.*/LOADER_TYPE=grub2/g" /etc/sysconfig/bootloader 
 fi
 
 #d --infobox "Creating snapshot ..." 3 40 || true
