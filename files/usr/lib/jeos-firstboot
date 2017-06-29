@@ -32,7 +32,7 @@ stty_size() {
     set -- `stty size`; LINES=$1; COLUMNS=$2
     # stty size can return zero when not ready or
     # its a serial console
-    if [ "${COLUMNS}" = "0" || "${LINES}" = "0" ]; then
+    if [ "$COLUMNS" = "0" -o "$LINES" = "0" ]; then
         LINES=24
         COLUMNS=80
     fi
@@ -226,13 +226,11 @@ if [ -n "$password" ]; then
     echo "root:$password" | run /usr/sbin/chpasswd
 fi
 
-EFIVARS_DIR="/sys/firmware/efi"
+EFI_SYSTAB="/sys/firmware/efi/systab"
 # Look for EFI dir to see if the machine is booted in UEFI mode
 modprobe efivars
-if ! [ "$(ls -A $EFIVARS_DIR)" ]; then
-    sed -i -e 's/LOADER_TYPE=.*/LOADER_TYPE=grub2/g' /etc/sysconfig/bootloader 
-else
-    echo "Grub is configured for EFI"
+if ! [ -f "$EFI_SYSTAB" ]; then
+    run sed -i -e "s/LOADER_TYPE=.*/LOADER_TYPE=grub2/g" /etc/sysconfig/bootloader 
 fi
 
 #d --infobox "Creating snapshot ..." 3 40 || true
