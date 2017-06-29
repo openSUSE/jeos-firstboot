@@ -226,6 +226,15 @@ if [ -n "$password" ]; then
     echo "root:$password" | run /usr/sbin/chpasswd
 fi
 
+EFIVARS_DIR="/sys/firmware/efi"
+# Look for EFI dir to see if the machine is booted in UEFI mode
+modprobe efivars
+if ! [ "$(ls -A $EFIVARS_DIR)" ]; then
+    sed -i -e 's/LOADER_TYPE=.*/LOADER_TYPE=grub2/g' /etc/sysconfig/bootloader 
+else
+    echo "Grub is configured for EFI"
+fi
+
 #d --infobox "Creating snapshot ..." 3 40 || true
 #run snapper --no-dbus -v create -d "Initial Status" --userdata "important=yes" || d --msgbox "snapper failed" 0 0 || true
 if [ ! -e /.snapshots/3 ]; then
