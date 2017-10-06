@@ -12,6 +12,7 @@ Conflicts=shutdown.target
 After=systemd-remount-fs.service
 Before=systemd-sysusers.service sysinit.target shutdown.target
 ConditionPathIsReadWrite=/etc
+RequiresMountFor=/.snapshots
 ConditionFirstBoot=yes
 
 [Service]
