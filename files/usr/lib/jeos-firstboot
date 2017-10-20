@@ -233,6 +233,34 @@ if ! [ -f "$EFI_SYSTAB" ]; then
     run sed -i -e "s/LOADER_TYPE=.*/LOADER_TYPE=grub2/g" /etc/sysconfig/bootloader 
 fi
 
+# Configure initial network settings
+#
+shopt -s nullglob
+
+candidates=()
+for p in /sys/class/net/* ; do
+        test -f "$p" && continue # skip bonding_masters file
+
+        # only devices having ID_NET_NAME.* attrs
+        udevadm info -q all -p "$p" | grep -qs ID_NET_NAME || continue
+        d=${p##*/}
+
+        unset IPADDR GATEWAYS
+        eval `wicked test dhcp4 "$d" 2>/dev/null | grep -E "^IPADDR=|^GATEWAYS="`
+        ip link set down "$d" # set link down after probe once done
+
+        test -n "$IPADDR"   && candidates+=("$d")  || continue # ok, track it
+        test -n "$GATEWAYS" && candidates=("$d")  || continue # just use it
+        break
+done
+
+for d in ${candidates[@]} ; do
+        rm -f "/etc/sysconfig/network/ifcfg-$d" || exit 1
+        printf "STARTMODE=hotplug\nBOOTPROTO=dhcp\nDHCLIENT_SET_HOSTNAME=yes\n" \
+                > "/etc/sysconfig/network/ifcfg-$d"
+        break # one is enough
+done
+
 #d --infobox "Creating snapshot ..." 3 40 || true
 #run snapper --no-dbus -v create -d "Initial Status" --userdata "important=yes" || d --msgbox "snapper failed" 0 0 || true
 if [ ! -e /.snapshots/3 ]; then
