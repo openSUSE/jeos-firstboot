@@ -256,7 +256,7 @@ done
 
 for d in ${candidates[@]} ; do
         rm -f "/etc/sysconfig/network/ifcfg-$d" || exit 1
-        printf "STARTMODE=hotplug\nBOOTPROTO=dhcp\nDHCLIENT_SET_HOSTNAME=yes\n" \
+        printf "STARTMODE=auto\nBOOTPROTO=dhcp\n" \
                 > "/etc/sysconfig/network/ifcfg-$d"
         break # one is enough
 done
