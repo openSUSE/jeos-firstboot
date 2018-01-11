@@ -173,7 +173,7 @@ fi
 # we need to adjust the keyboard and locale before the password is typed, in
 # case umlauts are used
 if [ -n "$keytable" ]; then
-    echo "KEYMAP=$keytable" | run tee /etc/vconsole.conf
+    echo "KEYMAP=$keytable" | run tee -a /etc/vconsole.conf
     run sed -i -e "s/^KEYTABLE=.*/KEYTABLE=\"$keytable\"/" /etc/sysconfig/keyboard
 fi
 # FIXME: systemd sets /etc/locale.conf which is ignored
