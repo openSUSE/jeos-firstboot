@@ -261,6 +261,9 @@ for d in ${candidates[@]} ; do
         break # one is enough
 done
 
+# Run snapper to setup quota for btrfs
+/usr/bin/snapper --no-dbus setup-quota
+
 #d --infobox "Creating snapshot ..." 3 40 || true
 #run snapper --no-dbus -v create -d "Initial Status" --userdata "important=yes" || d --msgbox "snapper failed" 0 0 || true
 if [ ! -e /.snapshots/2 ]; then
