@@ -64,12 +64,15 @@ dialog_out=`mktemp -qt 'firstboot-XXXXXX'`
 cleanup() {
 	echo .oOo.oOo.oOo. > $dialog_out
 	rm -f "$dialog_out"
+	kill -s SIGRTMAX-10 1
 	run setterm -msglevel 4
 }
 trap cleanup EXIT
 
 # avoid kernel messages spamming our console
 run setterm -msg off
+# Avoid systemd messages spamming our console
+kill -s SIGRTMAX-9 1
 
 systemd_firstboot_args=('--setup-machine-id')
 
