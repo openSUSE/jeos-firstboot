@@ -167,7 +167,8 @@ if menulist awk \
     /usr/share/zoneinfo/zone.tab \
     && d --menu  $"Select Time Zone" 0 0 $dh_menu "${list[@]}"; then
 	if [ -n "$result" ]; then
-	    systemd_firstboot_args+=("--timezone=$result")
+            set_timezone=1
+            systemd_firstboot_args+=("--timezone=$result")
 	fi
 else
 	d --msgbox $"error setting timezone" 0 0
@@ -183,6 +184,12 @@ fi
 if [ -n "$locale" ]; then
     run sed -i -e "s/^RC_LANG=.*/RC_LANG=\"$locale\"/" /etc/sysconfig/language
     export LANG="$locale"
+    # systemd-firstboot only sets the locale if /etc/locale.conf doesn't exist
+    rm -f /etc/locale.conf
+fi
+# systemd-firstboot only sets the timezone if the file doesn't exist (bsc#1092132)
+if [ -n "${set_timezone}" ]; then
+    rm -f /etc/localtime
 fi
 run systemd-firstboot "${systemd_firstboot_args[@]}"
 run /usr/lib/systemd/systemd-vconsole-setup || true # true for nspawn
