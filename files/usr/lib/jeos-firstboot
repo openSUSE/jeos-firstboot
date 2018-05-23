@@ -139,7 +139,9 @@ fi
 
 if [ -e "$EULA_FILE" -a ! -e "${EULA_FILE%/*}/no-acceptance-needed" ]; then
     if [ -n "$locale" ]; then
-	for i in "${EULA_FILE%.txt}.$locale.txt" "${EULA_FILE%.txt}.${locale%%_*}.txt"; do
+	for i in "${EULA_FILE%.txt}.$locale.txt" \
+	         "${EULA_FILE%.txt}.${locale%%.UTF-8}.txt" \
+	         "${EULA_FILE%.txt}.${locale%%_*}.txt"; do
 	    if [ -e "$i" ]; then
 		EULA_FILE="$i"
 		break
