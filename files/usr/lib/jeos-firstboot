@@ -82,6 +82,16 @@ keytable=''
 locale=''
 password=''
 
+# Console fonts mapping to locales
+# this need to be reworked, check bsc#1094346
+declare -A consolefonts
+consolefonts["el_GR.UTF-8"]="iso07u-16.psfu"
+consolefonts["ru_RU.UTF-8"]="UniCyr_8x16.psf"
+consolefonts["sr_RS.UTF-8"]="UniCyr_8x16.psf"
+consolefonts["uk_UA.UTF-8"]="UniCyr_8x16.psf"
+consolefonts["tg_TJ.UTF-8"]="UniCyr_8x16.psf"
+consolefonts["bg_BG.UTF-8"]="UniCyr_8x16.psf"
+
 let dh_menu=LINES-15
 let dh_text=LINES-5
 
@@ -132,6 +142,11 @@ if findlocales && d --menu  $"Select System Locale" 0 0 $dh_menu "${list[@]}"; t
 	    systemd_firstboot_args+=("--locale=$locale")
 	    LANG="$locale"
 	    export LANG
+        if [ ${consolefonts[$locale]+_} ]; then
+            run sed -i -e "s/^FONT=.*/FONT=${consolefonts[$locale]}/" /etc/vconsole.conf
+            run sed -i -e "s/^CONSOLE_FONT=.*/CONSOLE_FONT=i\"${consolefonts[$locale]}\"/" /etc/vconsole.conf
+            run /usr/lib/systemd/systemd-vconsole-setup || true # true for nspawn
+        fi
 	fi
 else
 	d --msgbox $"Error setting locale" 0 0
