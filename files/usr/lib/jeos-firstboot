@@ -118,17 +118,18 @@ findkeymaps()
 
 findlocales()
 {
-    list=('en_US' '')
+    list=()
     local l
-    for l in /usr/lib/locale/*_??; do
-	list+=("${l#/usr/lib/locale/}" '')
+    for l in /usr/lib/locale/*.utf8; do
+	code=${l#/usr/lib/locale/}
+	list+=("${code/.utf8/}" '')
     done
     [ -n "$list" ]
 }
 
-if findlocales && d --menu  $"Select System Locale" 0 0 $dh_menu "${list[@]}"; then
+if findlocales && d --default-item "en_US" --menu  $"Select System Locale" 0 0 $dh_menu "${list[@]}"; then
 	if [ -n "$result" ]; then
-	    locale="$result.UTF-8"
+	    locale="${result}.UTF-8"
 	    systemd_firstboot_args+=("--locale=$locale")
 	    LANG="$locale"
 	    export LANG
@@ -138,8 +139,18 @@ else
 fi
 
 if [ -e "$EULA_FILE" -a ! -e "${EULA_FILE%/*}/no-acceptance-needed" ]; then
-    if [ -n "$locale" ]; then
-	for i in "${EULA_FILE%.txt}.$locale.txt" "${EULA_FILE%.txt}.${locale%%_*}.txt"; do
+    [ -n "${locale}" ] && language="${locale%%_*}" || language="en"
+
+    # Those languages can't be displayed in the console
+    declare -A use_english_license
+    use_english_license["ja"]=1
+    use_english_license["zh"]=1
+    use_english_license["ko"]=1
+
+    if [ -n "$locale" -a -z "${use_english_license[${language}]+_}" ]; then
+	for i in "${EULA_FILE%.txt}.$locale.txt" \
+	         "${EULA_FILE%.txt}.${locale%%.UTF-8}.txt" \
+	         "${EULA_FILE%.txt}.${language}.txt"; do
 	    if [ -e "$i" ]; then
 		EULA_FILE="$i"
 		break
