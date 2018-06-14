@@ -7,20 +7,23 @@
 
 [Unit]
 Description=SUSE JeOS First Boot Wizard
-DefaultDependencies=no
-Conflicts=shutdown.target
-After=systemd-remount-fs.service
-Before=systemd-tmpfiles-setup.service sysinit.target shutdown.target
-ConditionPathIsReadWrite=/etc
-RequiresMountsFor=/.snapshots
-# Use the same file as yast
+
+# Same as YaST2-Firstboot.service here
+After=apparmor.service local-fs.target plymouth-start.service YaST2-Second-Stage.service
+Conflicts=plymouth-start.service
+Before=getty@tty1.service serial-getty@ttyS0.service serial-getty@ttyS1.service serial-getty@ttyS2.service
+Before=display-manager.service
 ConditionPathExists=/var/lib/YaST2/reconfig_system
 OnFailure=poweroff.target
 
+# jeos-firstboot starts before network and login though
+Before=network.service systemd-user-sessions.service
+
 [Service]
-Environment=SYSTEMCTL_OPTIONS=--ignore-dependencies TERM=linux
 Type=oneshot
+Environment=SYSTEMCTL_OPTIONS=--ignore-dependencies TERM=linux
 RemainAfterExit=yes
+ExecStartPre=-/usr/bin/plymouth quit
 ExecStart=/usr/lib/jeos-firstboot
 ExecStartPost=/usr/bin/rm -f /var/lib/YaST2/reconfig_system
 StandardOutput=tty
