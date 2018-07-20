@@ -43,4 +43,40 @@ retrofit_snapper_info() {
 	EOF
 }
 
+kmscon_available() {
+    # kmscon itself is installed
+    kmscon --help >/dev/null 2>&1 || return 1
+    # At least one monospace font is available
+    [ -n "$(fc-match "monospace" 2>/dev/null)" ] || return 1
+
+    return 0
+}
+
+# Get a property value from org.freedesktop.locale1
+queryLocale1() {
+	dbus-send --system --print-reply=literal --dest=org.freedesktop.locale1 /org/freedesktop/locale1 org.freedesktop.DBus.Properties.Get "string:org.freedesktop.locale1" "string:$1" | awk '{print $2}'
+}
+
+kmscon_localed() {
+	# Query whether org.freedesktop.locale1 is available. If it is, try to
+	# set XKB_DEFAULT_{MODEL,LAYOUT,VARIANT,OPTIONS} accordingly.
+	if queryLocale1 X11Model >/dev/null 2>/dev/null; then
+		# Do not overwrite existing values. There is no point in setting only some
+		# of them as then they would not match anymore.
+		if [ -z "${XKB_DEFAULT_MODEL}" -a -z "${XKB_DEFAULT_LAYOUT}" -a \
+		     -z "${XKB_DEFAULT_VARIANT}" -a -z "${XKB_DEFAULT_OPTIONS}" ]; then
+			X11MODEL="$(queryLocale1 X11Model)"
+			X11LAYOUT="$(queryLocale1 X11Layout)"
+			X11VARIANT="$(queryLocale1 X11Variant)"
+			X11OPTIONS="$(queryLocale1 X11Options)"
+			[ -n "${X11MODEL}" ] && export XKB_DEFAULT_MODEL="${X11MODEL}"
+			[ -n "${X11LAYOUT}" ] && export XKB_DEFAULT_LAYOUT="${X11LAYOUT}"
+			[ -n "${X11VARIANT}" ] && export XKB_DEFAULT_VARIANT="${X11VARIANT}"
+			[ -n "${X11OPTIONS}" ] && export XKB_DEFAULT_OPTIONS="${X11OPTIONS}"
+		fi
+	fi
+
+	kmscon "$@"
+}
+
 # vim: syntax=sh
