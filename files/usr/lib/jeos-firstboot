@@ -190,7 +190,7 @@ if [[ "$(tty)" = /dev/tty* ]]; then
             export LOCALE_PRESET="$locale"
             export KEYTABLE_PRESET="$keytable"
             ret_file="$(mktemp)"
-            kmscon_localed --no-reset-env -l -- /bin/sh -c "$0; echo $? > $ret_file"'; kill $PPID'
+            kmscon_localed --silent --font-size 10 --palette vga --no-reset-env -l -- /bin/sh -c "$0; echo \$? > $ret_file; kill \$PPID"
             exit $(cat "$ret_file"; rm -f "$ret_file")
         else
             # No kmscon, fall back to english license display
