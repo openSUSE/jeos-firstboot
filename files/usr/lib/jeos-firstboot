@@ -177,7 +177,7 @@ fi
 [ -n "${locale}" ] && language="${locale%%_*}" || language="en"
 force_english_license=0
 
-if [[ "$(tty)" = /dev/tty[0-9]* ]]; then
+if [[ "$(ps h -o tty -p $$)" = tty[0-9]* ]]; then
     # Those languages can't be displayed in the console
     declare -A start_kmscon
     start_kmscon["cs"]=1
