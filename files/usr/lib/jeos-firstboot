@@ -191,7 +191,7 @@ if [[ "$(tty)" = /dev/tty[0-9]* ]]; then
 
         if kmscon_available; then
             ret_file="$(mktemp)"
-            kmscon_localed --silent --font-size 10 --palette vga --no-reset-env -l -- /bin/sh -c "$0; echo \$? > $ret_file; kill \$PPID"
+            kmscon --silent --font-size 10 --palette vga --no-reset-env -l -- /bin/sh -c "$0; echo \$? > $ret_file; kill \$PPID"
             exit $(cat "$ret_file"; rm -f "$ret_file")
         elif fbiterm_available; then
             exec fbiterm -- "$0"
