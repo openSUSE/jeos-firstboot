@@ -52,6 +52,14 @@ kmscon_available() {
     return 0
 }
 
+fbiterm_available() {
+    # fbiterm itself is installed
+    fbiterm --help >/dev/null 2>&1 || return 1
+    # fbiterm comes with its own fallback font
+
+    return 0
+}
+
 # Get a property value from org.freedesktop.locale1
 queryLocale1() {
 	dbus-send --system --print-reply=literal --dest=org.freedesktop.locale1 /org/freedesktop/locale1 org.freedesktop.DBus.Properties.Get "string:org.freedesktop.locale1" "string:$1" | awk '{print $2}'
