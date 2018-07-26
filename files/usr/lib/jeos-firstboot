@@ -140,8 +140,6 @@ if [ -z "$LOCALE_PRESET" ]; then
         if [ -n "$result" ]; then
             locale="${result}.UTF-8"
             systemd_firstboot_args+=("--locale=$locale")
-            LANG="$locale"
-            export LANG
 
                 # Run langset to get consolefont and keymap set up
                 run langset.sh $locale || warn $"Setting the locale failed"
@@ -176,6 +174,7 @@ fi
 
 [ -n "${locale}" ] && language="${locale%%_*}" || language="en"
 force_english_license=0
+export LANG="$locale"
 
 if [[ "$(ps h -o tty -p $$)" = tty[0-9]* ]]; then
     # Those languages can't be displayed in the console
@@ -196,7 +195,8 @@ if [[ "$(ps h -o tty -p $$)" = tty[0-9]* ]]; then
         elif fbiterm_available; then
             exec fbiterm -- "$0"
         else
-            # No kmscon, fall back to english license display
+            # No kmscon or fbiterm, fall back to english
+            export LANG="en_US.UTF-8"
             force_english_license=1
         fi
     fi
