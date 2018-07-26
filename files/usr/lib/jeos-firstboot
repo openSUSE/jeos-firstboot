@@ -65,7 +65,7 @@ cleanup() {
 	echo .oOo.oOo.oOo. > $dialog_out
 	rm -f "$dialog_out"
 	kill -s SIGRTMAX-10 1
-	run setterm -msglevel 4
+	run setterm -msglevel 4 2>/dev/null
 }
 trap cleanup EXIT
 
@@ -131,62 +131,92 @@ findlocales()
     [ -n "$list" ]
 }
 
-default="en_US"
-[ -f /etc/locale.conf ] && locale_lang="$(awk -F= '$1 == "LANG" { split($2,fs,"."); print fs[1]; exit }' /etc/locale.conf)"
-[ -n "$locale_lang" ] && default="$locale_lang"
+if [ -z "$LOCALE_PRESET" ]; then
+    default="en_US"
+    [ -f /etc/locale.conf ] && locale_lang="$(awk -F= '$1 == "LANG" { split($2,fs,"."); print fs[1]; exit }' /etc/locale.conf)"
+    [ -n "$locale_lang" ] && default="$locale_lang"
 
-if findlocales && d --default-item "$default" --menu  $"Select System Locale" 0 0 $dh_menu "${list[@]}"; then
-	if [ -n "$result" ]; then
-	    locale="${result}.UTF-8"
-	    systemd_firstboot_args+=("--locale=$locale")
-	    LANG="$locale"
-	    export LANG
+    if findlocales && d --default-item "$default" --menu  $"Select System Locale" 0 0 $dh_menu "${list[@]}"; then
+        if [ -n "$result" ]; then
+            locale="${result}.UTF-8"
+            systemd_firstboot_args+=("--locale=$locale")
+            LANG="$locale"
+            export LANG
 
-            # Run langset to get consolefont and keymap set up
-            run langset.sh $locale || warn $"Setting the locale failed"
-	fi
+                # Run langset to get consolefont and keymap set up
+                run langset.sh $locale || warn $"Setting the locale failed"
+        fi
+    else
+        d --msgbox $"Error setting locale" 0 0
+    fi
 else
-	d --msgbox $"Error setting locale" 0 0
+    locale="$LOCALE_PRESET"
+    systemd_firstboot_args+=("--locale=$locale")
+fi
+
+if [ -z "$KEYTABLE_PRESET" ]; then
+    default="us"
+    [ -f /etc/vconsole.conf ] && vconsole_keymap="$(awk -F= '$1 == "KEYMAP" { split($2,fs,"."); print fs[1]; exit }' /etc/vconsole.conf)"
+    [ -n "$vconsole_keymap" ] && default="$vconsole_keymap"
+
+    if findkeymaps \
+        && d --default-item "$default" --menu  $"Select Keyboard Layout" 0 0 $dh_menu "${list[@]}"; then
+        if [ -n "$result" ]; then
+            keytable="$result"
+
+                # Activate the selected keyboard layout
+                run langset.sh "$locale" "$keytable" || warn $"Setting the keyboard layout failed"
+        fi
+    else
+        d --msgbox $"Error setting keyboard" 0 0
+    fi
+else
+    keytable="$result"
+fi
+
+[ -n "${locale}" ] && language="${locale%%_*}" || language="en"
+force_english_license=0
+
+if [[ "$(tty)" = /dev/tty[0-9]* ]]; then
+    # Those languages can't be displayed in the console
+    declare -A start_kmscon
+    start_kmscon["cs"]=1
+    start_kmscon["ja"]=1
+    start_kmscon["zh"]=1
+    start_kmscon["ko"]=1
+
+    if [ -n "$locale" -a -n "${start_kmscon[${language}]+_}" ]; then
+        export LOCALE_PRESET="$locale"
+        export KEYTABLE_PRESET="$keytable"
+
+        if kmscon_available; then
+            ret_file="$(mktemp)"
+            kmscon --silent --font-size 10 --palette vga --no-reset-env -l -- /bin/sh -c "$0; echo \$? > $ret_file; kill \$PPID"
+            exit $(cat "$ret_file"; rm -f "$ret_file")
+        elif fbiterm_available; then
+            exec fbiterm -- "$0"
+        else
+            # No kmscon, fall back to english license display
+            force_english_license=1
+        fi
+    fi
 fi
 
 if [ -e "$EULA_FILE" -a ! -e "${EULA_FILE%/*}/no-acceptance-needed" ]; then
-    [ -n "${locale}" ] && language="${locale%%_*}" || language="en"
-
-    # Those languages can't be displayed in the console
-    declare -A use_english_license
-    use_english_license["ja"]=1
-    use_english_license["zh"]=1
-    use_english_license["ko"]=1
-
-    if [ -n "$locale" -a -z "${use_english_license[${language}]+_}" ]; then
-	for i in "${EULA_FILE%.txt}.$locale.txt" \
-	         "${EULA_FILE%.txt}.${locale%%.UTF-8}.txt" \
-	         "${EULA_FILE%.txt}.${language}.txt"; do
-	    if [ -e "$i" ]; then
-		EULA_FILE="$i"
-		break
-	    fi
-	done
+    if [ "$force_english_license" = "0" ]; then
+        for i in "${EULA_FILE%.txt}.$locale.txt" \
+                "${EULA_FILE%.txt}.${locale%%.UTF-8}.txt" \
+                "${EULA_FILE%.txt}.${language}.txt"; do
+            if [ -e "$i" ]; then
+            EULA_FILE="$i"
+            break
+            fi
+        done
     fi
+
     while ! d --textbox "$EULA_FILE" $dh_text 85 --and-widget --yesno $"Do you agree with the terms of the license?" 0 0; do
 	d --msgbox $"Well, we cannot continue then ..." 6 40
     done
-fi
-
-default="us"
-[ -f /etc/vconsole.conf ] && vconsole_keymap="$(awk -F= '$1 == "KEYMAP" { split($2,fs,"."); print fs[1]; exit }' /etc/vconsole.conf)"
-[ -n "$vconsole-keymap" ] && default="$vconsole_keymap"
-
-if findkeymaps \
-    && d --default-item "$default" --menu  $"Select Keyboard Layout" 0 0 $dh_menu "${list[@]}"; then
-	if [ -n "$result" ]; then
-	    keytable="$result"
-
-            # Activate the selected keyboard layout
-            run langset.sh "$locale" "$keytable" || warn $"Setting the keyboard layout failed"
-	fi
-else
-	d --msgbox $"Error setting keyboard" 0 0
 fi
 
 default="$(readlink /etc/localtime)"
