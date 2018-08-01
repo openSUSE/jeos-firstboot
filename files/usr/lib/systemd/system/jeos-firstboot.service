@@ -23,7 +23,7 @@ Before=network.service systemd-user-sessions.service
 Type=oneshot
 Environment=SYSTEMCTL_OPTIONS=--ignore-dependencies TERM=linux
 RemainAfterExit=yes
-ExecStartPre=-/usr/bin/plymouth quit
+ExecStartPre=/bin/sh -c "/usr/bin/plymouth quit 2>/dev/null || :"
 ExecStart=/usr/lib/jeos-firstboot
 ExecStartPost=/usr/bin/rm -f /var/lib/YaST2/reconfig_system
 StandardOutput=tty
