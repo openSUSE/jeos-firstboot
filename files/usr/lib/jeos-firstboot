@@ -112,7 +112,7 @@ menulist()
 #menulist localectl --no-pager list-keymaps
 findkeymaps()
 {
-    list=('us' '')
+    list=()
     local line
     while read line; do
 	    list+=("${line%.map.gz}" '')
@@ -124,9 +124,8 @@ findlocales()
 {
     list=()
     local l
-    for l in /usr/lib/locale/*.utf8; do
-	code=${l#/usr/lib/locale/}
-	list+=("${code/.utf8/}" '')
+    for l in /usr/share/langset/*; do
+	list+=("${l#/usr/share/langset/}" '')
     done
     [ -n "$list" ]
 }
