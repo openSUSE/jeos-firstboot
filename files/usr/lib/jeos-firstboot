@@ -123,9 +123,12 @@ findkeymaps()
 findlocales()
 {
     list=()
-    local l
+    local l locale
+    # List only locales which are both in live-langset-data and glibc-locale(-base)
     for l in /usr/share/langset/*; do
-	list+=("${l#/usr/share/langset/}" '')
+        locale="${l#/usr/share/langset/}"
+        [ -d "/usr/lib/locale/${locale}.utf8" ] || continue
+        list+=("${locale}" '')
     done
     [ -n "$list" ]
 }
@@ -135,16 +138,23 @@ if [ -z "$LOCALE_PRESET" ]; then
     [ -f /etc/locale.conf ] && locale_lang="$(awk -F= '$1 == "LANG" { split($2,fs,"."); print fs[1]; exit }' /etc/locale.conf)"
     [ -n "$locale_lang" ] && default="$locale_lang"
 
-    if findlocales && d --default-item "$default" --menu  $"Select System Locale" 0 0 $dh_menu "${list[@]}"; then
-        if [ -n "$result" ]; then
-            locale="${result}.UTF-8"
-            systemd_firstboot_args+=("--locale=$locale")
-
-                # Run langset to get consolefont and keymap set up
-                run langset.sh $locale || warn $"Setting the locale failed"
-        fi
+    list=()
+    result="$default"
+    if ! findlocales; then
+        d --msgbox $"No locales found" 0 0
+    elif [ "${#list[@]}" -eq 2 ]; then
+        result="${list[0]}"
+        d --msgbox $"Locale set to $result.\nTo change to a different one, install glibc-locale and use\n'localectl set-locale LANG=ex_AMPLE.UTF-8'." 8 50
     else
-        d --msgbox $"Error setting locale" 0 0
+        d --default-item "$default" --menu $"Select System Locale" 0 0 $dh_menu "${list[@]}"
+    fi
+
+    if [ -n "$result" ]; then
+        locale="${result}.UTF-8"
+        systemd_firstboot_args+=("--locale=$locale")
+
+        # Run langset to get consolefont and keymap set up
+        run langset.sh $locale || warn $"Setting the locale failed"
     fi
 else
     locale="$LOCALE_PRESET"
