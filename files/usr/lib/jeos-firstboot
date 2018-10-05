@@ -64,7 +64,7 @@ dialog_out=`mktemp -qt 'firstboot-XXXXXX'`
 cleanup() {
 	echo .oOo.oOo.oOo. > $dialog_out
 	rm -f "$dialog_out"
-	kill -s SIGRTMAX-10 1
+	run kill -s SIGRTMAX-10 1
 	run setterm -msglevel 4 2>/dev/null
 }
 trap cleanup EXIT
@@ -72,7 +72,7 @@ trap cleanup EXIT
 # avoid kernel messages spamming our console
 run setterm -msg off
 # Avoid systemd messages spamming our console
-kill -s SIGRTMAX-9 1
+run kill -s SIGRTMAX-9 1
 
 systemd_firstboot_args=('--setup-machine-id')
 
@@ -292,7 +292,7 @@ fi
 
 EFI_SYSTAB="/sys/firmware/efi/systab"
 # Look for EFI dir to see if the machine is booted in UEFI mode
-modprobe efivars
+run modprobe efivars
 if ! [ -f "$EFI_SYSTAB" ]; then
     run sed -i -e "s/LOADER_TYPE=.*/LOADER_TYPE=grub2/g" /etc/sysconfig/bootloader 
 fi
