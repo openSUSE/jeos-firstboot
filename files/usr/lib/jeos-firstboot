@@ -284,6 +284,97 @@ Without registration this instance does not have access to updates and
 security fixes." 0 0 || true
 fi
 
+if is_raspberry; then
+    # Wi-fi
+    #
+    get_wlan_devices()
+    {
+        list=()
+        local line
+        while read line; do
+                list+=("${line}" '') 
+        done < <(ls -d /sys/class/net/*/wireless | awk -F'/' '{ print $5 }')
+        [ -n "$list" ]
+    }
+
+    get_wlan_networks()
+    {
+        list=()
+        local line
+        while read line; do
+                list+=("${line}" '') 
+        done < <(ip link set $wlan_device up && iwlist $wlan_device scan|grep ESSID|cut -d':' -f2|cut -d'"' -f2|sort -u)
+        [ -n "$list" ]
+    }
+
+    if get_wlan_devices && d --menu  $"Select Wireless card to configure" 0 0 $dh_menu "${list[@]}"; then
+        if [ -n "$result" ]; then
+                wlan_device="$result"
+        fi
+    else
+        d --msgbox $"Error getting wlan devices" 0 0
+    fi
+
+    if get_wlan_networks && d --menu  $"Select Wireless network to connect" 0 0 $dh_menu "${list[@]}"; then
+        if [ -n "$result" ]; then
+            wlan_network="$result"
+        fi
+    fi
+
+    if d --menu $"Select authentication mode" 0 0 $dh_menu Open '' WPA-PSK '' WPA-EAP ''; then
+        if [ -n "$result" ]; then
+            wlan_auth_mode="$result"
+        fi
+    else
+        echo "error"
+    fi
+    wlan_auth_mode_conf=
+    if [ $wlan_auth_mode = "WPA-EAP" ]; then
+        wlan_auth_mode_conf=eap
+        if d --inputbox $"Username" 0 0; then
+                if [ -n "$result" ]; then
+                        wlan_username="$result"
+                fi
+        fi
+    fi
+    if [ $wlan_auth_mode = "WPA-PSK" ]; then
+            wlan_auth_mode_conf=psk
+    fi
+    if [ $wlan_auth_mode = "Open" ]; then
+            wlan_auth_mode_conf=open
+    fi
+    if [ $wlan_auth_mode != "Open" ]; then	
+        wlan_password=
+        if d --insecure --passwordbox  $"Password" 0 0; then
+            wlan_password="$result"
+        fi
+    fi
+
+    run rm -f /tmp/ifcfg-$wlan_device
+    cat << EOF > /tmp/ifcfg-$wlan_device
+BOOTPROTO='dhcp'
+STARTMODE='auto'
+WIRELESS_AP_SCANMODE='1'
+WIRELESS_AUTH_MODE='$wlan_auth_mode_conf'
+WIRELESS_ESSID='$wlan_network'
+WIRELESS_MODE='Managed'
+EOF
+
+    if [ $wlan_auth_mode = "WPA-PSK" ]; then
+        echo "WIRELESS_WPA_PSK='$wlan_password'" >> /tmp/ifcfg-$wlan_device
+    fi
+
+    if [ $wlan_auth_mode = "WPA-EAP" ]; then
+        echo "WIRELESS_WPA_IDENTITY='$wlan_username'" >> /tmp/ifcfg-$wlan_device
+        echo "WIRELESS_WPA_PASSWORD='$wlan_password'" >> /tmp/ifcfg-$wlan_device
+    fi
+
+    run chmod 600 /tmp/ifcfg-$wlan_device
+    run mv /tmp/ifcfg-$wlan_device /etc/sysconfig/network/scripts
+    run systemctl restart wicked.service
+    run ifup $wlan_device
+fi
+
 d --infobox $"Applying firstboot settings ..." 3 40 || true
 # FIXME: systemd-firstboot doesn't set password if shadow present
 if [ -n "$password" ]; then
@@ -334,5 +425,8 @@ if [ ! -e /.snapshots/2 ]; then
     run create_snapshot 2 "Initial Status" "yes" || true
 fi
 /usr/lib/snapper/plugins/grub --refresh
+
+########
+echo $error_out
 
 # vim: sw=4
