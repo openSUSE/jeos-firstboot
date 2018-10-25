@@ -228,7 +228,7 @@ if [ -e "$EULA_FILE" -a ! -e "${EULA_FILE%/*}/no-acceptance-needed" ]; then
     done
 fi
 
-default="$(readlink /etc/localtime)"
+default="$(readlink -f /etc/localtime)"
 default="${default##/usr/share/zoneinfo/}"
 
 # timedatectl doesn't work as dbus is not up yet
