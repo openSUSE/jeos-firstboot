@@ -138,19 +138,20 @@ if [ -z "$LOCALE_PRESET" ]; then
     [ -f /etc/locale.conf ] && locale_lang="$(awk -F= '$1 == "LANG" { split($2,fs,"."); print fs[1]; exit }' /etc/locale.conf)"
     [ -n "$locale_lang" ] && default="$locale_lang"
 
-    list=()
-    result="$default"
+    list=() # Set by findlocales
+    newlocale="$default"
     if ! findlocales; then
         d --msgbox $"No locales found" 0 0
     elif [ "${#list[@]}" -eq 2 ]; then
-        result="${list[0]}"
-        d --msgbox $"Locale set to $result.\nTo change to a different one, install glibc-locale and use\n'localectl set-locale LANG=ex_AMPLE.UTF-8'." 8 50
+        newlocale="${list[0]}"
+        d --msgbox $"Locale set to $newlocale.\nTo change to a different one, install glibc-locale and use\n'localectl set-locale LANG=ex_AMPLE.UTF-8'." 8 50
     else
         d --default-item "$default" --menu $"Select System Locale" 0 0 $dh_menu "${list[@]}"
+        newlocale="${result}"
     fi
 
-    if [ -n "$result" ]; then
-        locale="${result}.UTF-8"
+    if [ -n "$newlocale" ]; then
+        locale="${newlocale}.UTF-8"
         systemd_firstboot_args+=("--locale=$locale")
 
         # Run langset to get consolefont and keymap set up
@@ -228,7 +229,7 @@ if [ -e "$EULA_FILE" -a ! -e "${EULA_FILE%/*}/no-acceptance-needed" ]; then
     done
 fi
 
-default="$(readlink /etc/localtime)"
+default="$(readlink -f /etc/localtime)"
 default="${default##/usr/share/zoneinfo/}"
 
 # timedatectl doesn't work as dbus is not up yet
