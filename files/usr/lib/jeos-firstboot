@@ -329,7 +329,7 @@ if is_raspberry; then
         echo "error"
     fi
     wlan_auth_mode_conf=
-    if [ $wlan_auth_mode = "WPA-EAP" ]; then
+    if [ "$wlan_auth_mode" = "WPA-EAP" ]; then
         wlan_auth_mode_conf=eap
         if d --inputbox $"Username" 0 0; then
                 if [ -n "$result" ]; then
@@ -337,13 +337,13 @@ if is_raspberry; then
                 fi
         fi
     fi
-    if [ $wlan_auth_mode = "WPA-PSK" ]; then
+    if [ "$wlan_auth_mode" = "WPA-PSK" ]; then
             wlan_auth_mode_conf=psk
     fi
-    if [ $wlan_auth_mode = "Open" ]; then
+    if [ "$wlan_auth_mode" = "Open" ]; then
             wlan_auth_mode_conf=open
     fi
-    if [ $wlan_auth_mode != "Open" ]; then	
+    if [ "$wlan_auth_mode" != "Open" ]; then	
         wlan_password=
         if d --insecure --passwordbox  $"Password" 0 0; then
             wlan_password="$result"
