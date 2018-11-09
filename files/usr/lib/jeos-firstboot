@@ -385,8 +385,9 @@ if is_raspberry; then
         fi
     fi
 
-    run rm -f /tmp/ifcfg-$wlan_device
-    cat << EOF > /tmp/ifcfg-$wlan_device
+    config_file=`mktemp -qt 'firstboot-XXXXXX'`
+
+    cat << EOF > $config_file
 BOOTPROTO='dhcp'
 STARTMODE='auto'
 WIRELESS_AP_SCANMODE='1'
@@ -396,16 +397,15 @@ WIRELESS_MODE='Managed'
 EOF
 
     if [ $wlan_auth_mode = "WPA-PSK" ]; then
-        echo "WIRELESS_WPA_PSK='$wlan_password'" >> /tmp/ifcfg-$wlan_device
+        echo "WIRELESS_WPA_PSK='$wlan_password'" >> $config_file
     fi
 
     if [ $wlan_auth_mode = "WPA-EAP" ]; then
-        echo "WIRELESS_WPA_IDENTITY='$wlan_username'" >> /tmp/ifcfg-$wlan_device
-        echo "WIRELESS_WPA_PASSWORD='$wlan_password'" >> /tmp/ifcfg-$wlan_device
+        echo "WIRELESS_WPA_IDENTITY='$wlan_username'" >> $config_file
+        echo "WIRELESS_WPA_PASSWORD='$wlan_password'" >> $config_file
     fi
 
-    run chmod 600 /tmp/ifcfg-$wlan_device
-    run mv /tmp/ifcfg-$wlan_device /etc/sysconfig/network/scripts
+    run mv -f $config_file /etc/sysconfig/network/scripts/ifcfg-$wlan_device
     run systemctl restart wicked.service
     run ifup $wlan_device
 fi
