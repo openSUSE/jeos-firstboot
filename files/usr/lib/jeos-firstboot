@@ -319,6 +319,34 @@ Without registration this instance does not have access to updates and
 security fixes." 0 0 || true
 fi
 
+# Configure initial network settings
+#
+shopt -s nullglob
+
+candidates=()
+for p in /sys/class/net/* ; do
+        test -f "$p" && continue # skip bonding_masters file
+
+        # only devices having ID_NET_NAME.* attrs
+        udevadm info -q all -p "$p" | grep -qs ID_NET_NAME || continue
+        d=${p##*/}
+
+        unset IPADDR GATEWAYS
+        eval `wicked test dhcp4 "$d" 2>/dev/null | grep -E "^IPADDR=|^GATEWAYS="`
+        ip link set down "$d" # set link down after probe once done
+
+        test -n "$IPADDR"   && candidates+=("$d")  || continue # ok, track it
+        test -n "$GATEWAYS" && candidates=("$d")  || continue # just use it
+        break
+done
+
+for d in ${candidates[@]} ; do
+        rm -f "/etc/sysconfig/network/ifcfg-$d" || exit 1
+        printf "STARTMODE=auto\nBOOTPROTO=dhcp\n" \
+                > "/etc/sysconfig/network/ifcfg-$d"
+        break # one is enough
+done
+
 if is_raspberry; then
     # Wi-fi
     #
@@ -360,8 +388,6 @@ if is_raspberry; then
         if [ -n "$result" ]; then
             wlan_auth_mode="$result"
         fi
-    else
-        echo "error"
     fi
     wlan_auth_mode_conf=
     if [ "$wlan_auth_mode" = "WPA-EAP" ]; then
@@ -405,15 +431,14 @@ EOF
         echo "WIRELESS_WPA_PASSWORD='$wlan_password'" >> $config_file
     fi
 
-    run mv -f $config_file /etc/sysconfig/network/scripts/ifcfg-$wlan_device
-    run systemctl restart wicked.service
-    run ifup $wlan_device
+    run mv -f $config_file /etc/sysconfig/network/ifcfg-$wlan_device
+	
 fi
 
 d --infobox $"Applying firstboot settings ..." 3 40 || true
 # FIXME: systemd-firstboot doesn't set password if shadow present
 if [ -n "$password" ]; then
-    echo "root:$password" | run /usr/sbin/chpasswd
+    run  echo "root:$password" | run /usr/sbin/chpasswd
 fi
 
 EFI_SYSTAB="/sys/firmware/efi/systab"
@@ -423,45 +448,18 @@ if ! [ -f "$EFI_SYSTAB" ]; then
     run sed -i -e "s/LOADER_TYPE=.*/LOADER_TYPE=grub2/g" /etc/sysconfig/bootloader 
 fi
 
-# Configure initial network settings
-#
-shopt -s nullglob
-
-candidates=()
-for p in /sys/class/net/* ; do
-        test -f "$p" && continue # skip bonding_masters file
-
-        # only devices having ID_NET_NAME.* attrs
-        udevadm info -q all -p "$p" | grep -qs ID_NET_NAME || continue
-        d=${p##*/}
-
-        unset IPADDR GATEWAYS
-        eval `wicked test dhcp4 "$d" 2>/dev/null | grep -E "^IPADDR=|^GATEWAYS="`
-        ip link set down "$d" # set link down after probe once done
-
-        test -n "$IPADDR"   && candidates+=("$d")  || continue # ok, track it
-        test -n "$GATEWAYS" && candidates=("$d")  || continue # just use it
-        break
-done
-
-for d in ${candidates[@]} ; do
-        rm -f "/etc/sysconfig/network/ifcfg-$d" || exit 1
-        printf "STARTMODE=auto\nBOOTPROTO=dhcp\n" \
-                > "/etc/sysconfig/network/ifcfg-$d"
-        break # one is enough
-done
-
 # Run snapper to setup quota for btrfs
-/usr/bin/snapper --no-dbus setup-quota || warn $"Could not setup quota for btrfs"
+run /usr/bin/snapper --no-dbus setup-quota || warn $"Could not setup quota for btrfs"
 
 #d --infobox "Creating snapshot ..." 3 40 || true
 #run snapper --no-dbus -v create -d "Initial Status" --userdata "important=yes" || d --msgbox "snapper failed" 0 0 || true
 if [ ! -e /.snapshots/2 ]; then
     run create_snapshot 2 "Initial Status" "yes" || true
 fi
-/usr/lib/snapper/plugins/grub --refresh
+run /usr/lib/snapper/plugins/grub --refresh
 
-########
-echo $error_out
-
+if is_raspberry; then
+    run ifdown $wlan_device
+    run ifup $wlan_device
+fi
 # vim: sw=4
