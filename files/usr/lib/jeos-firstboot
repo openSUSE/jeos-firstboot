@@ -87,42 +87,29 @@ let dh_text=LINES-5
 
 d(){
     retval=
-    cmd='dialog --backtitle "$PRETTY_NAME" "$@" 2>"$dialog_out"'
     while true
     do
-        eval $cmd
+        dialog --backtitle "$PRETTY_NAME" "$@" 2>"$dialog_out"
         retval=$?
         case $retval in
           0)
             # need || true as dialog doesn't write newlines
             read result < $dialog_out || true
-            return $retval
+            return 0
             ;;
           1)
-            dialog --yesno $"Do you really want to quit?" 0 0
-            retval=$?
-            case $retval in
-                0)
-                    exit 0;;
-                1|255)
-                    continue;;
-            esac
+            dialog --yesno $"Do you really want to quit?" 0 0 && exit 0
+            continue
             ;;
           255)
             # xargs to remove whitespaces
-            result_error=`cat $dialog_out|xargs`
+            result_error="$(xargs -a "$dialog_out")"
             if [ -z "$result_error" ]; then
-                dialog --yesno $"Do you really want to quit?" 0 0
-                retval=$?
-                case $retval in
-                    0)
-                        exit 0;;
-                    1|255)
-                        continue;;
-                esac
+                dialog --yesno $"Do you really want to quit?" 0 0 && exit 0
+                continue
             fi
             logger -p err -t jeos-firstboot "$result_error"
-            dialog --msgbox $"Exiting due to error, please check system log" 0 0
+            dialog --msgbox $"Exiting due to error, please check the system log" 0 0
             exit 2
             ;;
         esac
@@ -319,7 +306,8 @@ Without registration this instance does not have access to updates and
 security fixes." 0 0 || true
 fi
 
-# Configure initial network settings
+d --infobox $"Collecting network info ..." 3 33
+## Configure initial network settings
 #
 shopt -s nullglob
 
@@ -347,7 +335,13 @@ for d in ${candidates[@]} ; do
         break # one is enough
 done
 
+config_wireless=false
 if is_raspberry; then
+    if dialog --yesno $"Configure wireless network?" 0 0; then
+	config_wireless=true
+    fi
+fi
+if [ "$config_wireless" = "true" ]; then
     # Wi-fi
     #
     get_wlan_devices()
@@ -371,31 +365,24 @@ if is_raspberry; then
     }
 
     if get_wlan_devices && d --menu  $"Select Wireless card to configure" 0 0 $dh_menu "${list[@]}"; then
-        if [ -n "$result" ]; then
-                wlan_device="$result"
-        fi
+        wlan_device="$result"
     else
         d --msgbox $"Error getting wlan devices" 0 0
+        exit 1
     fi
 
     if get_wlan_networks && d --menu  $"Select Wireless network to connect" 0 0 $dh_menu "${list[@]}"; then
-        if [ -n "$result" ]; then
-            wlan_network="$result"
-        fi
+        wlan_network="$result"
     fi
 
-    if d --menu $"Select authentication mode" 0 0 $dh_menu Open '' WPA-PSK '' WPA-EAP ''; then
-        if [ -n "$result" ]; then
-            wlan_auth_mode="$result"
-        fi
+    if d --menu $"Select authentication mode" 0 0 $dh_menu $"WPA-PSK" '' $"WPA-EAP" '' $"Open" ''; then
+        wlan_auth_mode="$result"
     fi
     wlan_auth_mode_conf=
     if [ "$wlan_auth_mode" = "WPA-EAP" ]; then
         wlan_auth_mode_conf=eap
         if d --inputbox $"Username" 0 0; then
-                if [ -n "$result" ]; then
-                        wlan_username="$result"
-                fi
+            wlan_username="$result"
         fi
     fi
     if [ "$wlan_auth_mode" = "WPA-PSK" ]; then
@@ -458,7 +445,7 @@ if [ ! -e /.snapshots/2 ]; then
 fi
 run /usr/lib/snapper/plugins/grub --refresh
 
-if is_raspberry; then
+if [ "$config_wireless" = "true" ]; then
     run ifdown $wlan_device
     run ifup $wlan_device
 fi

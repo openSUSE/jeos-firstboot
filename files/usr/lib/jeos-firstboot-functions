@@ -61,11 +61,7 @@ fbiterm_available() {
 }
 
 is_raspberry() {
-    if grep Raspberry /proc/device-tree/model; then
-        return 0
-    else
-        return 1
-    fi
+     grep -q Raspberry /proc/device-tree/model
 }
 
 # vim: syntax=sh
