@@ -86,12 +86,34 @@ let dh_menu=LINES-15
 let dh_text=LINES-5
 
 d(){
-    if dialog --backtitle "$PRETTY_NAME" "$@" 2>"$dialog_out"; then
-	# need || true as dialog doesn't write newlines
-	read result < $dialog_out || true
-    else
-	return $?
-    fi
+    retval=
+    while true
+    do
+        dialog --backtitle "$PRETTY_NAME" "$@" 2>"$dialog_out"
+        retval=$?
+        case $retval in
+          0)
+            # need || true as dialog doesn't write newlines
+            read result < $dialog_out || true
+            return 0
+            ;;
+          1)
+            dialog --yesno $"Do you really want to quit?" 0 0 && exit 0
+            continue
+            ;;
+          255)
+            # xargs to remove whitespaces
+            result_error="$(xargs -a "$dialog_out")"
+            if [ -z "$result_error" ]; then
+                dialog --yesno $"Do you really want to quit?" 0 0 && exit 0
+                continue
+            fi
+            logger -p err -t jeos-firstboot "$result_error"
+            dialog --msgbox $"Exiting due to error, please check the system log" 0 0
+            exit 2
+            ;;
+        esac
+    done
 }
 
 warn(){
@@ -285,20 +307,8 @@ Without registration this instance does not have access to updates and
 security fixes." 0 0 || true
 fi
 
-d --infobox $"Applying firstboot settings ..." 3 40 || true
-# FIXME: systemd-firstboot doesn't set password if shadow present
-if [ -n "$password" ]; then
-    echo "root:$password" | run /usr/sbin/chpasswd
-fi
-
-EFI_SYSTAB="/sys/firmware/efi/systab"
-# Look for EFI dir to see if the machine is booted in UEFI mode
-run modprobe efivars
-if ! [ -f "$EFI_SYSTAB" ]; then
-    run sed -i -e "s/LOADER_TYPE=.*/LOADER_TYPE=grub2/g" /etc/sysconfig/bootloader 
-fi
-
-# Configure initial network settings
+d --infobox $"Collecting network info ..." 3 33
+## Configure initial network settings
 #
 shopt -s nullglob
 
@@ -326,14 +336,118 @@ for d in ${candidates[@]} ; do
         break # one is enough
 done
 
+config_wireless=false
+if is_raspberry; then
+    if dialog --yesno $"Configure wireless network?" 0 0; then
+	config_wireless=true
+    fi
+fi
+if [ "$config_wireless" = "true" ]; then
+    # Wi-fi
+    #
+    get_wlan_devices()
+    {
+        list=()
+        local line
+        while read line; do
+                list+=("${line}" '') 
+        done < <(ls -d /sys/class/net/*/wireless | awk -F'/' '{ print $5 }')
+        [ -n "$list" ]
+    }
+
+    get_wlan_networks()
+    {
+        list=()
+        local line
+        while read line; do
+                list+=("${line}" '') 
+        done < <(ip link set $wlan_device up && iwlist $wlan_device scan|grep ESSID|cut -d':' -f2|cut -d'"' -f2|sort -u)
+        [ -n "$list" ]
+    }
+
+    if get_wlan_devices && d --menu  $"Select Wireless card to configure" 0 0 $dh_menu "${list[@]}"; then
+        wlan_device="$result"
+    else
+        d --msgbox $"Error getting wlan devices" 0 0
+        exit 1
+    fi
+
+    if get_wlan_networks && d --menu  $"Select Wireless network to connect" 0 0 $dh_menu "${list[@]}"; then
+        wlan_network="$result"
+    fi
+
+    if d --menu $"Select authentication mode" 0 0 $dh_menu $"WPA-PSK" '' $"WPA-EAP" '' $"Open" ''; then
+        wlan_auth_mode="$result"
+    fi
+    wlan_auth_mode_conf=
+    if [ "$wlan_auth_mode" = "WPA-EAP" ]; then
+        wlan_auth_mode_conf=eap
+        if d --inputbox $"Username" 0 0; then
+            wlan_username="$result"
+        fi
+    fi
+    if [ "$wlan_auth_mode" = "WPA-PSK" ]; then
+            wlan_auth_mode_conf=psk
+    fi
+    if [ "$wlan_auth_mode" = "Open" ]; then
+            wlan_auth_mode_conf=open
+    fi
+    if [ "$wlan_auth_mode" != "Open" ]; then	
+        wlan_password=
+        if d --insecure --passwordbox  $"Password" 0 0; then
+            wlan_password="$result"
+        fi
+    fi
+
+    config_file=`mktemp -qt 'firstboot-XXXXXX'`
+
+    cat << EOF > $config_file
+BOOTPROTO='dhcp'
+STARTMODE='auto'
+WIRELESS_AP_SCANMODE='1'
+WIRELESS_AUTH_MODE='$wlan_auth_mode_conf'
+WIRELESS_ESSID='$wlan_network'
+WIRELESS_MODE='Managed'
+EOF
+
+    if [ $wlan_auth_mode = "WPA-PSK" ]; then
+        echo "WIRELESS_WPA_PSK='$wlan_password'" >> $config_file
+    fi
+
+    if [ $wlan_auth_mode = "WPA-EAP" ]; then
+        echo "WIRELESS_WPA_IDENTITY='$wlan_username'" >> $config_file
+        echo "WIRELESS_WPA_PASSWORD='$wlan_password'" >> $config_file
+    fi
+
+    run mv -f $config_file /etc/sysconfig/network/ifcfg-$wlan_device
+	
+fi
+
+d --infobox $"Applying firstboot settings ..." 3 40 || true
+# FIXME: systemd-firstboot doesn't set password if shadow present
+if [ -n "$password" ]; then
+    run  echo "root:$password" | run /usr/sbin/chpasswd
+fi
+
+EFI_SYSTAB="/sys/firmware/efi/systab"
+# Look for EFI dir to see if the machine is booted in UEFI mode
+run modprobe efivars
+if ! [ -f "$EFI_SYSTAB" ]; then
+    run sed -i -e "s/LOADER_TYPE=.*/LOADER_TYPE=grub2/g" /etc/sysconfig/bootloader 
+fi
+
 # Run snapper to setup quota for btrfs
-/usr/bin/snapper --no-dbus setup-quota || warn $"Could not setup quota for btrfs"
+run /usr/bin/snapper --no-dbus setup-quota || warn $"Could not setup quota for btrfs"
 
 #d --infobox "Creating snapshot ..." 3 40 || true
 #run snapper --no-dbus -v create -d "Initial Status" --userdata "important=yes" || d --msgbox "snapper failed" 0 0 || true
 if [ ! -e /.snapshots/2 ]; then
     run create_snapshot 2 "Initial Status" "yes" || true
 fi
-/usr/lib/snapper/plugins/grub --refresh
+run /usr/lib/snapper/plugins/grub --refresh
 
+if [ "$config_wireless" = "true" ]; then
+    run ifdown $wlan_device
+    run ifup $wlan_device
+fi
 # vim: sw=4
