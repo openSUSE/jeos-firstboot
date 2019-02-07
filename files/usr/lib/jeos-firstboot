@@ -73,6 +73,8 @@ trap cleanup EXIT
 run setterm -msg off
 # Avoid systemd messages spamming our console
 run kill -s SIGRTMAX-9 1
+# sleep to avoid systemd bug, bsc#1119382
+sleep 1
 
 systemd_firstboot_args=('--setup-machine-id')
 
