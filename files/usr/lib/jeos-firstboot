@@ -466,7 +466,7 @@ fi
 run /usr/lib/snapper/plugins/grub --refresh
 
 if [ "$config_wireless" = "true" ]; then
-    run ifdown $wlan_device
-    run ifup $wlan_device
+    run ifdown $wlan_device || true
+    run ifup $wlan_device || true
 fi
 # vim: sw=4
