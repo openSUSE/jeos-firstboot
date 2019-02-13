@@ -248,7 +248,7 @@ if [ -e "$EULA_FILE" -a ! -e "${EULA_FILE%/*}/no-acceptance-needed" ]; then
         done
     fi
 
-    while ! d --textbox "$EULA_FILE" $dh_text 85 --and-widget --yesno $"Do you agree with the terms of the license?" 0 0; do
+    while ! dialog --textbox "$EULA_FILE" $dh_text 85 --and-widget --yesno $"Do you agree with the terms of the license?" 0 0; do
 	d --msgbox $"Well, we cannot continue then ..." 6 40
     done
 fi
@@ -436,6 +436,7 @@ EOF
     if [ $wlan_auth_mode = "WPA-EAP" ]; then
         echo "WIRELESS_WPA_IDENTITY='$wlan_username'" >> $config_file
         echo "WIRELESS_WPA_PASSWORD='$wlan_password'" >> $config_file
+        echo "WIRELESS_EAP_AUTH='mschapv2'" >> $config_file
     fi
 
     run mv -f $config_file /etc/sysconfig/network/ifcfg-$wlan_device
@@ -466,7 +467,7 @@ fi
 run /usr/lib/snapper/plugins/grub --refresh
 
 if [ "$config_wireless" = "true" ]; then
-    run ifdown $wlan_device || true
+    run ifdown $wlan_device 2>/dev/null || true
     run ifup $wlan_device || true
 fi
 # vim: sw=4
