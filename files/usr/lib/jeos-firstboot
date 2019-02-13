@@ -73,6 +73,8 @@ trap cleanup EXIT
 run setterm -msg off
 # Avoid systemd messages spamming our console
 run kill -s SIGRTMAX-9 1
+# sleep to avoid systemd bug, bsc#1119382
+sleep 1
 
 systemd_firstboot_args=('--setup-machine-id')
 
@@ -98,14 +100,14 @@ d(){
             return 0
             ;;
           1)
-            dialog --yesno $"Do you really want to quit?" 0 0 && exit 0
+            dialog --yesno $"Do you really want to quit?" 0 0 && exit 1
             continue
             ;;
           255)
             # xargs to remove whitespaces
             result_error="$(xargs -a "$dialog_out")"
             if [ -z "$result_error" ]; then
-                dialog --yesno $"Do you really want to quit?" 0 0 && exit 0
+                dialog --yesno $"Do you really want to quit?" 0 0 && exit 1
                 continue
             fi
             logger -p err -t jeos-firstboot "$result_error"
@@ -337,7 +339,7 @@ for d in ${candidates[@]} ; do
 done
 
 config_wireless=false
-if is_raspberry; then
+if is_raspberry && ls -d /sys/class/net/*/wireless &>/dev/null; then
     if dialog --yesno $"Configure wireless network?" 0 0; then
 	config_wireless=true
     fi
@@ -362,43 +364,60 @@ if [ "$config_wireless" = "true" ]; then
         while read line; do
                 list+=("${line}" '') 
         done < <(ip link set $wlan_device up && iwlist $wlan_device scan|grep ESSID|cut -d':' -f2|cut -d'"' -f2|sort -u)
-        [ -n "$list" ]
+        [ -n "${list[*]}" ]
     }
 
-    if get_wlan_devices && d --menu  $"Select Wireless card to configure" 0 0 $dh_menu "${list[@]}"; then
-        wlan_device="$result"
-    else
-        d --msgbox $"Error getting wlan devices" 0 0
-        exit 1
-    fi
-
-    if get_wlan_networks && d --menu  $"Select Wireless network to connect" 0 0 $dh_menu "${list[@]}"; then
-        wlan_network="$result"
-    fi
-
-    if d --menu $"Select authentication mode" 0 0 $dh_menu $"WPA-PSK" '' $"WPA-EAP" '' $"Open" ''; then
-        wlan_auth_mode="$result"
-    fi
-    wlan_auth_mode_conf=
-    if [ "$wlan_auth_mode" = "WPA-EAP" ]; then
-        wlan_auth_mode_conf=eap
-        if d --inputbox $"Username" 0 0; then
-            wlan_username="$result"
+    wlan_error(){
+        d --title $"Error" --msgbox "$1" 0 0
+        dialog --yesno $"Do you want to retry?" 0 0
+    }
+    while true
+    do
+        if get_wlan_devices && d --menu  $"Select Wireless card to configure" 0 0 $dh_menu "${list[@]}"; then
+            wlan_device="$result"
+        else
+            if wlan_error $"Error listing wlan devices"; then
+                continue
+            else
+                break
+            fi
         fi
-    fi
-    if [ "$wlan_auth_mode" = "WPA-PSK" ]; then
-            wlan_auth_mode_conf=psk
-    fi
-    if [ "$wlan_auth_mode" = "Open" ]; then
-            wlan_auth_mode_conf=open
-    fi
-    if [ "$wlan_auth_mode" != "Open" ]; then	
-        wlan_password=
-        if d --insecure --passwordbox  $"Password" 0 0; then
-            wlan_password="$result"
-        fi
-    fi
 
+        if get_wlan_networks && d --menu  $"Select Wireless network to connect" 0 0 $dh_menu "${list[@]}"; then
+            wlan_network="$result"
+        else
+            if wlan_error $"Error listing wireless networks"; then
+                continue
+            else
+                break
+            fi
+        fi
+
+        if d --menu $"Select authentication mode" 0 0 $dh_menu $"WPA-PSK" '' $"WPA-EAP" '' $"Open" ''; then
+            wlan_auth_mode="$result"
+        fi
+        wlan_auth_mode_conf=
+        if [ "$wlan_auth_mode" = "WPA-EAP" ]; then
+            wlan_auth_mode_conf=eap
+            if d --inputbox $"Username" 0 0; then
+                wlan_username="$result"
+            fi
+        fi
+        if [ "$wlan_auth_mode" = "WPA-PSK" ]; then
+                wlan_auth_mode_conf=psk
+        fi
+        if [ "$wlan_auth_mode" = "Open" ]; then
+                wlan_auth_mode_conf=open
+        fi
+        if [ "$wlan_auth_mode" != "Open" ]; then	
+            wlan_password=
+            if d --insecure --passwordbox  $"Password" 0 0; then
+                wlan_password="$result"
+            fi
+        fi
+        break
+    done
+ 
     config_file=`mktemp -qt 'firstboot-XXXXXX'`
 
     cat << EOF > $config_file
@@ -447,7 +466,7 @@ fi
 run /usr/lib/snapper/plugins/grub --refresh
 
 if [ "$config_wireless" = "true" ]; then
-    run ifdown $wlan_device
-    run ifup $wlan_device
+    run ifdown $wlan_device || true
+    run ifup $wlan_device || true
 fi
 # vim: sw=4
