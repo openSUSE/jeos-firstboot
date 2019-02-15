@@ -456,15 +456,22 @@ if ! [ -f "$EFI_SYSTAB" ]; then
     run sed -i -e "s/LOADER_TYPE=.*/LOADER_TYPE=grub2/g" /etc/sysconfig/bootloader 
 fi
 
-# Run snapper to setup quota for btrfs
-run /usr/bin/snapper --no-dbus setup-quota || warn $"Could not setup quota for btrfs"
+# Test if snapper is available
+if [ -x /usr/bin/snapper ]
+then
+    # Run snapper to setup quota for btrfs
+    run /usr/bin/snapper --no-dbus setup-quota || warn $"Could not setup quota for btrfs"
 
-#d --infobox "Creating snapshot ..." 3 40 || true
-#run snapper --no-dbus -v create -d "Initial Status" --userdata "important=yes" || d --msgbox "snapper failed" 0 0 || true
-if [ ! -e /.snapshots/2 ]; then
-    run create_snapshot 2 "Initial Status" "yes" || true
+    #d --infobox "Creating snapshot ..." 3 40 || true
+    #run snapper --no-dbus -v create -d "Initial Status" --userdata "important=yes" || d --msgbox "snapper failed" 0 0 || true
+    if [ ! -e /.snapshots/2 ]; then
+        run create_snapshot 2 "Initial Status" "yes" || true
+    fi
+    if [ -x /usr/lib/snapper/plugins/grub ]
+    then
+        run /usr/lib/snapper/plugins/grub --refresh
+    fi
 fi
-run /usr/lib/snapper/plugins/grub --refresh
 
 if [ "$config_wireless" = "true" ]; then
     run ifdown $wlan_device 2>/dev/null || true
