@@ -26,7 +26,9 @@ TEXTDOMAIN='jeos-firstboot'
 . /etc/os-release
 . "$0-functions"
 
-EULA_FILE=/etc/YaST2/licenses/base/license.txt
+# Starting with SLE-15-SP1 that is the EULA file
+EULA_FILE=/usr/share/licenses/product/SLES/license.txt
+EULA_FILE_LEGACY=/etc/YaST2/licenses/base/license.txt
 
 stty_size() {
     set -- `stty size`; LINES=$1; COLUMNS=$2
@@ -236,7 +238,7 @@ if [[ "$(ps h -o tty -p $$)" = tty[0-9]* ]]; then
     fi
 fi
 
-if [ -e "$EULA_FILE" -a ! -e "${EULA_FILE%/*}/no-acceptance-needed" ]; then
+if [ -e "$EULA_FILE" -o -e "$EULA_FILE_LEGACY" -a ! -e "${EULA_FILE%/*}/no-acceptance-needed" ]; then
     if [ "$force_english_license" = "0" ]; then
         for i in "${EULA_FILE%.txt}.$locale.txt" \
                 "${EULA_FILE%.txt}.${locale%%.UTF-8}.txt" \
