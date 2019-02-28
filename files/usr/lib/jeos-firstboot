@@ -462,8 +462,6 @@ then
     # Run snapper to setup quota for btrfs
     run /usr/bin/snapper --no-dbus setup-quota || warn $"Could not setup quota for btrfs"
 
-    #d --infobox "Creating snapshot ..." 3 40 || true
-    #run snapper --no-dbus -v create -d "Initial Status" --userdata "important=yes" || d --msgbox "snapper failed" 0 0 || true
     if [ ! -e /.snapshots/2 ]; then
         run create_snapshot 2 "Initial Status" "yes" || true
     fi
