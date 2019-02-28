@@ -470,4 +470,13 @@ if [ "$config_wireless" = "true" ]; then
     run ifdown $wlan_device 2>/dev/null || true
     run ifup $wlan_device || true
 fi
+
+# Execute external script(s) on firstboot
+if [ -d "/usr/lib/jeos-firstboot.d" ]; then
+    for script in /usr/lib/jeos-firstboot.d/??-*; do
+        if [ -x "${script}" ]; then
+            run "${script}"
+        fi
+    done
+fi
 # vim: sw=4
