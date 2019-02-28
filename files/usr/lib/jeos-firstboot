@@ -457,16 +457,14 @@ if ! [ -f "$EFI_SYSTAB" ]; then
 fi
 
 # Test if snapper is available
-if [ -x /usr/bin/snapper ]
-then
+if [ -x /usr/bin/snapper ]; then
     # Run snapper to setup quota for btrfs
     run /usr/bin/snapper --no-dbus setup-quota || warn $"Could not setup quota for btrfs"
 
     if [ ! -e /.snapshots/2 ]; then
         run create_snapshot 2 "Initial Status" "yes" || true
     fi
-    if [ -x /usr/lib/snapper/plugins/grub ]
-    then
+    if [ -x /usr/lib/snapper/plugins/grub ]; then
         run /usr/lib/snapper/plugins/grub --refresh
     fi
 fi
