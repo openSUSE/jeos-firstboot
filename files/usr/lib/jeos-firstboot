@@ -60,6 +60,20 @@ else
     }
 fi
 
+modules=()
+
+call_module_hook() {
+    hook="$1"
+    for module in "${modules[@]}"; do
+        hook_function="${module}_${hook}"
+        [ $(type -f "${hook_function}") == "function" ] || continue
+        "${hook_function}" && true # To not trigger errexit
+        ret=$?
+        [ ${ret} -eq 0 ] || return ${ret}
+    done
+    return 0
+}
+
 dialog_out=`mktemp -qt 'firstboot-XXXXXX'`
 cleanup() {
 	echo .oOo.oOo.oOo. > $dialog_out
@@ -471,29 +485,14 @@ if [ "$config_wireless" = "true" ]; then
     run ifup $wlan_device || true
 fi
 
-if [ -d "/usr/share/jeos-firstboot" ]; then
-    # Load all available modules
-    pushd "/usr/share/jeos-firstboot"
+if pushd "/usr/share/jeos-firstboot" &>/dev/null; then
     for module in *; do
-        source $module && modules+=("$module")
-    done
-    popd
-
-    # Run all systemd_firstboot hooks
-    for module in "${module[@]}"; do
-        # First run main function or bail out if not available
-        [ $(type -f "${module}_systemd_firstboot") = "function" ] || continue
-        "${module}_systemd_firstboot"
-
-        # Check if post function is available
-        if [ $(type -f "${module}_post") = "function" ]; then
-            "${module}_post"
-        fi
-
-        # Check if cleanup function is available
-        if [ $(type -f "${module}_cleanup") = "function" ]; then
-            "${module}_cleanup"
-        fi
+        source "${module}" && modules+=("${module}")
     done
 fi
+popd &>/dev/null
+
+call_module_hook systemd_firstboot
+call_module_hook post
+call_module_hook cleanup
 # vim: sw=4
