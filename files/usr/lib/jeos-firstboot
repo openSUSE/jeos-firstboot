@@ -489,8 +489,8 @@ if pushd "/usr/share/jeos-firstboot" &>/dev/null; then
     for module in *; do
         source "${module}" && modules+=("${module}")
     done
+    popd &>/dev/null
 fi
-popd &>/dev/null
 
 call_module_hook systemd_firstboot
 call_module_hook post
