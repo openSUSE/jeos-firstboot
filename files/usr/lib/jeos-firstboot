@@ -487,7 +487,9 @@ fi
 
 if pushd "/usr/share/jeos-firstboot" &>/dev/null; then
     for module in *; do
-        source "${module}" && modules+=("${module}")
+        if . "${module}"; then
+            modules+=("${module}")
+        fi
     done
     popd &>/dev/null
 fi
