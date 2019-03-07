@@ -63,13 +63,13 @@ fi
 modules=()
 
 call_module_hook() {
-    hook="$1"
+    local hook="$1"
     for module in "${modules[@]}"; do
         hook_function="${module}_${hook}"
-        [ $(type -f "${hook_function}") == "function" ] || continue
-        "${hook_function}" && true # To not trigger errexit
+        [ $(type -f "${hook_function}") = "function" ] || continue
+        "${hook_function}" || true # To not trigger errexit
         ret=$?
-        [ ${ret} -eq 0 ] || return ${ret}
+        [ $ret -eq 0 ] || return $ret
     done
     return 0
 }
