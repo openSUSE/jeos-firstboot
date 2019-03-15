@@ -26,8 +26,6 @@ TEXTDOMAIN='jeos-firstboot'
 . /etc/os-release
 . "$0-functions"
 
-EULA_FILE=/etc/YaST2/licenses/base/license.txt
-
 stty_size() {
     set -- `stty size`; LINES=$1; COLUMNS=$2
     # stty size can return zero when not ready or
@@ -234,6 +232,22 @@ if [[ "$(ps h -o tty -p $$)" = tty[0-9]* ]]; then
             force_english_license=1
         fi
     fi
+fi
+
+# Find the location of the EULA
+# An EULA in /etc takes precedence (this also works for openSUSE, so no specific code for that)
+EULA_FILE=/etc/YaST2/licenses/base/license.txt
+
+if [ ! -e "${EULA_FILE}" ]; then
+	# SLE moved it to a different non-standard location, which is not directly visible.
+	# So try to infer it using the baseproduct link.
+	EULA_FILE="/usr/share/licenses/product/$(basename -s .prod $(readlink /etc/products.d/baseproduct))/license.txt"
+fi
+
+# Failsafe: If neither a license nor the no-acceptance-needed flag are found, quit.
+if ! [ -e "$EULA_FILE" -o -e "${EULA_FILE%/*}/no-acceptance-needed" ]; then
+	d --msgbox $"No license found - cannot continue" 6 40
+	exit 1
 fi
 
 if [ -e "$EULA_FILE" -a ! -e "${EULA_FILE%/*}/no-acceptance-needed" ]; then
