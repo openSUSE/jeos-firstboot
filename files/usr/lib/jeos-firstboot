@@ -388,9 +388,4 @@ if [ ! -e /.snapshots/2 ]; then
 fi
 run /usr/lib/snapper/plugins/grub --refresh
 
-if [ "$config_wireless" = "true" ]; then
-    run ifdown $wlan_device 2>/dev/null || true
-    run ifup $wlan_device || true
-fi
-
 # vim: sw=4
