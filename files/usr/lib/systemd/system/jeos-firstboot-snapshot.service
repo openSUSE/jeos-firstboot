@@ -1,0 +1,30 @@
+[Unit]
+Description=SUSE JeOS First Boot Wizard - create system snapshot
+
+# Same as YaST2-Firstboot.service here
+After=apparmor.service local-fs.target plymouth-start.service YaST2-Second-Stage.service
+Conflicts=plymouth-start.service
+Before=getty@tty1.service serial-getty@ttyS0.service serial-getty@ttyS1.service serial-getty@ttyS2.service
+Before=display-manager.service
+ConditionPathExists=/var/lib/YaST2/reconfig_system
+# The configuration is already done - so this doesn't make much sense
+#OnFailure=poweroff.target
+
+# jeos-firstboot-snapshot starts between jeos-firstboot and login
+Wants=time-sync.target
+Requires=jeos-firstboot.service
+After=jeos-firstboot.service time-sync.target
+Before=systemd-user-sessions.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+# In Pre - if creation fails, don't do the configuration again
+ExecStartPre=/usr/bin/rm -f /var/lib/YaST2/reconfig_system
+ExecStart=/usr/lib/jeos-firstboot-snapshot
+StandardOutput=tty
+StandardInput=tty
+#StandardError=tty
+
+[Install]
+WantedBy=default.target
