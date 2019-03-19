@@ -361,9 +361,9 @@ for d in ${candidates[@]} ; do
         break # one is enough
 done
 
+trap 'call_module_hook cleanup' EXIT
 call_module_hook systemd_firstboot
 call_module_hook post
-call_module_hook cleanup
 
 d --infobox $"Applying firstboot settings ..." 3 40 || true
 # FIXME: systemd-firstboot doesn't set password if shadow present
