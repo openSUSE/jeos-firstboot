@@ -235,14 +235,9 @@ if [[ "$(ps h -o tty -p $$)" = tty[0-9]* ]]; then
 fi
 
 # Find the location of the EULA
-# An EULA in /etc takes precedence (this also works for openSUSE, so no specific code for that)
+# An EULA in /etc takes precedence
 EULA_FILE=/etc/YaST2/licenses/base/license.txt
-
-if [ ! -e "${EULA_FILE}" ]; then
-	# SLE moved it to a different non-standard location, which is not directly visible.
-	# So try to infer it using the baseproduct link.
-	EULA_FILE="/usr/share/licenses/product/$(basename -s .prod $(readlink /etc/products.d/baseproduct))/license.txt"
-fi
+[ -e "${EULA_FILE}" ] || EULA_FILE=/usr/share/licenses/product/base/license.txt
 
 # Failsafe: If neither a license nor the no-acceptance-needed flag are found, quit.
 if ! [ -e "$EULA_FILE" -o -e "${EULA_FILE%/*}/no-acceptance-needed" ]; then
