@@ -361,6 +361,10 @@ for d in ${candidates[@]} ; do
         break # one is enough
 done
 
+call_module_hook systemd_firstboot
+call_module_hook post
+call_module_hook cleanup
+
 d --infobox $"Applying firstboot settings ..." 3 40 || true
 # FIXME: systemd-firstboot doesn't set password if shadow present
 if [ -n "$password" ]; then
@@ -384,7 +388,9 @@ if [ ! -e /.snapshots/2 ]; then
 fi
 run /usr/lib/snapper/plugins/grub --refresh
 
-call_module_hook systemd_firstboot
-call_module_hook post
-call_module_hook cleanup
+if [ "$config_wireless" = "true" ]; then
+    run ifdown $wlan_device 2>/dev/null || true
+    run ifup $wlan_device || true
+fi
+
 # vim: sw=4
