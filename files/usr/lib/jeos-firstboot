@@ -74,6 +74,15 @@ call_module_hook() {
     return 0
 }
 
+if pushd "/usr/share/jeos-firstboot" &>/dev/null; then
+    for module in *; do
+        if . "${module}"; then
+            modules+=("${module}")
+        fi
+    done
+    popd &>/dev/null
+fi
+
 dialog_out=`mktemp -qt 'firstboot-XXXXXX'`
 cleanup() {
 	echo .oOo.oOo.oOo. > $dialog_out
@@ -362,7 +371,7 @@ EFI_SYSTAB="/sys/firmware/efi/systab"
 # Look for EFI dir to see if the machine is booted in UEFI mode
 run modprobe efivars
 if ! [ -f "$EFI_SYSTAB" ]; then
-    run sed -i -e "s/LOADER_TYPE=.*/LOADER_TYPE=grub2/g" /etc/sysconfig/bootloader 
+    run sed -i -e "s/LOADER_TYPE=.*/LOADER_TYPE=grub2/g" /etc/sysconfig/bootloader
 fi
 
 # Run snapper to setup quota for btrfs
@@ -374,15 +383,6 @@ if [ ! -e /.snapshots/2 ]; then
     run create_snapshot 2 "Initial Status" "yes" || true
 fi
 run /usr/lib/snapper/plugins/grub --refresh
-
-if pushd "/usr/share/jeos-firstboot" &>/dev/null; then
-    for module in *; do
-        if . "${module}"; then
-            modules+=("${module}")
-        fi
-    done
-    popd &>/dev/null
-fi
 
 call_module_hook systemd_firstboot
 call_module_hook post
