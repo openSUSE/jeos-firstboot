@@ -363,7 +363,6 @@ done
 
 trap 'call_module_hook cleanup' EXIT
 call_module_hook systemd_firstboot
-call_module_hook post
 
 d --infobox $"Applying firstboot settings ..." 3 40 || true
 # FIXME: systemd-firstboot doesn't set password if shadow present
@@ -388,4 +387,5 @@ if [ ! -e /.snapshots/2 ]; then
 fi
 run /usr/lib/snapper/plugins/grub --refresh
 
+call_module_hook post
 # vim: sw=4
