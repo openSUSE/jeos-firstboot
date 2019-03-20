@@ -361,6 +361,7 @@ for d in ${candidates[@]} ; do
         break # one is enough
 done
 
+config_wireless=false
 trap 'call_module_hook cleanup' EXIT
 call_module_hook systemd_firstboot
 
