@@ -54,57 +54,58 @@ raspberrywifi_systemd_firstboot()
             config_wireless=true
         fi
     fi
-    if [ "$config_wireless" = "true" ]; then
-        while true
-        do
-            if raspberrywifi_get_wlan_devices && d --menu  $"Select Wireless card to configure" 0 0 $dh_menu "${list[@]}"; then
-                wlan_device="$result"
+    $config_wireless || return
+
+    while true
+    do
+        if raspberrywifi_get_wlan_devices && d --menu  $"Select Wireless card to configure" 0 0 $dh_menu "${list[@]}"; then
+            wlan_device="$result"
+        else
+            if raspberrywifi_wlan_error $"Error listing wlan devices"; then
+                continue
             else
-                if raspberrywifi_wlan_error $"Error listing wlan devices"; then
-                    continue
-                else
-                    break
-                fi
+                break
             fi
+        fi
 
-            if raspberrywifi_get_wlan_networks && d --menu  $"Select Wireless network to connect" 0 0 $dh_menu "${list[@]}"; then
-                wlan_network="$result"
+        if raspberrywifi_get_wlan_networks && d --menu  $"Select Wireless network to connect" 0 0 $dh_menu "${list[@]}"; then
+            wlan_network="$result"
+        else
+            if wlan_error $"Error listing wireless networks"; then
+                continue
             else
-                if wlan_error $"Error listing wireless networks"; then
-                    continue
-                else
-                    break
-                fi
+                break
             fi
+        fi
 
-            if d --menu $"Select authentication mode" 0 0 $dh_menu $"WPA-PSK" '' $"WPA-EAP" '' $"Open" ''; then
-                wlan_auth_mode="$result"
+        if d --menu $"Select authentication mode" 0 0 $dh_menu $"WPA-PSK" '' $"WPA-EAP" '' $"Open" ''; then
+            wlan_auth_mode="$result"
+        fi
+        wlan_auth_mode_conf=
+        if [ "$wlan_auth_mode" = "WPA-EAP" ]; then
+            wlan_auth_mode_conf=eap
+            if d --inputbox $"Username" 0 0; then
+                wlan_username="$result"
             fi
-            wlan_auth_mode_conf=
-            if [ "$wlan_auth_mode" = "WPA-EAP" ]; then
-                wlan_auth_mode_conf=eap
-                if d --inputbox $"Username" 0 0; then
-                    wlan_username="$result"
-                fi
+        fi
+        if [ "$wlan_auth_mode" = "WPA-PSK" ]; then
+            wlan_auth_mode_conf=psk
+        fi
+        if [ "$wlan_auth_mode" = "Open" ]; then
+            wlan_auth_mode_conf=open
+        fi
+        if [ "$wlan_auth_mode" != "Open" ]; then
+            wlan_password=
+            if d --insecure --passwordbox  $"Password" 0 0; then
+                wlan_password="$result"
             fi
-            if [ "$wlan_auth_mode" = "WPA-PSK" ]; then
-                wlan_auth_mode_conf=psk
-            fi
-            if [ "$wlan_auth_mode" = "Open" ]; then
-                wlan_auth_mode_conf=open
-            fi
-            if [ "$wlan_auth_mode" != "Open" ]; then
-                wlan_password=
-                if d --insecure --passwordbox  $"Password" 0 0; then
-                    wlan_password="$result"
-                fi
-            fi
-            break
-        done
+        fi
+        break
+    done
 
-        config_file=`mktemp -qt 'firstboot-XXXXXX'`
+    config_file=`mktemp -qt 'firstboot-XXXXXX'`
 
-        cat << EOF > $config_file
+    cat << EOF > $config_file
 BOOTPROTO='dhcp'
 STARTMODE='auto'
 WIRELESS_AP_SCANMODE='1'
@@ -113,24 +114,22 @@ WIRELESS_ESSID='$wlan_network'
 WIRELESS_MODE='Managed'
 EOF
 
-        if [ $wlan_auth_mode = "WPA-PSK" ]; then
-            echo "WIRELESS_WPA_PSK='$wlan_password'" >> $config_file
-        fi
-
-        if [ $wlan_auth_mode = "WPA-EAP" ]; then
-            echo "WIRELESS_WPA_IDENTITY='$wlan_username'" >> $config_file
-            echo "WIRELESS_WPA_PASSWORD='$wlan_password'" >> $config_file
-            echo "WIRELESS_EAP_AUTH='mschapv2'" >> $config_file
-        fi
-
-        run mv -f $config_file /etc/sysconfig/network/ifcfg-$wlan_device
+    if [ $wlan_auth_mode = "WPA-PSK" ]; then
+        echo "WIRELESS_WPA_PSK='$wlan_password'" >> $config_file
     fi
+
+    if [ $wlan_auth_mode = "WPA-EAP" ]; then
+        echo "WIRELESS_WPA_IDENTITY='$wlan_username'" >> $config_file
+        echo "WIRELESS_WPA_PASSWORD='$wlan_password'" >> $config_file
+        echo "WIRELESS_EAP_AUTH='mschapv2'" >> $config_file
+    fi
+
+    run mv -f $config_file /etc/sysconfig/network/ifcfg-$wlan_device
 }
 
 raspberrywifi_post()
 {
-    if [ "$config_wireless" = "true" ]; then
-        run ifdown $wlan_device 2>/dev/null || true
-        run ifup $wlan_device || true
-    fi
+    $config_wireless || return
+    run ifdown $wlan_device 2>/dev/null || true
+    run ifup $wlan_device || true
 }
