@@ -130,7 +130,7 @@ EOF
 }
 
 # This is called by jeos-firstboot for user
-# interaction and access to the global systemd_firstboot_args array
+# after raspberrywifi_systemd_firstboot-function
 raspberrywifi_post()
 {
     [ "$config_wireless" = "true" ] || return
