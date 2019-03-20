@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2019 SUSE LLC
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -19,8 +19,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# Wi-fi
-#
+# Raspberry pi Wi-fi functions
 raspberrywifi_get_wlan_devices()
 {
     list=()
@@ -47,6 +46,8 @@ raspberrywifi_wlan_error()
     dialog --yesno $"Do you want to retry?" 0 0
 }
 
+# This is called by jeos-firstboot for user
+# interaction and access to the global systemd_firstboot_args array
 raspberrywifi_systemd_firstboot()
 {
     if is_raspberry && ls -d /sys/class/net/*/wireless &>/dev/null; then
@@ -127,6 +128,8 @@ EOF
     run mv -f $config_file /etc/sysconfig/network/ifcfg-$wlan_device
 }
 
+# This is called by jeos-firstboot for user
+# interaction and access to the global systemd_firstboot_args array
 raspberrywifi_post()
 {
     $config_wireless || return
