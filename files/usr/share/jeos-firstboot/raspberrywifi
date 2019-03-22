@@ -129,8 +129,7 @@ EOF
     run mv -f $config_file /etc/sysconfig/network/ifcfg-$wlan_device
 }
 
-# This is called by jeos-firstboot for user
-# after raspberrywifi_systemd_firstboot-function
+# This is called after the configuration steps finished successfully
 raspberrywifi_post()
 {
     [ "$config_wireless" = "true" ] || return
