@@ -468,8 +468,10 @@ fi
 
 # Test if snapper is available
 if [ -x /usr/bin/snapper ]; then
-    # Run snapper to setup quota for btrfs
-    run /usr/bin/snapper --no-dbus setup-quota || warn $"Could not setup quota for btrfs"
+    if ! btrfs qgroup show / &>/dev/null; then
+        # Run snapper to setup quota for btrfs
+        run /usr/bin/snapper --no-dbus setup-quota || warn $"Could not setup quota for btrfs"
+    fi
 
     if [ ! -e /.snapshots/2 ]; then
         run create_snapshot 2 "Initial Status" "yes" || true
