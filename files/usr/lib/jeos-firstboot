@@ -311,28 +311,30 @@ fi
 run rm -f /etc/localtime
 run systemd-firstboot "${systemd_firstboot_args[@]}"
 
-# NOTE: must be last as dialog file is used to set the password
-while true; do
-    password=
-    if d --insecure --passwordbox  $"Enter root Password" 0 0; then
-	password="$result"
-	if d --insecure --passwordbox  $"Confirm root Password" 0 0; then
-	    if [ "$password" != "$result" ]; then
-		d --msgbox $"Entered passwords don't match" 5 40 || true
-		continue
+if [ -z "$PASSWORD_ALREADY_SET" ]; then
+    # NOTE: must be last as dialog file is used to set the password
+    while true; do
+	password=
+	if d --insecure --passwordbox  $"Enter root Password" 0 0; then
+	    password="$result"
+	    if d --insecure --passwordbox  $"Confirm root Password" 0 0; then
+		if [ "$password" != "$result" ]; then
+		    d --msgbox $"Entered passwords don't match" 5 40 || true
+		    continue
+		fi
+		# don't use that one as we need to switch locale
+		#systemd_firstboot_args+=("--root-password-file=$dialog_out")
 	    fi
-	    # don't use that one as we need to switch locale
-	    #systemd_firstboot_args+=("--root-password-file=$dialog_out")
 	fi
-    fi
-    if [ -z "$password" ]; then
-	warn $"Warning: No root password set.
+	if [ -z "$password" ]; then
+	    warn $"Warning: No root password set.
 
 You cannot log in that way. A debug shell will be started on tty9 just this time. Use it to e.g. import your ssh key." 0 0 || true
-	run systemctl start debug-shell.service
-    fi
-    break
-done
+	    run systemctl start debug-shell.service
+	fi
+	break
+    done
+fi
 
 if [ -x /usr/bin/SUSEConnect ]; then
     d --msgbox $"Please register this image using your existing SUSE entitlement.
