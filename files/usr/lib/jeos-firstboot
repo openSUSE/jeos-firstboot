@@ -396,7 +396,7 @@ if ! [ -f "$EFI_SYSTAB" ]; then
 fi
 
 # Test if snapper is available
-if [ -x /usr/bin/snapper ]; then
+if [ -x /usr/bin/snapper -a "$(stat --format=%T -f /)" = "btrfs" ]; then
     if ! btrfs qgroup show / &>/dev/null; then
         # Run snapper to setup quota for btrfs
         run /usr/bin/snapper --no-dbus setup-quota || warn $"Could not setup quota for btrfs"
