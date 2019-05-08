@@ -289,17 +289,22 @@ fi
 default="$(readlink -f /etc/localtime)"
 default="${default##/usr/share/zoneinfo/}"
 
-# timedatectl doesn't work as dbus is not up yet
-# menulist timedatectl --no-pager list-timezones
-if menulist awk \
-    'BEGIN{print "UTC"; sort="sort"}/^#/{next;}{print $3|sort}END{close(sort)}' \
-    /usr/share/zoneinfo/zone.tab \
-    && d --default-item "$default" --menu $"Select Time Zone" 0 0 $dh_menu "${list[@]}"; then
+if [ -z "$TIMEZONE_PRESET" ]; then
+    # timedatectl doesn't work as dbus is not up yet
+    # menulist timedatectl --no-pager list-timezones
+    if menulist awk \
+		'BEGIN{print "UTC"; sort="sort"}/^#/{next;}{print $3|sort}END{close(sort)}' \
+		/usr/share/zoneinfo/zone.tab \
+	    && d --default-item "$default" --menu $"Select Time Zone" 0 0 $dh_menu "${list[@]}"; then
 	if [ -n "$result" ]; then
 	    systemd_firstboot_args+=("--timezone=$result")
 	fi
-else
+    else
 	d --msgbox $"error setting timezone" 0 0
+    fi
+else
+    timezone="$TIMEZONE_PRESET"
+    systemd_firstboot_args+=("--timezone=$timezone")
 fi
 
 # systemd-firstboot does not set the timezone if it exists, langset.sh created it
