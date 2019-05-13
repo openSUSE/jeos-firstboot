@@ -26,6 +26,10 @@ TEXTDOMAIN='jeos-firstboot'
 . /etc/os-release
 . "$0-functions"
 
+# Read the optional configuration file
+[ -f /usr/share/defaults/jeos-firstboot.conf ] && . /usr/share/defaults/jeos-firstboot.conf
+[ -f /etc/jeos-firstboot.conf ] && . /etc/jeos-firstboot.conf
+
 stty_size() {
     set -- `stty size`; LINES=$1; COLUMNS=$2
     # stty size can return zero when not ready or
