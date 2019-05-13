@@ -183,7 +183,7 @@ findlocales()
     [ -n "$list" ]
 }
 
-if [ -z "$LOCALE_PRESET" ]; then
+if [ -z "$JEOS_LOCALE" ]; then
     default="en_US"
     [ -f /etc/locale.conf ] && locale_lang="$(awk -F= '$1 == "LANG" { split($2,fs,"."); print fs[1]; exit }' /etc/locale.conf)"
     [ -n "$locale_lang" ] && default="$locale_lang"
@@ -208,11 +208,11 @@ if [ -z "$LOCALE_PRESET" ]; then
         run langset.sh $locale || warn $"Setting the locale failed"
     fi
 else
-    locale="$LOCALE_PRESET"
+    locale="$JEOS_LOCALE"
     systemd_firstboot_args+=("--locale=$locale")
 fi
 
-if [ -z "$KEYTABLE_PRESET" ]; then
+if [ -z "$JEOS_KEYTABLE" ]; then
     default="us"
     [ -f /etc/vconsole.conf ] && vconsole_keymap="$(awk -F= '$1 == "KEYMAP" { split($2,fs,"."); print fs[1]; exit }' /etc/vconsole.conf)"
     [ -n "$vconsole_keymap" ] && default="$vconsole_keymap"
@@ -245,8 +245,10 @@ if [[ "$(ps h -o tty -p $$)" = tty[0-9]* ]]; then
     start_kmscon["ko"]=1
 
     if [ -n "$locale" -a -n "${start_kmscon[${language}]+_}" ]; then
-        export LOCALE_PRESET="$locale"
-        export KEYTABLE_PRESET="$keytable"
+	# We re-export the variables, as will be inspected when this
+	# script is re-executed in the secondary console
+        export JEOS_LOCALE="$locale"
+        export JEOS_KEYTABLE="$keytable"
 
         if kmscon_available; then
             ret_file="$(mktemp)"
@@ -293,7 +295,7 @@ fi
 default="$(readlink -f /etc/localtime)"
 default="${default##/usr/share/zoneinfo/}"
 
-if [ -z "$TIMEZONE_PRESET" ]; then
+if [ -z "$JEOS_TIMEZONE" ]; then
     # timedatectl doesn't work as dbus is not up yet
     # menulist timedatectl --no-pager list-timezones
     if menulist awk \
@@ -307,7 +309,7 @@ if [ -z "$TIMEZONE_PRESET" ]; then
 	d --msgbox $"error setting timezone" 0 0
     fi
 else
-    timezone="$TIMEZONE_PRESET"
+    timezone="$JEOS_TIMEZONE"
     systemd_firstboot_args+=("--timezone=$timezone")
 fi
 
@@ -315,7 +317,7 @@ fi
 run rm -f /etc/localtime
 run systemd-firstboot "${systemd_firstboot_args[@]}"
 
-if [ -z "$PASSWORD_ALREADY_SET" ]; then
+if [ -z "$JEOS_PASSWORD_ALREADY_SET" ]; then
     # NOTE: must be last as dialog file is used to set the password
     while true; do
 	password=
