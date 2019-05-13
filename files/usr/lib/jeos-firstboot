@@ -221,16 +221,19 @@ if [ -z "$JEOS_KEYTABLE" ]; then
         && d --default-item "$default" --menu  $"Select Keyboard Layout" 0 0 $dh_menu "${list[@]}"; then
         if [ -n "$result" ]; then
             keytable="$result"
-
-                # Activate the selected keyboard layout
-                run langset.sh "$locale" "$keytable" || warn $"Setting the keyboard layout failed"
         fi
     else
         d --msgbox $"Error setting keyboard" 0 0
     fi
 else
-    keytable="$result"
+    keytable="$JEOS_KEYTABLE"
+fi 
+
+if [ ! -z "$locale" -a ! -z "$keytable" ]; then
+    # Activate the selected keyboard layout
+    run langset.sh "$locale" "$keytable" || warn $"Setting the keyboard layout failed"
 fi
+
 
 [ -n "${locale}" ] && language="${locale%%_*}" || language="en"
 force_english_license=0
