@@ -312,8 +312,7 @@ if [ -z "$JEOS_TIMEZONE" ]; then
 	d --msgbox $"error setting timezone" 0 0
     fi
 else
-    timezone="$JEOS_TIMEZONE"
-    systemd_firstboot_args+=("--timezone=$timezone")
+    systemd_firstboot_args+=("--timezone=$JEOS_TIMEZONE")
 fi
 
 # systemd-firstboot does not set the timezone if it exists, langset.sh created it
