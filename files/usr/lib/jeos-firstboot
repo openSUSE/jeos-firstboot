@@ -78,7 +78,7 @@ call_module_hook() {
 
 if pushd "/usr/share/jeos-firstboot" &>/dev/null; then
     for module in *; do
-        if . "${module}"; then
+        if [ -f "${module}" ] && source "${module}"; then
             modules+=("${module}")
         fi
     done
