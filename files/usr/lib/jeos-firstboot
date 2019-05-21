@@ -296,14 +296,13 @@ if [ -z "$JEOS_TIMEZONE" ]; then
 		/usr/share/zoneinfo/zone.tab \
 	    && d --default-item "$default" --menu $"Select Time Zone" 0 0 $dh_menu "${list[@]}"; then
 	if [ -n "$result" ]; then
-	    systemd_firstboot_args+=("--timezone=$result")
+	    JEOS_TIMEZONE="$result"
 	fi
     else
 	d --msgbox $"error setting timezone" 0 0
     fi
-else
-    systemd_firstboot_args+=("--timezone=$JEOS_TIMEZONE")
 fi
+systemd_firstboot_args+=("--timezone=$JEOS_TIMEZONE")
 
 # systemd-firstboot does not set the timezone if it exists, langset.sh created it
 run rm -f /etc/localtime
