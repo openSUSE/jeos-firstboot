@@ -371,7 +371,6 @@ for p in /sys/class/net/* ; do
 	fi
 done
 
-config_wireless=false
 trap 'call_module_hook cleanup' EXIT
 call_module_hook systemd_firstboot
 

@@ -18,6 +18,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+config_wireless=false
+
 # Raspberry pi Wi-fi functions
 raspberrywifi_get_wlan_devices()
 {
@@ -45,6 +47,10 @@ raspberrywifi_wlan_error()
     dialog --yesno $"Do you want to retry?" 0 0
 }
 
+is_raspberry() {
+     grep -q Raspberry /proc/device-tree/model 2> /dev/null
+}
+
 # This is called by jeos-firstboot for user
 # interaction and access to the global systemd_firstboot_args array
 raspberrywifi_systemd_firstboot()
@@ -54,7 +60,7 @@ raspberrywifi_systemd_firstboot()
             config_wireless=true
         fi
     fi
-    [ "$config_wireless" = "true" ] || return
+    [ "$config_wireless" = "true" ] || return 0
 
     while true
     do
@@ -130,7 +136,7 @@ EOF
 # This is called after the configuration steps finished successfully
 raspberrywifi_post()
 {
-    [ "$config_wireless" = "true" ] || return
+    [ "$config_wireless" = "true" ] || return 0
     run ifdown $wlan_device 2>/dev/null || true
     run ifup $wlan_device || true
 }
