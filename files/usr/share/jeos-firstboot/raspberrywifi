@@ -68,9 +68,8 @@ raspberrywifi_systemd_firstboot()
 		if ! raspberrywifi_get_wlan_devices; then
 			if raspberrywifi_wlan_error $"Error listing wlan devices"; then
 				continue
-			else
-				break
 			fi
+			break
 		fi
 
 		if [ "${#list[@]}" -eq "2" ]; then
@@ -83,11 +82,10 @@ raspberrywifi_systemd_firstboot()
 		if raspberrywifi_get_wlan_networks && d --menu  $"Select Wireless network to connect" 0 0 $dh_menu "${list[@]}"; then
 			wlan_network="$result"
 		else
-			if wlan_error $"Error listing wireless networks"; then
+			if raspberrywifi_wlan_error $"Error listing wireless networks"; then
 				continue
-			else
-				break
 			fi
+			break
 		fi
 
 		d --menu $"Select authentication mode" 0 0 $dh_menu $"WPA-PSK" '' $"WPA-EAP" '' $"Open" ''
