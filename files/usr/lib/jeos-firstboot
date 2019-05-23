@@ -309,20 +309,17 @@ run rm -f /etc/localtime
 run systemd-firstboot "${systemd_firstboot_args[@]}"
 
 if [ -z "$JEOS_PASSWORD_ALREADY_SET" ]; then
-    # NOTE: must be last as dialog file is used to set the password
     while true; do
 	password=
-	if d --insecure --passwordbox  $"Enter root Password" 0 0; then
-	    password="$result"
-	    if d --insecure --passwordbox  $"Confirm root Password" 0 0; then
-		if [ "$password" != "$result" ]; then
-		    d --msgbox $"Entered passwords don't match" 5 40 || true
-		    continue
-		fi
-		# don't use that one as we need to switch locale
-		#systemd_firstboot_args+=("--root-password-file=$dialog_out")
-	    fi
-	fi
+	d --insecure --passwordbox  $"Enter root Password" 0 0
+        password="$result"
+	d --insecure --passwordbox  $"Confirm root Password" 0 0
+        if [ "$password" != "$result" ]; then
+	    d --msgbox $"Entered passwords don't match" 5 40
+            continue
+        fi
+	# don't use that one as we need to switch locale
+	#systemd_firstboot_args+=("--root-password-file=$dialog_out")
 	if [ -z "$password" ]; then
 	    warn $"Warning: No root password set.
 

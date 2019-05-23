@@ -95,9 +95,8 @@ raspberrywifi_systemd_firstboot()
         wlan_auth_mode_conf=
         if [ "$wlan_auth_mode" = "WPA-EAP" ]; then
             wlan_auth_mode_conf=eap
-            if d --inputbox $"Username" 0 0; then
-                wlan_username="$result"
-            fi
+            d --inputbox $"Username" 0 0
+            wlan_username="$result"
         fi
         if [ "$wlan_auth_mode" = "WPA-PSK" ]; then
             wlan_auth_mode_conf=psk
@@ -107,9 +106,8 @@ raspberrywifi_systemd_firstboot()
         fi
         if [ "$wlan_auth_mode" != "Open" ]; then
             wlan_password=
-            if d --insecure --passwordbox  $"Password" 0 0; then
-                wlan_password="$result"
-            fi
+            d --insecure --passwordbox  $"Password" 0 0
+            wlan_password="$result"
         fi
         break
     done
