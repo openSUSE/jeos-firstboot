@@ -88,6 +88,7 @@ fi
 
 dialog_out=`mktemp -qt 'firstboot-XXXXXX'`
 cleanup() {
+	call_module_hook cleanup
 	echo .oOo.oOo.oOo. > $dialog_out
 	rm -f "$dialog_out"
 	# reenable systemd and kernel logs
@@ -367,7 +368,6 @@ for p in /sys/class/net/* ; do
 	fi
 done
 
-trap 'call_module_hook cleanup' EXIT
 call_module_hook systemd_firstboot
 
 d --infobox $"Applying firstboot settings ..." 3 40 || true
