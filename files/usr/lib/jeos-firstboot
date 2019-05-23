@@ -31,72 +31,74 @@ TEXTDOMAIN='jeos-firstboot'
 [ -f /etc/jeos-firstboot.conf ] && . /etc/jeos-firstboot.conf
 
 stty_size() {
-    set -- `stty size`; LINES=$1; COLUMNS=$2
-    # stty size can return zero when not ready or
-    # its a serial console
-    if [ "$COLUMNS" = "0" -o "$LINES" = "0" ]; then
-        LINES=24
-        COLUMNS=80
-    fi
-}; stty_size
+	set -- `stty size`; LINES=$1; COLUMNS=$2
+	# stty size can return zero when not ready or
+	# its a serial console
+	if [ "$COLUMNS" = "0" -o "$LINES" = "0" ]; then
+		LINES=24
+		COLUMNS=80
+	fi
+}
+stty_size
 
 # for testing we may run as non root
 if [ -w /run ]; then
-    export TMPDIR=/run
-    # debugging
-    if [ -n "$FIRSTBOOT_DEBUG" ]; then
-	set -x
-	exec 2>/var/log/firstboot-debug
-    fi
+	export TMPDIR=/run
+	# debugging
+	if [ -n "$FIRSTBOOT_DEBUG" ]; then
+		set -x
+		exec 2>/var/log/firstboot-debug
+	fi
 else
-    dry=1
+	dry=1
 fi
 
 if [ -n "$dry" ]; then
-    run() {
-	echo "$@"
-    }
+	run() {
+		echo "$@"
+	}
 else
-    run() {
-	"$@"
-    }
+	run() {
+		"$@"
+	}
 fi
 
 modules=()
 
 call_module_hook() {
-    local hook="$1"
-    for module in "${modules[@]}"; do
-        hook_function="${module}_${hook}"
-        [ $(type -f "${hook_function}") = "function" ] || continue
-        "${hook_function}" && true # To not trigger errexit
-        ret=$?
-        [ $ret -eq 0 ] || return $ret
-    done
-    return 0
+	local hook="$1"
+	for module in "${modules[@]}"; do
+		hook_function="${module}_${hook}"
+		[ "$(type -t "${hook_function}")" = "function" ] || continue
+		"${hook_function}" && true # To not trigger errexit
+		ret=$?
+		[ $ret -eq 0 ] || return $ret
+	done
+	return 0
 }
 
 if pushd "/usr/share/jeos-firstboot" &>/dev/null; then
-    for module in *; do
-        if . "${module}"; then
-            modules+=("${module}")
-        fi
-    done
-    popd &>/dev/null
+	for module in *; do
+		if [ -f "${module}" ] && source "${module}"; then
+			modules+=("${module}")
+		fi
+	done
+	popd &>/dev/null
 fi
 
 dialog_out=`mktemp -qt 'firstboot-XXXXXX'`
 cleanup() {
+	call_module_hook cleanup
 	echo .oOo.oOo.oOo. > $dialog_out
 	rm -f "$dialog_out"
 	# reenable systemd and kernel logs
 	run kill -s SIGRTMAX-10 1
-	run setterm -msg on
+	run setterm -msg on 2>/dev/null || true
 }
 trap cleanup EXIT
 
 # avoid kernel messages spamming our console
-run setterm -msg off
+run setterm -msg off 2>/dev/null || true
 # Avoid systemd messages spamming our console
 run kill -s SIGRTMAX-9 1
 # sleep to avoid systemd bug, bsc#1119382
@@ -117,144 +119,143 @@ let dh_menu=LINES-15
 let dh_text=LINES-5
 
 d(){
-    retval=
-    while true
-    do
-        dialog --backtitle "$PRETTY_NAME" "$@" 2>"$dialog_out"
-        retval=$?
-        case $retval in
-          0)
-            # need || true as dialog doesn't write newlines
-            read result < $dialog_out || true
-            return 0
-            ;;
-          1)
-            dialog --yesno $"Do you really want to quit?" 0 0 && exit 1
-            continue
-            ;;
-          255)
-            # xargs to remove whitespaces
-            result_error="$(xargs -a "$dialog_out")"
-            if [ -z "$result_error" ]; then
-                dialog --yesno $"Do you really want to quit?" 0 0 && exit 1
-                continue
-            fi
-            logger -p err -t jeos-firstboot "$result_error"
-            dialog --msgbox $"Exiting due to error, please check the system log" 0 0
-            exit 2
-            ;;
-        esac
-    done
+	retval=
+	while true
+	do
+		dialog --backtitle "$PRETTY_NAME" --output-fd 3 "$@" 3>"${dialog_out}"
+		retval=$?
+		case $retval in
+		  0)
+			# need || true as dialog doesn't write newlines
+			read result < $dialog_out || true
+			return 0
+			;;
+		  1)
+			dialog --yesno $"Do you really want to quit?" 0 0 && exit 1
+			continue
+			;;
+		  255)
+			# xargs to remove whitespaces
+			result_error="$(xargs -a "$dialog_out")"
+			if [ -z "$result_error" ]; then
+				dialog --yesno $"Do you really want to quit?" 0 0 && exit 1
+				continue
+			fi
+			logger -p err -t jeos-firstboot "$result_error"
+			dialog --msgbox $"Exiting due to error, please check the system log" 0 0
+			exit 2
+			;;
+		esac
+	done
 }
 
 warn(){
-    d --title $"Warning" --msgbox "$1" 6 40
+	d --title $"Warning" --msgbox "$1" 6 40
 }
 
 menulist()
 {
-    list=()
-    local line
-    while read line; do
-	    list+=("$line" '')
-    done < <("$@"||true)
-    [ -n "$list" ]
+	list=()
+	local line
+	while read line; do
+		list+=("$line" '')
+	done < <("$@"||true)
+	[ -n "$list" ]
 }
 
 # for some reason localectl doesn't work here
 #menulist localectl --no-pager list-keymaps
 findkeymaps()
 {
-    list=()
-    local line
-    while read line; do
-	    list+=("${line%.map.gz}" '')
-    done < <(find /usr/share/kbd/keymaps -name '*.map.gz' -printf "%f\n" | sort -u)
-    [ -n "$list" ]
+	list=()
+	local line
+	while read line; do
+		list+=("${line%.map.gz}" '')
+	done < <(find /usr/share/kbd/keymaps -name '*.map.gz' -printf "%f\n" | sort -u)
+	[ -n "$list" ]
 }
 
 findlocales()
 {
-    list=()
-    local l locale
-    # List only locales which are both in live-langset-data and glibc-locale(-base)
-    for l in /usr/share/langset/*; do
-        locale="${l#/usr/share/langset/}"
-        [ -d "/usr/lib/locale/${locale}.utf8" ] || continue
-        list+=("${locale}" '')
-    done
-    [ -n "$list" ]
+	list=()
+	local l locale
+	# List only locales which are both in live-langset-data and glibc-locale(-base)
+	for l in /usr/share/langset/*; do
+		locale="${l#/usr/share/langset/}"
+		[ -d "/usr/lib/locale/${locale}.utf8" ] || continue
+		list+=("${locale}" '')
+	done
+	[ -n "$list" ]
 }
 
 if [ -z "$JEOS_LOCALE" ]; then
-    default="en_US"
-    [ -f /etc/locale.conf ] && locale_lang="$(awk -F= '$1 == "LANG" { split($2,fs,"."); print fs[1]; exit }' /etc/locale.conf)"
-    [ -n "$locale_lang" ] && default="$locale_lang"
+	default="en_US"
+	[ -f /etc/locale.conf ] && locale_lang="$(awk -F= '$1 == "LANG" { split($2,fs,"."); print fs[1]; exit }' /etc/locale.conf)"
+	[ -n "$locale_lang" ] && default="$locale_lang"
 
-    list=() # Set by findlocales
-    newlocale="$default"
-    if ! findlocales; then
-        d --msgbox $"No locales found" 0 0
-    elif [ "${#list[@]}" -eq 2 ]; then
-        newlocale="${list[0]}"
-        d --msgbox $"Locale set to $newlocale.\nTo change to a different one, install glibc-locale and use\n'localectl set-locale LANG=ex_AMPLE.UTF-8'." 8 50
-    else
-        d --default-item "$default" --menu $"Select System Locale" 0 0 $dh_menu "${list[@]}"
-        newlocale="${result}"
-    fi
+	list=() # Set by findlocales
+	newlocale="$default"
+	if ! findlocales; then
+		d --msgbox $"No locales found" 0 0
+	elif [ "${#list[@]}" -eq 2 ]; then
+		newlocale="${list[0]}"
+		d --msgbox $"Locale set to $newlocale.\nTo change to a different one, install glibc-locale and use\n'localectl set-locale LANG=ex_AMPLE.UTF-8'." 8 50
+	else
+		d --default-item "$default" --menu $"Select System Locale" 0 0 $dh_menu "${list[@]}"
+		newlocale="${result}"
+	fi
 
-    JEOS_LOCALE="${newlocale}.UTF-8"
+	JEOS_LOCALE="${newlocale}.UTF-8"
 fi
 
 run langset.sh $JEOS_LOCALE || warn $"Setting the locale failed"
 systemd_firstboot_args+=("--locale=$JEOS_LOCALE")
 
 if [ -z "$JEOS_KEYTABLE" ]; then
-    default="us"
-    [ -f /etc/vconsole.conf ] && vconsole_keymap="$(awk -F= '$1 == "KEYMAP" { split($2,fs,"."); print fs[1]; exit }' /etc/vconsole.conf)"
-    [ -n "$vconsole_keymap" ] && default="$vconsole_keymap"
+	default="us"
+	[ -f /etc/vconsole.conf ] && vconsole_keymap="$(awk -F= '$1 == "KEYMAP" { split($2,fs,"."); print fs[1]; exit }' /etc/vconsole.conf)"
+	[ -n "$vconsole_keymap" ] && default="$vconsole_keymap"
 
-    if findkeymaps \
-        && d --default-item "$default" --menu  $"Select Keyboard Layout" 0 0 $dh_menu "${list[@]}"; then
-        if [ -n "$result" ]; then
-            JEOS_KEYTABLE="$result"
-        fi
-    else
-        d --msgbox $"Error setting keyboard" 0 0
-    fi
+	if findkeymaps \
+		&& d --default-item "$default" --menu  $"Select Keyboard Layout" 0 0 $dh_menu "${list[@]}"; then
+		if [ -n "$result" ]; then
+			JEOS_KEYTABLE="$result"
+		fi
+	else
+		d --msgbox $"Error setting keyboard" 0 0
+	fi
 fi 
 
 if [ ! -z "$JEOS_LOCALE" -a ! -z "$JEOS_KEYTABLE" ]; then
-    # Activate the selected keyboard layout
-    run langset.sh "$JEOS_LOCALE" "$JEOS_KEYTABLE" || warn $"Setting the keyboard layout failed"
+	# Activate the selected keyboard layout
+	run langset.sh "$JEOS_LOCALE" "$JEOS_KEYTABLE" || warn $"Setting the keyboard layout failed"
 fi
-
 
 [ -n "$JEOS_LOCALE" ] && language="${JEOS_LOCALE%%_*}" || language="en"
 force_english_license=0
 export LANG="$JEOS_LOCALE"
 
 if [[ "$(ps h -o tty -p $$)" = tty[0-9]* ]]; then
-    # Those languages can't be displayed in the console
-    declare -A start_kmscon
-    start_kmscon["cs"]=1
-    start_kmscon["ja"]=1
-    start_kmscon["zh"]=1
-    start_kmscon["ko"]=1
+	# Those languages can't be displayed in the console
+	declare -A start_kmscon
+	start_kmscon["cs"]=1
+	start_kmscon["ja"]=1
+	start_kmscon["zh"]=1
+	start_kmscon["ko"]=1
 
-    if [ -n "$JEOS_LOCALE" -a -n "${start_kmscon[${language}]+_}" ]; then
-        if kmscon_available; then
-            ret_file="$(mktemp)"
-            kmscon --silent --font-size 10 --palette vga --no-reset-env -l -- /bin/sh -c "$0; echo \$? > $ret_file; kill \$PPID"
-            exit $(cat "$ret_file"; rm -f "$ret_file")
-        elif fbiterm_available; then
-            exec fbiterm -- "$0"
-        else
-            # No kmscon or fbiterm, fall back to english
-            export LANG="en_US.UTF-8"
-            force_english_license=1
-        fi
-    fi
+	if [ -n "$JEOS_LOCALE" -a -n "${start_kmscon[${language}]+_}" ]; then
+		if kmscon_available; then
+			ret_file="$(mktemp)"
+			kmscon --silent --font-size 10 --palette vga --no-reset-env -l -- /bin/sh -c "$0; echo \$? > $ret_file; kill \$PPID"
+			exit $(cat "$ret_file"; rm -f "$ret_file")
+		elif fbiterm_available; then
+			exec fbiterm -- "$0"
+		else
+			# No kmscon or fbiterm, fall back to english
+			export LANG="en_US.UTF-8"
+			force_english_license=1
+		fi
+	fi
 fi
 
 # Find the location of the EULA
@@ -269,38 +270,38 @@ if ! [ -e "$EULA_FILE" -o -e "${EULA_FILE%/*}/no-acceptance-needed" ]; then
 fi
 
 if [ -e "$EULA_FILE" -a ! -e "${EULA_FILE%/*}/no-acceptance-needed" ]; then
-    if [ "$force_english_license" = "0" ]; then
-        for i in "${EULA_FILE%.txt}.${JEOS_LOCALE}.txt" \
-                "${EULA_FILE%.txt}.${JEOS_LOCALE%%.UTF-8}.txt" \
-                "${EULA_FILE%.txt}.${language}.txt"; do
-            if [ -e "$i" ]; then
-            EULA_FILE="$i"
-            break
-            fi
-        done
-    fi
+	if [ "$force_english_license" = "0" ]; then
+		for i in "${EULA_FILE%.txt}.${JEOS_LOCALE}.txt" \
+				"${EULA_FILE%.txt}.${JEOS_LOCALE%%.UTF-8}.txt" \
+				"${EULA_FILE%.txt}.${language}.txt"; do
+			if [ -e "$i" ]; then
+				EULA_FILE="$i"
+				break
+			fi
+		done
+	fi
 
-    while ! dialog --backtitle "$PRETTY_NAME" --textbox "$EULA_FILE" $dh_text 85 --and-widget --yesno $"Do you agree with the terms of the license?" 0 0; do
-	d --msgbox $"Well, we cannot continue then ..." 6 40
-    done
+	while ! dialog --backtitle "$PRETTY_NAME" --textbox "$EULA_FILE" $dh_text 85 --and-widget --yesno $"Do you agree with the terms of the license?" 0 0; do
+		d --msgbox $"Well, we cannot continue then ..." 6 40
+	done
 fi
 
 default="$(readlink -f /etc/localtime)"
 default="${default##/usr/share/zoneinfo/}"
 
 if [ -z "$JEOS_TIMEZONE" ]; then
-    # timedatectl doesn't work as dbus is not up yet
-    # menulist timedatectl --no-pager list-timezones
-    if menulist awk \
+	# timedatectl doesn't work as dbus is not up yet
+	# menulist timedatectl --no-pager list-timezones
+	if menulist awk \
 		'BEGIN{print "UTC"; sort="sort"}/^#/{next;}{print $3|sort}END{close(sort)}' \
 		/usr/share/zoneinfo/zone.tab \
-	    && d --default-item "$default" --menu $"Select Time Zone" 0 0 $dh_menu "${list[@]}"; then
+		&& d --default-item "$default" --menu $"Select Time Zone" 0 0 $dh_menu "${list[@]}"; then
 	if [ -n "$result" ]; then
-	    JEOS_TIMEZONE="$result"
+		JEOS_TIMEZONE="$result"
 	fi
-    else
-	d --msgbox $"error setting timezone" 0 0
-    fi
+	else
+		d --msgbox $"error setting timezone" 0 0
+	fi
 fi
 systemd_firstboot_args+=("--timezone=$JEOS_TIMEZONE")
 
@@ -309,32 +310,28 @@ run rm -f /etc/localtime
 run systemd-firstboot "${systemd_firstboot_args[@]}"
 
 if [ -z "$JEOS_PASSWORD_ALREADY_SET" ]; then
-    # NOTE: must be last as dialog file is used to set the password
-    while true; do
-	password=
-	if d --insecure --passwordbox  $"Enter root Password" 0 0; then
-	    password="$result"
-	    if d --insecure --passwordbox  $"Confirm root Password" 0 0; then
+	while true; do
+		d --insecure --passwordbox  $"Enter root Password" 0 0
+		password="$result"
+		d --insecure --passwordbox  $"Confirm root Password" 0 0
 		if [ "$password" != "$result" ]; then
-		    d --msgbox $"Entered passwords don't match" 5 40 || true
-		    continue
+			d --msgbox $"Entered passwords don't match" 5 40
+			continue
 		fi
 		# don't use that one as we need to switch locale
 		#systemd_firstboot_args+=("--root-password-file=$dialog_out")
-	    fi
-	fi
-	if [ -z "$password" ]; then
-	    warn $"Warning: No root password set.
+		if [ -z "$password" ]; then
+			warn $"Warning: No root password set.
 
 You cannot log in that way. A debug shell will be started on tty9 just this time. Use it to e.g. import your ssh key." 0 0 || true
-	    run systemctl start debug-shell.service
-	fi
-	break
-    done
+		run systemctl start debug-shell.service
+		fi
+		break
+	done
 fi
 
 if [ -x /usr/bin/SUSEConnect ]; then
-    d --msgbox $"Please register this image using your existing SUSE entitlement.
+	d --msgbox $"Please register this image using your existing SUSE entitlement.
 
 As \"root\" use the following command:
 
@@ -352,15 +349,18 @@ d --infobox $"Collecting network info ..." 3 33
 shopt -s nullglob
 
 for p in /sys/class/net/* ; do
-        test -f "$p" && continue # skip bonding_masters file
+	test -f "$p" && continue # skip bonding_masters file
 
-        # only devices having ID_NET_NAME.* attrs
-        udevadm info -q all -p "$p" | grep -qs ID_NET_NAME || continue
-        d=${p##*/}
+	# only devices having ID_NET_NAME.* attrs
+	udevadm info -q property -p "$p" | grep -qs ID_NET_NAME || continue
+	# But don't touch WLAN interfaces
+	udevadm info -q property -p "$p" | grep -qs "DEVTYPE=wlan" && continue
 
-        unset IPADDR
-        eval `wicked test dhcp4 "$d" 2>/dev/null | grep -E "^IPADDR="`
-        ip link set down "$d" # set link down after probe once done
+	d=${p##*/}
+
+	unset IPADDR
+	eval `wicked test dhcp4 "$d" 2>/dev/null | grep -E "^IPADDR="`
+	ip link set down "$d" # set link down after probe once done
 
 	# Create a configuration file for each interface that provides
 	# an IPADDR
@@ -371,37 +371,34 @@ for p in /sys/class/net/* ; do
 	fi
 done
 
-config_wireless=false
-trap 'call_module_hook cleanup' EXIT
 call_module_hook systemd_firstboot
 
 d --infobox $"Applying firstboot settings ..." 3 40 || true
 # FIXME: systemd-firstboot doesn't set password if shadow present
 if [ -n "$password" ]; then
-    run  echo "root:$password" | run /usr/sbin/chpasswd
+	run echo "root:$password" | run /usr/sbin/chpasswd
 fi
 
 EFI_SYSTAB="/sys/firmware/efi/systab"
 # Look for EFI dir to see if the machine is booted in UEFI mode
 run modprobe efivars
 if ! [ -f "$EFI_SYSTAB" ]; then
-    run sed -i -e "s/LOADER_TYPE=.*/LOADER_TYPE=grub2/g" /etc/sysconfig/bootloader
+	run sed -i -e "s/LOADER_TYPE=.*/LOADER_TYPE=grub2/g" /etc/sysconfig/bootloader
 fi
 
 # Test if snapper is available
 if [ -x /usr/bin/snapper -a "$(stat --format=%T -f /)" = "btrfs" ]; then
-    if ! btrfs qgroup show / &>/dev/null; then
-        # Run snapper to setup quota for btrfs
-        run /usr/bin/snapper --no-dbus setup-quota || warn $"Could not setup quota for btrfs"
-    fi
+	if ! btrfs qgroup show / &>/dev/null; then
+		# Run snapper to setup quota for btrfs
+		run /usr/bin/snapper --no-dbus setup-quota || warn $"Could not setup quota for btrfs"
+	fi
 
-    if [ ! -e /.snapshots/2 ]; then
-        run create_snapshot 2 "Initial Status" "yes" || true
-    fi
-    if [ -x /usr/lib/snapper/plugins/grub ]; then
-        run /usr/lib/snapper/plugins/grub --refresh
-    fi
+	if [ ! -e /.snapshots/2 ]; then
+		run create_snapshot 2 "Initial Status" "yes" || true
+	fi
+	if [ -x /usr/lib/snapper/plugins/grub ]; then
+		run /usr/lib/snapper/plugins/grub --refresh
+	fi
 fi
 
 call_module_hook post
-# vim: sw=4

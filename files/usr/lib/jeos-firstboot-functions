@@ -44,24 +44,20 @@ retrofit_snapper_info() {
 }
 
 kmscon_available() {
-    # kmscon itself is installed
-    kmscon --help >/dev/null 2>&1 || return 1
-    # At least one monospace font is available
-    [ -n "$(fc-match "monospace" 2>/dev/null)" ] || return 1
+	# kmscon itself is installed
+	kmscon --help >/dev/null 2>&1 || return 1
+	# At least one monospace font is available
+	[ -n "$(fc-match "monospace" 2>/dev/null)" ] || return 1
 
-    return 0
+	return 0
 }
 
 fbiterm_available() {
-    # fbiterm itself is installed
-    fbiterm --help >/dev/null 2>&1 || return 1
-    # fbiterm comes with its own fallback font
+	# fbiterm itself is installed
+	fbiterm --help >/dev/null 2>&1 || return 1
+	# fbiterm comes with its own fallback font
 
-    return 0
-}
-
-is_raspberry() {
-     grep -q Raspberry /proc/device-tree/model 2> /dev/null
+	return 0
 }
 
 # vim: syntax=sh
