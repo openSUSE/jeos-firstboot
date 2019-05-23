@@ -352,7 +352,10 @@ for p in /sys/class/net/* ; do
 	test -f "$p" && continue # skip bonding_masters file
 
 	# only devices having ID_NET_NAME.* attrs
-	udevadm info -q all -p "$p" | grep -qs ID_NET_NAME || continue
+	udevadm info -q property -p "$p" | grep -qs ID_NET_NAME || continue
+	# But don't touch WLAN interfaces
+	udevadm info -q property -p "$p" | grep -qs "DEVTYPE=wlan" && continue
+
 	d=${p##*/}
 
 	unset IPADDR
