@@ -91,12 +91,12 @@ cleanup() {
 	rm -f "$dialog_out"
 	# reenable systemd and kernel logs
 	run kill -s SIGRTMAX-10 1
-	run setterm -msg on
+	run setterm -msg on 2>/dev/null || true
 }
 trap cleanup EXIT
 
 # avoid kernel messages spamming our console
-run setterm -msg off
+run setterm -msg off 2>/dev/null || true
 # Avoid systemd messages spamming our console
 run kill -s SIGRTMAX-9 1
 # sleep to avoid systemd bug, bsc#1119382
