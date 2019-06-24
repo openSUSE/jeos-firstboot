@@ -383,7 +383,9 @@ EFI_SYSTAB="/sys/firmware/efi/systab"
 # Look for EFI dir to see if the machine is booted in UEFI mode
 run modprobe efivars
 if ! [ -f "$EFI_SYSTAB" ]; then
-	run sed -i -e "s/LOADER_TYPE=.*/LOADER_TYPE=grub2/g" /etc/sysconfig/bootloader
+	if [ -f /etc/sysconfig/bootloader ]; then
+		run sed -i -e "s/LOADER_TYPE=.*/LOADER_TYPE=grub2/g" /etc/sysconfig/bootloader
+	fi
 fi
 
 # Test if snapper is available
