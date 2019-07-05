@@ -19,6 +19,10 @@ OnFailure=poweroff.target
 # jeos-firstboot starts before network and login though
 Before=network.service systemd-user-sessions.service
 
+# The existence of this file reflects whether cloud-init's systemd-generator enables cloud-init.
+# If it does not exist, cloud-init won't run, so it's our turn.
+ConditionPathExists=!/run/cloud-init/enabled
+
 [Service]
 Type=oneshot
 Environment=SYSTEMCTL_OPTIONS=--ignore-dependencies TERM=linux
