@@ -370,6 +370,8 @@ for p in /sys/class/net/* ; do
 	fi
 done
 
+run sed -i -E 's/^DHCLIENT(6?)_SET_HOSTNAME=.*$/DHCLIENT\1_SET_HOSTNAME=yes/' /etc/sysconfig/network/dhcp
+
 call_module_hook systemd_firstboot
 
 d --infobox $"Applying firstboot settings ..." 3 40 || true
