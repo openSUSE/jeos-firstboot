@@ -23,13 +23,15 @@ Before=network.service systemd-user-sessions.service
 # If it does not exist, cloud-init won't run, so it's our turn.
 ConditionPathExists=!/run/cloud-init/enabled
 
+# jeos-firstboot-snapshot.service deletes the flag file, but starts after us
+Wants=jeos-firstboot-snapshot.service
+
 [Service]
 Type=oneshot
-Environment=SYSTEMCTL_OPTIONS=--ignore-dependencies TERM=linux
+Environment=TERM=linux
 RemainAfterExit=yes
 ExecStartPre=/bin/sh -c "/usr/bin/plymouth quit 2>/dev/null || :"
 ExecStart=/usr/lib/jeos-firstboot
-ExecStartPost=/usr/bin/rm -f /var/lib/YaST2/reconfig_system
 StandardOutput=tty
 StandardInput=tty
 #StandardError=tty
