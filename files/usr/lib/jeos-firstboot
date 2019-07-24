@@ -365,7 +365,6 @@ for p in /sys/class/net/* ; do
 	# Create a configuration file for each interface that provides
 	# an IPADDR
 	if [ -n "$IPADDR" ]; then
-		rm -f "/etc/sysconfig/network/ifcfg-$d" || exit 1
 		printf "STARTMODE=auto\nBOOTPROTO=dhcp\n" \
 			> "/etc/sysconfig/network/ifcfg-$d"
 	fi
