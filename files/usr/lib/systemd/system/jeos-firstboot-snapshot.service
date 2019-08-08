@@ -10,11 +10,11 @@ ConditionPathExists=/var/lib/YaST2/reconfig_system
 # The configuration is already done - so this doesn't make much sense
 #OnFailure=poweroff.target
 
-# jeos-firstboot-snapshot starts between jeos-firstboot and login
+# jeos-firstboot-snapshot starts after jeos-firstboot, time got synced
+# and dbus became available
 Wants=time-sync.target
-Requires=jeos-firstboot.service
+Requires=jeos-firstboot.service dbus.service
 After=jeos-firstboot.service time-sync.target
-Before=systemd-user-sessions.service
 
 [Service]
 Type=oneshot
