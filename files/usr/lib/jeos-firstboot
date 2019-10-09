@@ -351,8 +351,9 @@ shopt -s nullglob
 for p in /sys/class/net/* ; do
 	test -f "$p" && continue # skip bonding_masters file
 
-	# only devices having ID_NET_NAME.* attrs
-	udevadm info -q property -p "$p" | grep -qs ID_NET_NAME || continue
+	# Only devices having ID_NET_NAME.* attrs
+	# Ignore errors if udev not available
+	udevadm info -q property -p "$p" 2>/dev/null | grep -qs ID_NET_NAME || continue
 	# But don't touch WLAN interfaces
 	udevadm info -q property -p "$p" | grep -qs "DEVTYPE=wlan" && continue
 
@@ -380,9 +381,10 @@ if [ -n "$password" ]; then
 	run echo "root:$password" | run /usr/sbin/chpasswd
 fi
 
-EFI_SYSTAB="/sys/firmware/efi/systab"
 # Look for EFI dir to see if the machine is booted in UEFI mode
-run modprobe efivars
+EFI_SYSTAB="/sys/firmware/efi/systab"
+# modprobe and efivars are not available everywhere, just ignore those cases
+run modprobe efivars &>/dev/null || true
 if ! [ -f "$EFI_SYSTAB" ]; then
 	if [ -f /etc/sysconfig/bootloader ]; then
 		run sed -i -e "s/LOADER_TYPE=.*/LOADER_TYPE=grub2/g" /etc/sysconfig/bootloader
