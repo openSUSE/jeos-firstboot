@@ -243,6 +243,8 @@ if [[ "$(ps h -o tty -p $$)" = tty[0-9]* ]]; then
 	start_kmscon["zh"]=1
 	start_kmscon["ko"]=1
 
+	# Relay those settings to the nested instance
+	export JEOS_LOCALE JEOS_KEYTABLE
 	if [ -n "$JEOS_LOCALE" -a -n "${start_kmscon[${language}]+_}" ]; then
 		if kmscon_available; then
 			ret_file="$(mktemp)"
