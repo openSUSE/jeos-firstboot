@@ -163,8 +163,8 @@ menulist()
 	[ -n "$list" ]
 }
 
-# for some reason localectl doesn't work here
-#menulist localectl --no-pager list-keymaps
+# localectl --no-pager list-keymaps does not list aliases (symlinks), but those are used
+# by YaST/langset.sh, so we need to show them.
 findkeymaps()
 {
 	list=()
