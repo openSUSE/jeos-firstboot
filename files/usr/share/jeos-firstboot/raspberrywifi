@@ -75,7 +75,7 @@ raspberrywifi_systemd_firstboot()
 		if [ "${#list[@]}" -eq "2" ]; then
 			wlan_device="${list[0]}"
 		else
-			d --menu  $"Select Wireless card to configure" 0 0 $dh_menu "${list[@]}"
+			d --menu  $"Select wireless card to configure" 0 0 $dh_menu "${list[@]}"
 			wlan_device="${result}"
 		fi
 
@@ -105,15 +105,13 @@ raspberrywifi_systemd_firstboot()
 		fi
 		if [ "$wlan_auth_mode" != "Open" ]; then
 			wlan_password=
-			d --insecure --passwordbox  $"Password" 0 0
+			d --insecure --passwordbox  $"Network password" 0 0
 			wlan_password="$result"
 		fi
-		break
-	done
 
-	config_file=`mktemp -qt 'firstboot-XXXXXX'`
+		config_file=`mktemp -qt 'firstboot-XXXXXX'`
 
-	cat << EOF > $config_file
+		cat << EOF > $config_file
 BOOTPROTO='dhcp'
 STARTMODE='auto'
 WIRELESS_AP_SCANMODE='1'
@@ -122,23 +120,40 @@ WIRELESS_ESSID='$wlan_network'
 WIRELESS_MODE='Managed'
 EOF
 
-	if [ $wlan_auth_mode = "WPA-PSK" ]; then
-		echo "WIRELESS_WPA_PSK='$wlan_password'" >> $config_file
-	fi
+		if [ $wlan_auth_mode = "WPA-PSK" ]; then
+			echo "WIRELESS_WPA_PSK='$wlan_password'" >> $config_file
+		fi
 
-	if [ $wlan_auth_mode = "WPA-EAP" ]; then
-		echo "WIRELESS_WPA_IDENTITY='$wlan_username'" >> $config_file
-		echo "WIRELESS_WPA_PASSWORD='$wlan_password'" >> $config_file
-		echo "WIRELESS_EAP_AUTH='mschapv2'" >> $config_file
-	fi
+		if [ $wlan_auth_mode = "WPA-EAP" ]; then
+			echo "WIRELESS_WPA_IDENTITY='$wlan_username'" >> $config_file
+			echo "WIRELESS_WPA_PASSWORD='$wlan_password'" >> $config_file
+			echo "WIRELESS_EAP_AUTH='mschapv2'" >> $config_file
+		fi
 
-	run mv -f $config_file /etc/sysconfig/network/ifcfg-$wlan_device
+		run mv -f $config_file /etc/sysconfig/network/ifcfg-$wlan_device
+		d --infobox $"Connecting to wireless network ..." 3 38 || true
+
+		run ifdown $wlan_device &>/dev/null || true
+		# Disabling exit on error to capture exit code
+		set +e
+		ifup $wlan_device &>/dev/null
+		ret_val=$?
+		set -e
+		if [ $ret_val -ne 0 ]; then
+			if dialog --yesno $"Connection failed, do you wish to retry?" 0 0; then
+				continue
+			else
+				# Otherwise, return 0 to continue main execution
+				return 0
+			fi
+		else
+			break
+		fi
+	done
 }
 
 # This is called after the configuration steps finished successfully
 raspberrywifi_post()
 {
-	[ "$config_wireless" = "true" ] || return 0
-	run ifdown $wlan_device 2>/dev/null || true
-	run ifup $wlan_device || true
+	return 0
 }
