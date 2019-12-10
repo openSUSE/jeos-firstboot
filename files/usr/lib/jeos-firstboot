@@ -204,7 +204,7 @@ if [ -z "$JEOS_LOCALE" ]; then
 		newlocale="${list[0]}"
 		d --msgbox $"Locale set to $newlocale.\nTo change to a different one, install glibc-locale and use\n'localectl set-locale LANG=ex_AMPLE.UTF-8'." 8 50
 	else
-		d --default-item "$default" --menu $"Select System Locale" 0 0 $dh_menu "${list[@]}"
+		d --default-item "$default" --menu $"Select system locale" 0 0 $dh_menu "${list[@]}"
 		newlocale="${result}"
 	fi
 
@@ -220,7 +220,7 @@ if [ -z "$JEOS_KEYTABLE" ]; then
 	[ -n "$vconsole_keymap" ] && default="$vconsole_keymap"
 
 	if findkeymaps \
-		&& d --default-item "$default" --menu  $"Select Keyboard Layout" 0 0 $dh_menu "${list[@]}"; then
+		&& d --default-item "$default" --menu  $"Select keyboard layout" 0 0 $dh_menu "${list[@]}"; then
 		if [ -n "$result" ]; then
 			JEOS_KEYTABLE="$result"
 		fi
@@ -286,8 +286,8 @@ if [ -e "$EULA_FILE" -a ! -e "${EULA_FILE%/*}/no-acceptance-needed" ]; then
 		done
 	fi
 
-	while ! dialog --backtitle "$PRETTY_NAME" --textbox "$EULA_FILE" $dh_text 85 --and-widget --yesno $"Do you agree with the terms of the license?" 0 0; do
-		d --msgbox $"Well, we cannot continue then ..." 6 40
+	while ! d --backtitle "$PRETTY_NAME" --textbox "$EULA_FILE" $dh_text 85 --and-widget --yesno $"Do you agree with the terms of the license?" 0 0; do
+		true
 	done
 fi
 
@@ -300,12 +300,12 @@ if [ -z "$JEOS_TIMEZONE" ]; then
 	if menulist awk \
 		'BEGIN{print "UTC"; sort="sort"}/^#/{next;}{print $3|sort}END{close(sort)}' \
 		/usr/share/zoneinfo/zone.tab \
-		&& d --default-item "$default" --menu $"Select Time Zone" 0 0 $dh_menu "${list[@]}"; then
+		&& d --default-item "$default" --menu $"Select time zone" 0 0 $dh_menu "${list[@]}"; then
 	if [ -n "$result" ]; then
 		JEOS_TIMEZONE="$result"
 	fi
 	else
-		d --msgbox $"error setting timezone" 0 0
+		d --msgbox $"Error setting timezone" 0 0
 	fi
 fi
 systemd_firstboot_args+=("--timezone=$JEOS_TIMEZONE")
@@ -316,9 +316,9 @@ run systemd-firstboot "${systemd_firstboot_args[@]}"
 
 if [ -z "$JEOS_PASSWORD_ALREADY_SET" ]; then
 	while true; do
-		d --insecure --passwordbox  $"Enter root Password" 0 0
+		d --insecure --passwordbox  $"Enter root password" 0 0
 		password="$result"
-		d --insecure --passwordbox  $"Confirm root Password" 0 0
+		d --insecure --passwordbox  $"Confirm root password" 0 0
 		if [ "$password" != "$result" ]; then
 			d --msgbox $"Entered passwords don't match" 5 40
 			continue
