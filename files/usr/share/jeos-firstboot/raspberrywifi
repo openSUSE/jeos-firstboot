@@ -151,26 +151,11 @@ EOF
 		d --infobox $"Connecting to wireless network ..." 3 38 || true
 
 		run ifdown $wlan_device &>/dev/null || true
-		# Disabling exit on error to capture exit code
-		set +e
-		ifup $wlan_device &>/dev/null
-		ret_val=$?
-		set -e
-		if [ $ret_val -ne 0 ]; then
+		if ! run ifup $wlan_device &>/dev/null; then
 			if dialog --yesno $"Connection failed, do you wish to retry?" 0 0; then
 				continue
-			else
-				# Otherwise, return 0 to continue main execution
-				return 0
 			fi
-		else
-			break
 		fi
+		return 0
 	done
-}
-
-# This is called after the configuration steps finished successfully
-raspberrywifi_post()
-{
-	return 0
 }

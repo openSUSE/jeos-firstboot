@@ -122,11 +122,9 @@ d(){
 	retval=
 	while true
 	do
-        # disable exit on error for capturing dialog return codes
-	        set +e
-		dialog --backtitle "$PRETTY_NAME" --output-fd 3 "$@" 3>"${dialog_out}"
-		retval=$?
-        	set -e
+	        # Note: Remember about the set -e if changing this line
+		retval=0
+		dialog --backtitle "$PRETTY_NAME" --output-fd 3 "$@" 3>"${dialog_out}" || retval=$?
 		case $retval in
 		  0)
 			# need || true as dialog doesn't write newlines
