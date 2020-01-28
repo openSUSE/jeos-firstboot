@@ -122,7 +122,6 @@ d(){
 	retval=
 	while true
 	do
-	        # Note: Remember about the set -e if changing this line
 		retval=0
 		dialog --backtitle "$PRETTY_NAME" --output-fd 3 "$@" 3>"${dialog_out}" || retval=$?
 		case $retval in

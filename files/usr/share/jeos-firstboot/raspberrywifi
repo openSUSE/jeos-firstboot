@@ -67,7 +67,7 @@ raspberrywifi_systemd_firstboot()
 
                 d=${p##*/}
 
-                # On Rpi create a configuration file for each interface detected
+                # On RPi create a configuration file for each interface detected
                 # even when no cable connected
                 printf "STARTMODE=auto\nBOOTPROTO=dhcp\n" \
                                 > "/etc/sysconfig/network/ifcfg-$d"
