@@ -284,7 +284,7 @@ if [ -e "$EULA_FILE" -a ! -e "${EULA_FILE%/*}/no-acceptance-needed" ]; then
 	fi
 
 	while ! dialog --backtitle "$PRETTY_NAME" --textbox "$EULA_FILE" $dh_text 85 --and-widget --yesno $"Do you agree with the terms of the license?" 0 0; do
-		d --msgbox $"Can not continue without agreement ..." 6 40
+		d --msgbox $"Can not continue without agreement" 6 40
 	done
 fi
 
