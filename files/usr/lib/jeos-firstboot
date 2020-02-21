@@ -265,13 +265,13 @@ fi
 EULA_FILE=/etc/YaST2/licenses/base/license.txt
 [ -e "${EULA_FILE}" ] || EULA_FILE=/usr/share/licenses/product/base/license.txt
 
-# Failsafe: If neither a license nor the no-acceptance-needed flag are found, quit.
-if ! [ -e "$EULA_FILE" -o -e "${EULA_FILE%/*}/no-acceptance-needed" ]; then
+# Failsafe: If no license found, quit.
+if ! [ -e "$EULA_FILE" ]; then
 	d --msgbox $"No license found - cannot continue" 6 40
 	exit 1
 fi
 
-if [ -e "$EULA_FILE" -a ! -e "${EULA_FILE%/*}/no-acceptance-needed" ]; then
+if [ -e "$EULA_FILE" ]; then
 	if [ "$force_english_license" = "0" ]; then
 		for i in "${EULA_FILE%.txt}.${JEOS_LOCALE}.txt" \
 				"${EULA_FILE%.txt}.${JEOS_LOCALE%%.UTF-8}.txt" \
