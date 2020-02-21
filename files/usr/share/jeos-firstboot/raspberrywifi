@@ -56,29 +56,26 @@ is_raspberry()
 # interaction and access to the global systemd_firstboot_args array
 raspberrywifi_systemd_firstboot()
 {
-	if is_raspberry; then
-		# for RaspberryPi we configure all network devices
-		for net_path in /sys/class/net/* ; do
-			test -f "$net_path" && continue # skip bonding_masters file
+        for p in /sys/class/net/* ; do
+                test -f "$p" && continue # skip bonding_masters file
 
-			# Only devices having ID_NET_NAME.* attrs
-			# Ignore errors if udev not available
-			udevadm info -q property -p "$net_path" 2>/dev/null | grep -qs ID_NET_NAME || continue
-			# But don't touch WLAN interfaces
-			udevadm info -q property -p "$net_path" | grep -qs "DEVTYPE=wlan" && continue
+                # Only devices having ID_NET_NAME.* attrs
+                # Ignore errors if udev not available
+                udevadm info -q property -p "$p" 2>/dev/null | grep -qs ID_NET_NAME || continue
+                # But don't touch WLAN interfaces
+                udevadm info -q property -p "$p" | grep -qs "DEVTYPE=wlan" && continue
 
-			net_dev=${net_path##*/}
+                d=${p##*/}
 
-			# On RPi create a configuration file for each interface detected
-			# even when no cable connected
-			printf "STARTMODE=auto\nBOOTPROTO=dhcp\n" \
-					> "/etc/sysconfig/network/ifcfg-$net_dev"
-		done
+                # On RPi create a configuration file for each interface detected
+                # even when no cable connected
+                printf "STARTMODE=auto\nBOOTPROTO=dhcp\n" \
+                                > "/etc/sysconfig/network/ifcfg-$d"
+        done
 
-		if stat -t /sys/class/net/*/wireless &> /dev/null; then
-			if dialog --yesno $"Configure wireless network?" 0 0; then
-				config_wireless=true
-			fi
+	if is_raspberry && stat -t /sys/class/net/*/wireless &> /dev/null; then
+		if dialog --yesno $"Configure wireless network?" 0 0; then
+			config_wireless=true
 		fi
 	fi
 	[ "$config_wireless" = "true" ] || return 0
