@@ -351,26 +351,26 @@ d --infobox $"Collecting network info ..." 3 33
 #
 shopt -s nullglob
 
-for p in /sys/class/net/* ; do
-	test -f "$p" && continue # skip bonding_masters file
+for net_path in /sys/class/net/* ; do
+	test -f "$net_path" && continue # skip bonding_masters file
 
 	# Only devices having ID_NET_NAME.* attrs
 	# Ignore errors if udev not available
-	udevadm info -q property -p "$p" 2>/dev/null | grep -qs ID_NET_NAME || continue
+	udevadm info -q property -p "$net_path" 2>/dev/null | grep -qs ID_NET_NAME || continue
 	# But don't touch WLAN interfaces
-	udevadm info -q property -p "$p" | grep -qs "DEVTYPE=wlan" && continue
+	udevadm info -q property -p "$net_path" | grep -qs "DEVTYPE=wlan" && continue
 
-	d=${p##*/}
+	net_device=${net_path##*/}
 
 	unset IPADDR
-	eval `wicked test dhcp4 "$d" 2>/dev/null | grep -E "^IPADDR="`
-	ip link set down "$d" # set link down after probe once done
+	eval `wicked test dhcp4 "$net_device" 2>/dev/null | grep -E "^IPADDR="`
+	ip link set down "$net_device" # set link down after probe once done
 
 	# Create a configuration file for each interface that provides
 	# an IPADDR
 	if [ -n "$IPADDR" ]; then
 		printf "STARTMODE=auto\nBOOTPROTO=dhcp\n" \
-			> "/etc/sysconfig/network/ifcfg-$d"
+			> "/etc/sysconfig/network/ifcfg-$net_device"
 	fi
 done
 
