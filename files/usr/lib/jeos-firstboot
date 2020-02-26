@@ -122,11 +122,8 @@ d(){
 	retval=
 	while true
 	do
-        # disable exit on error for capturing dialog return codes
-	        set +e
-		dialog --backtitle "$PRETTY_NAME" --output-fd 3 "$@" 3>"${dialog_out}"
-		retval=$?
-        	set -e
+		retval=0
+		dialog --backtitle "$PRETTY_NAME" --output-fd 3 "$@" 3>"${dialog_out}" || retval=$?
 		case $retval in
 		  0)
 			# need || true as dialog doesn't write newlines
@@ -204,7 +201,7 @@ if [ -z "$JEOS_LOCALE" ]; then
 		newlocale="${list[0]}"
 		d --msgbox $"Locale set to $newlocale.\nTo change to a different one, install glibc-locale and use\n'localectl set-locale LANG=ex_AMPLE.UTF-8'." 8 50
 	else
-		d --default-item "$default" --menu $"Select System Locale" 0 0 $dh_menu "${list[@]}"
+		d --default-item "$default" --menu $"Select system locale" 0 0 $dh_menu "${list[@]}"
 		newlocale="${result}"
 	fi
 
@@ -220,7 +217,7 @@ if [ -z "$JEOS_KEYTABLE" ]; then
 	[ -n "$vconsole_keymap" ] && default="$vconsole_keymap"
 
 	if findkeymaps \
-		&& d --default-item "$default" --menu  $"Select Keyboard Layout" 0 0 $dh_menu "${list[@]}"; then
+		&& d --default-item "$default" --menu  $"Select keyboard layout" 0 0 $dh_menu "${list[@]}"; then
 		if [ -n "$result" ]; then
 			JEOS_KEYTABLE="$result"
 		fi
@@ -268,28 +265,26 @@ fi
 EULA_FILE=/etc/YaST2/licenses/base/license.txt
 [ -e "${EULA_FILE}" ] || EULA_FILE=/usr/share/licenses/product/base/license.txt
 
-# Failsafe: If neither a license nor the no-acceptance-needed flag are found, quit.
-if ! [ -e "$EULA_FILE" -o -e "${EULA_FILE%/*}/no-acceptance-needed" ]; then
+# Failsafe: If no license found, quit.
+if ! [ -e "$EULA_FILE" ]; then
 	d --msgbox $"No license found - cannot continue" 6 40
 	exit 1
 fi
 
-if [ -e "$EULA_FILE" -a ! -e "${EULA_FILE%/*}/no-acceptance-needed" ]; then
-	if [ "$force_english_license" = "0" ]; then
-		for i in "${EULA_FILE%.txt}.${JEOS_LOCALE}.txt" \
-				"${EULA_FILE%.txt}.${JEOS_LOCALE%%.UTF-8}.txt" \
-				"${EULA_FILE%.txt}.${language}.txt"; do
-			if [ -e "$i" ]; then
-				EULA_FILE="$i"
-				break
-			fi
-		done
-	fi
-
-	while ! dialog --backtitle "$PRETTY_NAME" --textbox "$EULA_FILE" $dh_text 85 --and-widget --yesno $"Do you agree with the terms of the license?" 0 0; do
-		d --msgbox $"Well, we cannot continue then ..." 6 40
+if [ "$force_english_license" = "0" ]; then
+	for i in "${EULA_FILE%.txt}.${JEOS_LOCALE}.txt" \
+			"${EULA_FILE%.txt}.${JEOS_LOCALE%%.UTF-8}.txt" \
+			"${EULA_FILE%.txt}.${language}.txt"; do
+		if [ -e "$i" ]; then
+			EULA_FILE="$i"
+			break
+		fi
 	done
 fi
+
+while ! dialog --backtitle "$PRETTY_NAME" --textbox "$EULA_FILE" $dh_text 85 --and-widget --yesno $"Do you agree with the terms of the license?" 0 0; do
+	d --msgbox $"Can not continue without agreement" 6 40
+done
 
 default="$(readlink -f /etc/localtime)"
 default="${default##/usr/share/zoneinfo/}"
@@ -300,12 +295,12 @@ if [ -z "$JEOS_TIMEZONE" ]; then
 	if menulist awk \
 		'BEGIN{print "UTC"; sort="sort"}/^#/{next;}{print $3|sort}END{close(sort)}' \
 		/usr/share/zoneinfo/zone.tab \
-		&& d --default-item "$default" --menu $"Select Time Zone" 0 0 $dh_menu "${list[@]}"; then
+		&& d --default-item "$default" --menu $"Select time zone" 0 0 $dh_menu "${list[@]}"; then
 	if [ -n "$result" ]; then
 		JEOS_TIMEZONE="$result"
 	fi
 	else
-		d --msgbox $"error setting timezone" 0 0
+		d --msgbox $"Error setting timezone" 0 0
 	fi
 fi
 systemd_firstboot_args+=("--timezone=$JEOS_TIMEZONE")
@@ -316,9 +311,9 @@ run systemd-firstboot "${systemd_firstboot_args[@]}"
 
 if [ -z "$JEOS_PASSWORD_ALREADY_SET" ]; then
 	while true; do
-		d --insecure --passwordbox  $"Enter root Password" 0 0
+		d --insecure --passwordbox  $"Enter root password" 0 0
 		password="$result"
-		d --insecure --passwordbox  $"Confirm root Password" 0 0
+		d --insecure --passwordbox  $"Confirm root password" 0 0
 		if [ "$password" != "$result" ]; then
 			d --msgbox $"Entered passwords don't match" 5 40
 			continue
@@ -354,26 +349,26 @@ d --infobox $"Collecting network info ..." 3 33
 #
 shopt -s nullglob
 
-for p in /sys/class/net/* ; do
-	test -f "$p" && continue # skip bonding_masters file
+for net_path in /sys/class/net/* ; do
+	test -f "$net_path" && continue # skip bonding_masters file
 
 	# Only devices having ID_NET_NAME.* attrs
 	# Ignore errors if udev not available
-	udevadm info -q property -p "$p" 2>/dev/null | grep -qs ID_NET_NAME || continue
+	udevadm info -q property -p "$net_path" 2>/dev/null | grep -qs ID_NET_NAME || continue
 	# But don't touch WLAN interfaces
-	udevadm info -q property -p "$p" | grep -qs "DEVTYPE=wlan" && continue
+	udevadm info -q property -p "$net_path" | grep -qs "DEVTYPE=wlan" && continue
 
-	d=${p##*/}
+	net_device=${net_path##*/}
 
 	unset IPADDR
-	eval `wicked test dhcp4 "$d" 2>/dev/null | grep -E "^IPADDR="`
-	ip link set down "$d" # set link down after probe once done
+	eval `wicked test dhcp4 "$net_device" 2>/dev/null | grep -E "^IPADDR="`
+	ip link set down "$net_device" # set link down after probe once done
 
 	# Create a configuration file for each interface that provides
 	# an IPADDR
 	if [ -n "$IPADDR" ]; then
 		printf "STARTMODE=auto\nBOOTPROTO=dhcp\n" \
-			> "/etc/sysconfig/network/ifcfg-$d"
+			> "/etc/sysconfig/network/ifcfg-$net_device"
 	fi
 done
 
