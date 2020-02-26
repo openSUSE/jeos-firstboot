@@ -271,22 +271,20 @@ if ! [ -e "$EULA_FILE" ]; then
 	exit 1
 fi
 
-if [ -e "$EULA_FILE" ]; then
-	if [ "$force_english_license" = "0" ]; then
-		for i in "${EULA_FILE%.txt}.${JEOS_LOCALE}.txt" \
-				"${EULA_FILE%.txt}.${JEOS_LOCALE%%.UTF-8}.txt" \
-				"${EULA_FILE%.txt}.${language}.txt"; do
-			if [ -e "$i" ]; then
-				EULA_FILE="$i"
-				break
-			fi
-		done
-	fi
-
-	while ! dialog --backtitle "$PRETTY_NAME" --textbox "$EULA_FILE" $dh_text 85 --and-widget --yesno $"Do you agree with the terms of the license?" 0 0; do
-		d --msgbox $"Can not continue without agreement" 6 40
+if [ "$force_english_license" = "0" ]; then
+	for i in "${EULA_FILE%.txt}.${JEOS_LOCALE}.txt" \
+			"${EULA_FILE%.txt}.${JEOS_LOCALE%%.UTF-8}.txt" \
+			"${EULA_FILE%.txt}.${language}.txt"; do
+		if [ -e "$i" ]; then
+			EULA_FILE="$i"
+			break
+		fi
 	done
 fi
+
+while ! dialog --backtitle "$PRETTY_NAME" --textbox "$EULA_FILE" $dh_text 85 --and-widget --yesno $"Do you agree with the terms of the license?" 0 0; do
+	d --msgbox $"Can not continue without agreement" 6 40
+done
 
 default="$(readlink -f /etc/localtime)"
 default="${default##/usr/share/zoneinfo/}"
