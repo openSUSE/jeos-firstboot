@@ -260,31 +260,33 @@ if [[ "$(ps h -o tty -p $$)" = tty[0-9]* ]]; then
 	fi
 fi
 
-# Find the location of the EULA
-# An EULA in /etc takes precedence
-EULA_FILE=/etc/YaST2/licenses/base/license.txt
-[ -e "${EULA_FILE}" ] || EULA_FILE=/usr/share/licenses/product/base/license.txt
+if [ -z "$JEOS_EULA_ALREADY_AGREED" ]; then
+	# Find the location of the EULA
+	# An EULA in /etc takes precedence
+	EULA_FILE=/etc/YaST2/licenses/base/license.txt
+	[ -e "${EULA_FILE}" ] || EULA_FILE=/usr/share/licenses/product/base/license.txt
 
-# Failsafe: If no license found, quit.
-if ! [ -e "$EULA_FILE" ]; then
-	d --msgbox $"No license found - cannot continue" 6 40
-	exit 1
-fi
+	# Failsafe: If no license found, quit.
+	if ! [ -e "$EULA_FILE" ]; then
+		d --msgbox $"No license found - cannot continue" 6 40
+		exit 1
+	fi
 
-if [ "$force_english_license" = "0" ]; then
-	for i in "${EULA_FILE%.txt}.${JEOS_LOCALE}.txt" \
-			"${EULA_FILE%.txt}.${JEOS_LOCALE%%.UTF-8}.txt" \
-			"${EULA_FILE%.txt}.${language}.txt"; do
-		if [ -e "$i" ]; then
-			EULA_FILE="$i"
-			break
-		fi
+	if [ "$force_english_license" = "0" ]; then
+		for i in "${EULA_FILE%.txt}.${JEOS_LOCALE}.txt" \
+				"${EULA_FILE%.txt}.${JEOS_LOCALE%%.UTF-8}.txt" \
+				"${EULA_FILE%.txt}.${language}.txt"; do
+			if [ -e "$i" ]; then
+				EULA_FILE="$i"
+				break
+			fi
+		done
+	fi
+
+	while ! dialog --backtitle "$PRETTY_NAME" --textbox "$EULA_FILE" $dh_text 85 --and-widget --yesno $"Do you agree with the terms of the license?" 0 0; do
+		d --msgbox $"Can not continue without agreement" 6 40
 	done
 fi
-
-while ! dialog --backtitle "$PRETTY_NAME" --textbox "$EULA_FILE" $dh_text 85 --and-widget --yesno $"Do you agree with the terms of the license?" 0 0; do
-	d --msgbox $"Can not continue without agreement" 6 40
-done
 
 default="$(readlink -f /etc/localtime)"
 default="${default##/usr/share/zoneinfo/}"
