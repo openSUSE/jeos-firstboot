@@ -332,8 +332,9 @@ You cannot log in that way. A debug shell will be started on tty9 just this time
 	done
 fi
 
-# Do not show the register on non SLE based distributions
-if [ -x /usr/bin/SUSEConnect -a -z "${ID##sle*}" ]; then
+# Do not show the register on non SLE based distributions or if is
+# globally disabled
+if [ -x /usr/bin/SUSEConnect -a -z "${ID##sle*}" -a -z "${JEOS_HIDE_SUSECONNECT}" ]; then
 	d --msgbox $"Please register this image using your existing SUSE entitlement.
 
 As \"root\" use the following command:
