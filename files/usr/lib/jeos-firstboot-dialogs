@@ -1,0 +1,41 @@
+dialog_locale()
+{
+        default="en_US"
+        [ -f /etc/locale.conf ] && locale_lang="$(awk -F= '$1 == "LANG" { split($2,fs,"."); print fs[1]; exit }' /etc/locale.conf)"
+        [ -n "$locale_lang" ] && default="$locale_lang"
+
+        list=() # Set by findlocales
+        newlocale="$default"
+        if ! findlocales; then
+                d --msgbox $"No locales found" 0 0
+        elif [ "${#list[@]}" -eq 2 ]; then
+                newlocale="${list[0]}"
+                d --msgbox $"Locale set to $newlocale.\nTo change to a different one, install glibc-locale and use\n'localectl set-locale LANG=ex_AMPLE.UTF-8'." 8 50
+        else
+                d --default-item "$default" --menu $"Select system locale" 0 0 $dh_menu "${list[@]}"
+                newlocale="${result}"
+        fi
+
+        JEOS_LOCALE="${newlocale}.UTF-8"
+
+#        run langset.sh $JEOS_LOCALE || warn $"Setting the locale failed"
+#        systemd_firstboot_args+=("--locale=$JEOS_LOCALE")
+}
+
+dialog_keytable()
+{
+        default="us"
+        [ -f /etc/vconsole.conf ] && vconsole_keymap="$(awk -F= '$1 == "KEYMAP" { split($2,fs,"."); print fs[1]; exit }' /etc/vconsole.conf)"
+        [ -n "$vconsole_keymap" ] && default="$vconsole_keymap"
+
+        if findkeymaps \
+                && d --default-item "$default" --menu  $"Select keyboard layout" 0 0 $dh_menu "${list[@]}"; then
+                if [ -n "$result" ]; then
+                        JEOS_KEYTABLE="$result"
+                fi
+        else
+                d --msgbox $"Error setting keyboard" 0 0
+        fi
+}
+
+# vim: syntax=sh

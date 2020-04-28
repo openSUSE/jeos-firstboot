@@ -1,0 +1,43 @@
+kmscon_available() {
+	# kmscon itself is installed
+	kmscon --help >/dev/null 2>&1 || return 1
+	# At least one monospace font is available
+	[ -n "$(fc-match "monospace" 2>/dev/null)" ] || return 1
+
+	return 0
+}
+
+fbiterm_available() {
+	# fbiterm itself is installed
+	fbiterm --help >/dev/null 2>&1 || return 1
+	# fbiterm comes with its own fallback font
+
+	return 0
+}
+
+# localectl --no-pager list-keymaps does not list aliases (symlinks), but those are used
+# by YaST/langset.sh, so we need to show them.
+findkeymaps()
+{
+        list=()
+        local line
+        while read line; do
+                list+=("${line%.map.gz}" '')
+        done < <(find /usr/share/kbd/keymaps -name '*.map.gz' -printf "%f\n" | sort -u)
+        [ -n "$list" ]
+}
+
+findlocales()
+{
+        list=()
+        local l locale
+        # List only locales which are both in live-langset-data and glibc-locale(-base)
+        for l in /usr/share/langset/*; do
+                locale="${l#/usr/share/langset/}"
+                [ -d "/usr/lib/locale/${locale}.utf8" ] || continue
+                list+=("${locale}" '')
+        done
+        [ -n "$list" ]
+}
+
+# vim: syntax=sh
