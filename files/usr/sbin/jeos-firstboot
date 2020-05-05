@@ -168,17 +168,17 @@ if [ -z "$JEOS_LOCALE" ]; then
     dialog_locale
 fi
 
-run langset.sh $JEOS_LOCALE || warn $"Setting the locale failed"
+# Activate the locale selected
+apply_locale
+# also add to systemd-firstboot parameters
 systemd_firstboot_args+=("--locale=$JEOS_LOCALE")
 
 if [ -z "$JEOS_KEYTABLE" ]; then
     dialog_keytable
 fi 
 
-if [ ! -z "$JEOS_LOCALE" -a ! -z "$JEOS_KEYTABLE" ]; then
-	# Activate the selected keyboard layout
-	run langset.sh "$JEOS_LOCALE" "$JEOS_KEYTABLE" || warn $"Setting the keyboard layout failed"
-fi
+# langset.sh needs locale to set keytable
+apply_locale_and_keytable
 
 [ -n "$JEOS_LOCALE" ] && language="${JEOS_LOCALE%%_*}" || language="en"
 force_english_license=0
@@ -254,23 +254,10 @@ if [ -z "$JEOS_EULA_ALREADY_AGREED" ]; then
 	done
 fi
 
-default="$(readlink -f /etc/localtime)"
-default="${default##/usr/share/zoneinfo/}"
-
 if [ -z "$JEOS_TIMEZONE" ]; then
-	# timedatectl doesn't work as dbus is not up yet
-	# menulist timedatectl --no-pager list-timezones
-	if menulist awk \
-		'BEGIN{print "UTC"; sort="sort"}/^#/{next;}{print $3|sort}END{close(sort)}' \
-		/usr/share/zoneinfo/zone.tab \
-		&& d --default-item "$default" --menu $"Select time zone" 0 0 $dh_menu "${list[@]}"; then
-	if [ -n "$result" ]; then
-		JEOS_TIMEZONE="$result"
-	fi
-	else
-		d --msgbox $"Error setting timezone" 0 0
-	fi
+    dialog_timezone
 fi
+
 systemd_firstboot_args+=("--timezone=$JEOS_TIMEZONE")
 
 # systemd-firstboot does not set the timezone if it exists, langset.sh created it
@@ -313,35 +300,8 @@ Without registration this instance does not have access to updates and
 security fixes." 0 0 || true
 fi
 
-d --infobox $"Collecting network info ..." 3 33
 ## Configure initial network settings
-#
-shopt -s nullglob
-
-for net_path in /sys/class/net/* ; do
-	test -f "$net_path" && continue # skip bonding_masters file
-
-	# Only devices having ID_NET_NAME.* attrs
-	# Ignore errors if udev not available
-	udevadm info -q property -p "$net_path" 2>/dev/null | grep -qs ID_NET_NAME || continue
-	# But don't touch WLAN interfaces
-	udevadm info -q property -p "$net_path" | grep -qs "DEVTYPE=wlan" && continue
-
-	net_device=${net_path##*/}
-
-	unset IPADDR
-	eval `wicked test dhcp4 "$net_device" 2>/dev/null | grep -E "^IPADDR="`
-	ip link set down "$net_device" # set link down after probe once done
-
-	# Create a configuration file for each interface that provides
-	# an IPADDR
-	if [ -n "$IPADDR" ]; then
-		printf "STARTMODE=auto\nBOOTPROTO=dhcp\n" \
-			> "/etc/sysconfig/network/ifcfg-$net_device"
-	fi
-done
-
-run sed -i -E 's/^DHCLIENT(6?)_SET_HOSTNAME=.*$/DHCLIENT\1_SET_HOSTNAME=yes/' /etc/sysconfig/network/dhcp
+dialog_network
 
 call_module_hook systemd_firstboot
 

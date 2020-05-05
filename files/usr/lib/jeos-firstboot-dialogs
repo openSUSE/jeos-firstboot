@@ -17,9 +17,6 @@ dialog_locale()
         fi
 
         JEOS_LOCALE="${newlocale}.UTF-8"
-
-#        run langset.sh $JEOS_LOCALE || warn $"Setting the locale failed"
-#        systemd_firstboot_args+=("--locale=$JEOS_LOCALE")
 }
 
 dialog_keytable()
@@ -36,6 +33,57 @@ dialog_keytable()
         else
                 d --msgbox $"Error setting keyboard" 0 0
         fi
+}
+
+dialog_timezone()
+{
+	default="$(readlink -f /etc/localtime)"
+	default="${default##/usr/share/zoneinfo/}"
+	# timedatectl doesn't work as dbus is not up yet
+	# menulist timedatectl --no-pager list-timezones
+	if menulist awk \
+		'BEGIN{print "UTC"; sort="sort"}/^#/{next;}{print $3|sort}END{close(sort)}' \
+		/usr/share/zoneinfo/zone.tab \
+		&& d --default-item "$default" --menu $"Select time zone" 0 0 $dh_menu "${list[@]}"; then
+	if [ -n "$result" ]; then
+		JEOS_TIMEZONE="$result"
+	fi
+	else
+		d --msgbox $"Error setting timezone" 0 0
+	fi
+}
+
+dialog_network()
+{
+	d --infobox $"Collecting network info ..." 3 33
+
+	shopt -s nullglob
+
+	for net_path in /sys/class/net/* ; do
+		test -f "$net_path" && continue # skip bonding_masters file
+
+		# Only devices having ID_NET_NAME.* attrs
+		# Ignore errors if udev not available
+		udevadm info -q property -p "$net_path" 2>/dev/null | grep -qs ID_NET_NAME || continue
+		# But don't touch WLAN interfaces
+		udevadm info -q property -p "$net_path" | grep -qs "DEVTYPE=wlan" && continue
+
+		net_device=${net_path##*/}
+
+		unset IPADDR
+		eval `wicked test dhcp4 "$net_device" 2>/dev/null | grep -E "^IPADDR="`
+		ip link set down "$net_device" # set link down after probe once done
+
+		# Create a configuration file for each interface that provides
+		# an IPADDR
+		if [ -n "$IPADDR" ]; then
+			printf "STARTMODE=auto\nBOOTPROTO=dhcp\n" \
+				> "/etc/sysconfig/network/ifcfg-$net_device"
+		fi
+	done
+	
+
+	run sed -i -E 's/^DHCLIENT(6?)_SET_HOSTNAME=.*$/DHCLIENT\1_SET_HOSTNAME=yes/' /etc/sysconfig/network/dhcp
 }
 
 # vim: syntax=sh

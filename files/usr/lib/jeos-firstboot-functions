@@ -40,4 +40,18 @@ findlocales()
         [ -n "$list" ]
 }
 
+apply_locale()
+{
+	if [ ! -z "$JEOS_LOCALE" ]; then
+		run langset.sh $JEOS_LOCALE || warn $"Setting the locale failed"
+	fi
+}
+
+apply_locale_and_keytable()
+{
+	if [ ! -z "$JEOS_LOCALE" -a ! -z "$JEOS_KEYTABLE" ]; then
+		# Activate the selected keyboard layout
+		run langset.sh "$JEOS_LOCALE" "$JEOS_KEYTABLE" || warn $"Setting the keyboard layout failed"
+	fi
+}
 # vim: syntax=sh
