@@ -265,24 +265,7 @@ run rm -f /etc/localtime
 run systemd-firstboot "${systemd_firstboot_args[@]}"
 
 if [ -z "$JEOS_PASSWORD_ALREADY_SET" ]; then
-	while true; do
-		d --insecure --passwordbox  $"Enter root password" 0 0
-		password="$result"
-		d --insecure --passwordbox  $"Confirm root password" 0 0
-		if [ "$password" != "$result" ]; then
-			d --msgbox $"Entered passwords don't match" 5 40
-			continue
-		fi
-		# don't use that one as we need to switch locale
-		#systemd_firstboot_args+=("--root-password-file=$dialog_out")
-		if [ -z "$password" ]; then
-			warn $"Warning: No root password set.
-
-You cannot log in that way. A debug shell will be started on tty9 just this time. Use it to e.g. import your ssh key." 0 0 || true
-		run systemctl start debug-shell.service
-		fi
-		break
-	done
+    dialog_password
 fi
 
 # Do not show the register on non SLE based distributions or if is
@@ -306,10 +289,8 @@ dialog_network
 call_module_hook systemd_firstboot
 
 d --infobox $"Applying firstboot settings ..." 3 40 || true
-# FIXME: systemd-firstboot doesn't set password if shadow present
-if [ -n "$password" ]; then
-	run echo "root:$password" | run /usr/sbin/chpasswd
-fi
+
+apply_password
 
 # Look for EFI dir to see if the machine is booted in UEFI mode
 EFI_SYSTAB="/sys/firmware/efi/systab"
