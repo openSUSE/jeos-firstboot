@@ -54,4 +54,12 @@ apply_locale_and_keytable()
 		run langset.sh "$JEOS_LOCALE" "$JEOS_KEYTABLE" || warn $"Setting the keyboard layout failed"
 	fi
 }
+
+apply_password()
+{
+	# FIXME: systemd-firstboot doesn't set password if shadow present
+	if [ -n "$password" ]; then
+		run echo "root:$password" | run /usr/sbin/chpasswd
+	fi
+}
 # vim: syntax=sh
