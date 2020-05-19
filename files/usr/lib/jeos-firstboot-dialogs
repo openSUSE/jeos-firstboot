@@ -1,3 +1,13 @@
+menulist()
+{
+	list=()
+	local line
+	while read line; do
+		list+=("$line" '')
+	done < <("$@"||true)
+	[ -n "$list" ]
+}
+
 dialog_locale()
 {
         default="en_US"
@@ -31,7 +41,7 @@ dialog_keytable()
                         JEOS_KEYTABLE="$result"
                 fi
         else
-                d --msgbox $"Error setting keyboard" 0 0
+                d --msgbox $"Error setting keyboard" 5 26
         fi
 }
 
@@ -49,7 +59,7 @@ dialog_timezone()
 		JEOS_TIMEZONE="$result"
 	fi
 	else
-		d --msgbox $"Error setting timezone" 0 0
+		d --msgbox $"Error setting timezone" 5 26
 	fi
 }
 
