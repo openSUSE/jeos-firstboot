@@ -31,17 +31,6 @@ TEXTDOMAIN='jeos-firstboot'
 [ -f /usr/share/defaults/jeos-firstboot.conf ] && . /usr/share/defaults/jeos-firstboot.conf
 [ -f /etc/jeos-firstboot.conf ] && . /etc/jeos-firstboot.conf
 
-stty_size() {
-	set -- `stty size`; LINES=$1; COLUMNS=$2
-	# stty size can return zero when not ready or
-	# its a serial console
-	if [ "$COLUMNS" = "0" -o "$LINES" = "0" ]; then
-		LINES=24
-		COLUMNS=80
-	fi
-}
-stty_size
-
 # for testing we may run as non root
 if [ -w /run ]; then
 	export TMPDIR=/run
@@ -110,23 +99,6 @@ systemd_firstboot_args=('--setup-machine-id')
 # instance, make sure that the variables are declared.
 JEOS_LOCALE=${JEOS_LOCALE-}
 JEOS_KEYTABLE=${JEOS_KEYTABLE-}
-
-result=
-list=
-password=''
-
-let dh_menu=LINES-15
-let dh_text=LINES-5
-
-menulist()
-{
-	list=()
-	local line
-	while read line; do
-		list+=("$line" '')
-	done < <("$@"||true)
-	[ -n "$list" ]
-}
 
 if [ -z "$JEOS_LOCALE" ]; then
     dialog_locale

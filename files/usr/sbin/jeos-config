@@ -1,0 +1,130 @@
+#!/bin/bash
+# Copyright (c) 2020 SUSE LLC
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+. /etc/os-release
+. "/usr/lib/jeos-firstboot-functions"
+. "/usr/lib/jeos-firstboot-dialogs"
+
+# for testing we may run as non root
+if [ -w /run ]; then
+	export TMPDIR=/run
+	# debugging
+	if [ -n "$FIRSTBOOT_DEBUG" ]; then
+		set -x
+		exec 2>/var/log/firstboot-debug
+	fi
+else
+	dry=1
+fi
+
+if [ -n "$dry" ]; then
+	run() {
+		echo "$@"
+	}
+else
+	run() {
+		"$@"
+	}
+fi
+
+cleanup() {
+	call_module_hook cleanup
+	echo .oOo.oOo.oOo. > $dialog_out
+	rm -f "$dialog_out"
+	# reenable systemd and kernel logs
+	run kill -s SIGRTMAX-10 1
+	run setterm -msg on 2>/dev/null || true
+}
+trap cleanup EXIT
+
+# If the configuration is not loaded and we are in the first terminal
+# instance, make sure that the variables are declared.
+JEOS_LOCALE=${JEOS_LOCALE-}
+JEOS_KEYTABLE=${JEOS_KEYTABLE-}
+
+result=
+list=
+password=''
+
+let dh_menu=LINES-15
+let dh_text=LINES-5
+
+function usage()
+{
+	echo "Usage: jeos-config [OPTION...] CONFIG_NAME"
+	echo ""
+	echo "	-h		shows these usage help"
+	echo "	locale		Show dialog to configure the system locale"
+	echo "	keytable	Show dialog to configure the system locale and keyboard"
+	echo "	timezone	Show dialog to configure the system timezone"
+	echo "	keytable	Show dialog to configure the system password"
+	echo "	network		Show dialog to configure the system network"
+	echo "	wireless	Show dialog to configure the wireless network"
+	echo ""
+}
+
+if [ $# -eq 0 ]; then
+	usage
+	exit 1
+fi
+
+while getopts ":h" opt; do
+	case ${opt} in
+		h ) 
+			usage
+			exit 0
+			;;
+		\? ) 
+			echo "Invalid Option: -$OPTARG" 1>&2
+			usage
+     			exit 1
+			;;
+	esac
+done
+
+subcommand=$1; shift  # Remove 'pip' from the argument list
+
+case "$subcommand" in
+
+	locale)
+		dialog_locale
+		apply_locale
+        	;;
+	keytable)
+		dialog_locale
+		dialog_keytable
+		apply_locale_and_keytable
+		;;	
+	timezone)
+		dialog_timezone
+		timedatectl set-timezone "$JEOS_TIMEZONE"
+		;;	
+	network)
+		dialog_network
+		d --infobox $"Restarting network ..." 3 26 || true
+		systemctl restart network
+		;;	
+	wireless)
+		echo "wireless"
+		;;
+	*)
+		echo "unknown option"
+esac
