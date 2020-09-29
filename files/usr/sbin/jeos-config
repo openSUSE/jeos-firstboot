@@ -45,8 +45,26 @@ else
 	}
 fi
 
+call_module_config() {
+	local module="$1"
+	module_function="${module}_jeos_config"
+	[ "$(type -t "${module_function}")" = "function" ] || return 1
+	"${module_function}" && true # To not trigger errexit
+	ret=$?
+	[ $ret -eq 0 ] || return $ret
+}
+
+if pushd "/usr/share/jeos-firstboot" &>/dev/null; then
+	for module in *; do
+		if [ -f "${module}" ] && source "${module}"; then
+			modules+=("${module}")
+		fi
+	done
+	popd &>/dev/null
+fi
+
 cleanup() {
-	call_module_hook cleanup
+	#call_module_hook cleanup
 	echo .oOo.oOo.oOo. > $dialog_out
 	rm -f "$dialog_out"
 	# reenable systemd and kernel logs
@@ -77,7 +95,9 @@ function usage()
 	echo "	timezone	Show dialog to configure the system timezone"
 	echo "	keytable	Show dialog to configure the system password"
 	echo "	network		Show dialog to configure the system network"
-	echo "	wireless	Show dialog to configure the wireless network"
+	for module in "${modules[@]}"; do
+		echo "	${module}	Show dialog of module ${module}"
+	done
 	echo ""
 }
 
@@ -100,7 +120,7 @@ while getopts ":h" opt; do
 	esac
 done
 
-subcommand=$1; shift  # Remove 'pip' from the argument list
+subcommand=$1; shift  # Remove 'pip' from the argument lis
 
 case "$subcommand" in
 
@@ -121,10 +141,7 @@ case "$subcommand" in
 		dialog_network
 		d --infobox $"Restarting network ..." 3 26 || true
 		systemctl restart network
-		;;	
-	wireless)
-		echo "wireless"
 		;;
 	*)
-		echo "unknown option"
+		call_module_config "$subcommand"|| echo "Unknown option"
 esac

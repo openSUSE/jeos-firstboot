@@ -52,6 +52,88 @@ is_raspberry()
 	 grep -q Raspberry /proc/device-tree/model 2> /dev/null
 }
 
+raspberrywifi_jeos_config()
+{
+while true
+do
+    if ! raspberrywifi_get_wlan_devices; then
+        if raspberrywifi_wlan_error $"Error listing wlan devices"; then
+            continue
+        fi
+        break
+    fi
+
+    if [ "${#list[@]}" -eq "2" ]; then
+        wlan_device="${list[0]}"
+    else
+        d --menu  $"Select wireless card to configure" 0 0 $dh_menu "${list[@]}"
+        wlan_device="${result}"
+    fi
+
+    if raspberrywifi_get_wlan_networks && d --menu  $"Select wireless network to connect" 0 0 $dh_menu "${list[@]}"; then
+        wlan_network="$result"
+    else
+        if raspberrywifi_wlan_error $"Error listing wireless networks"; then
+            continue
+        fi
+        break
+    fi
+
+    d --menu $"Select authentication mode" 0 0 $dh_menu $"WPA-PSK" '' $"WPA-EAP" '' $"Open" ''
+    wlan_auth_mode="$result"
+
+    wlan_auth_mode_conf=
+    if [ "$wlan_auth_mode" = "WPA-EAP" ]; then
+        wlan_auth_mode_conf=eap
+        d --inputbox $"Username" 0 0
+        wlan_username="$result"
+    fi
+    if [ "$wlan_auth_mode" = "WPA-PSK" ]; then
+        wlan_auth_mode_conf=psk
+    fi
+    if [ "$wlan_auth_mode" = "Open" ]; then
+        wlan_auth_mode_conf=open
+    fi
+    if [ "$wlan_auth_mode" != "Open" ]; then
+        wlan_password=
+        d --insecure --passwordbox  $"Network password" 0 0
+        wlan_password="$result"
+    fi
+
+    config_file=`mktemp -qt 'firstboot-XXXXXX'`
+
+    cat << EOF > $config_file
+BOOTPROTO='dhcp'
+STARTMODE='auto'
+WIRELESS_AP_SCANMODE='1'
+WIRELESS_AUTH_MODE='$wlan_auth_mode_conf'
+WIRELESS_ESSID='$wlan_network'
+WIRELESS_MODE='Managed'
+EOF
+
+    if [ $wlan_auth_mode = "WPA-PSK" ]; then
+        echo "WIRELESS_WPA_PSK='$wlan_password'" >> $config_file
+    fi
+
+    if [ $wlan_auth_mode = "WPA-EAP" ]; then
+        echo "WIRELESS_WPA_IDENTITY='$wlan_username'" >> $config_file
+        echo "WIRELESS_WPA_PASSWORD='$wlan_password'" >> $config_file
+        echo "WIRELESS_EAP_AUTH='mschapv2'" >> $config_file
+    fi
+
+    run mv -f $config_file /etc/sysconfig/network/ifcfg-$wlan_device
+    d --infobox $"Connecting to wireless network ..." 3 38 || true
+
+    run ifdown $wlan_device &>/dev/null || true
+    if ! run ifup $wlan_device &>/dev/null; then
+        if dialog --yesno $"Connection failed, do you wish to retry?" 0 0; then
+            continue
+        fi
+    fi
+    return 0
+done
+}
+
 # This is called by jeos-firstboot for user
 # interaction and access to the global systemd_firstboot_args array
 raspberrywifi_systemd_firstboot()
@@ -63,82 +145,5 @@ raspberrywifi_systemd_firstboot()
 	fi
 	[ "$config_wireless" = "true" ] || return 0
 
-	while true
-	do
-		if ! raspberrywifi_get_wlan_devices; then
-			if raspberrywifi_wlan_error $"Error listing wlan devices"; then
-				continue
-			fi
-			break
-		fi
-
-		if [ "${#list[@]}" -eq "2" ]; then
-			wlan_device="${list[0]}"
-		else
-			d --menu  $"Select wireless card to configure" 0 0 $dh_menu "${list[@]}"
-			wlan_device="${result}"
-		fi
-
-		if raspberrywifi_get_wlan_networks && d --menu  $"Select wireless network to connect" 0 0 $dh_menu "${list[@]}"; then
-			wlan_network="$result"
-		else
-			if raspberrywifi_wlan_error $"Error listing wireless networks"; then
-				continue
-			fi
-			break
-		fi
-
-		d --menu $"Select authentication mode" 0 0 $dh_menu $"WPA-PSK" '' $"WPA-EAP" '' $"Open" ''
-		wlan_auth_mode="$result"
-
-		wlan_auth_mode_conf=
-		if [ "$wlan_auth_mode" = "WPA-EAP" ]; then
-			wlan_auth_mode_conf=eap
-			d --inputbox $"Username" 0 0
-			wlan_username="$result"
-		fi
-		if [ "$wlan_auth_mode" = "WPA-PSK" ]; then
-			wlan_auth_mode_conf=psk
-		fi
-		if [ "$wlan_auth_mode" = "Open" ]; then
-			wlan_auth_mode_conf=open
-		fi
-		if [ "$wlan_auth_mode" != "Open" ]; then
-			wlan_password=
-			d --insecure --passwordbox  $"Network password" 0 0
-			wlan_password="$result"
-		fi
-
-		config_file=`mktemp -qt 'firstboot-XXXXXX'`
-
-		cat << EOF > $config_file
-BOOTPROTO='dhcp'
-STARTMODE='auto'
-WIRELESS_AP_SCANMODE='1'
-WIRELESS_AUTH_MODE='$wlan_auth_mode_conf'
-WIRELESS_ESSID='$wlan_network'
-WIRELESS_MODE='Managed'
-EOF
-
-		if [ $wlan_auth_mode = "WPA-PSK" ]; then
-			echo "WIRELESS_WPA_PSK='$wlan_password'" >> $config_file
-		fi
-
-		if [ $wlan_auth_mode = "WPA-EAP" ]; then
-			echo "WIRELESS_WPA_IDENTITY='$wlan_username'" >> $config_file
-			echo "WIRELESS_WPA_PASSWORD='$wlan_password'" >> $config_file
-			echo "WIRELESS_EAP_AUTH='mschapv2'" >> $config_file
-		fi
-
-		run mv -f $config_file /etc/sysconfig/network/ifcfg-$wlan_device
-		d --infobox $"Connecting to wireless network ..." 3 38 || true
-
-		run ifdown $wlan_device &>/dev/null || true
-		if ! run ifup $wlan_device &>/dev/null; then
-			if dialog --yesno $"Connection failed, do you wish to retry?" 0 0; then
-				continue
-			fi
-		fi
-		return 0
-	done
+	raspberrywifi_jeos_config
 }
