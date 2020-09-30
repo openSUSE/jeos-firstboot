@@ -188,7 +188,7 @@ findlocales()
 }
 
 if [ -z "$JEOS_LOCALE" ]; then
-	default="en_US"
+	default="en_US.UTF-8"
 	[ -f /etc/locale.conf ] && locale_lang="$(awk -F= '$1 == "LANG" { split($2,fs,"."); print fs[1]; exit }' /etc/locale.conf)"
 	[ -n "$locale_lang" ] && default="$locale_lang"
 
