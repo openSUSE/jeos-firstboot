@@ -18,9 +18,8 @@ dialog_locale()
         newlocale="$default"
         if ! findlocales; then
                 d --msgbox $"No locales found" 0 0
-        elif [ "${#list[@]}" -eq 2 ]; then
+        elif [ "${#list[@]}" -eq 2 ]; then # Only a single entry
                 newlocale="${list[0]}"
-                d --msgbox $"Locale set to $newlocale.\nTo change to a different one, install glibc-locale and use\n'localectl set-locale LANG=ex_AMPLE.UTF-8'." 8 50
         else
                 d --default-item "$default" --menu $"Select system locale" 0 0 $dh_menu "${list[@]}"
                 newlocale="${result}"
