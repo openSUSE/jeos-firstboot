@@ -20,8 +20,8 @@
 # SOFTWARE.
 
 . /etc/os-release
-. "/usr/lib/jeos-firstboot-functions"
-. "/usr/lib/jeos-firstboot-dialogs"
+. "/usr/share/jeos-firstboot/jeos-firstboot-functions"
+. "/usr/share/jeos-firstboot/jeos-firstboot-dialogs"
 
 # for testing we may run as non root
 if [ -w /run ]; then
