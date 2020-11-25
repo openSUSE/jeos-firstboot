@@ -89,7 +89,7 @@ function usage()
 {
 	echo "Usage: jeos-config [OPTION...] CONFIG_NAME"
 	echo ""
-	echo "	-h		shows these usage help"
+	echo "	-h		show this help"
 	echo "	locale		Show dialog to configure the system locale"
 	echo "	keytable	Show dialog to configure the system locale and keyboard"
 	echo "	timezone	Show dialog to configure the system timezone"
