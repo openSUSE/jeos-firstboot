@@ -95,7 +95,7 @@ Configure system settings using an interactive dialog
 	locale		Show configuration for locale
 	keytable	Show configuration for keyboard
 	timezone	Show configuration for timezone
-	keytable	Show configuration for password
+	password	Show configuration for password
 	network		Show configuration for network
 $(for module in "${modules[@]}"; do
 	echo "	${module}	Show configuration for ${module}"
@@ -143,6 +143,10 @@ case "$subcommand" in
 		dialog_network
 		d --infobox $"Restarting network ..." 3 26 || true
 		systemctl restart network
+		;;
+	password)
+		dialog_password
+		apply_password
 		;;
 	*)
 		call_module_config "$subcommand"|| echo "Unknown option"
