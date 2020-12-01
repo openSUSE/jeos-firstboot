@@ -108,11 +108,11 @@ fi
 
 while getopts ":h" opt; do
 	case ${opt} in
-		h ) 
+		h) 
 			usage
 			exit 0
 			;;
-		\? ) 
+		\?) 
 			echo "Invalid Option: -$OPTARG" 1>&2
 			usage
      			exit 1
