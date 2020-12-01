@@ -52,6 +52,9 @@ is_raspberry()
 	 grep -q Raspberry /proc/device-tree/model 2> /dev/null
 }
 
+# This function is called as part of jeos-config module hook implementation
+# and also used to run the config dialogs for the module itself for 
+# jeos-firstboot modules extension.
 raspberrywifi_jeos_config()
 {
 while true
