@@ -129,8 +129,8 @@ case "$subcommand" in
 		apply_locale
         	;;
 	keytable)
-		dialog_locale
 		dialog_keytable
+		get_current_locale
 		apply_locale_and_keytable
 		;;	
 	timezone)

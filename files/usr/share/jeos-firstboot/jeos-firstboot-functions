@@ -96,6 +96,11 @@ findlocales()
         [ -n "$list" ]
 }
 
+get_current_locale()
+{
+	JEOS_LOCALE=`awk -F= '$1 == "LANG" { print $2; exit }' /etc/locale.conf`
+}
+
 apply_locale()
 {
 	if [ ! -z "$JEOS_LOCALE" ]; then
