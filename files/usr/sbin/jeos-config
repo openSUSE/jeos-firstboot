@@ -54,7 +54,7 @@ call_module_config() {
 	[ $ret -eq 0 ] || return $ret
 }
 
-if pushd "/usr/share/jeos-firstboot" &>/dev/null; then
+if pushd "/usr/share/jeos-firstboot/modules" &>/dev/null; then
 	for module in *; do
 		if [ -f "${module}" ] && source "${module}"; then
 			modules+=("${module}")
