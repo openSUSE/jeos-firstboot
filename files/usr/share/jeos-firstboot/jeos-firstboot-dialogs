@@ -111,7 +111,6 @@ dialog_network()
 		fi
 	done
 	
-
 	run sed -i -E 's/^DHCLIENT(6?)_SET_HOSTNAME=.*$/DHCLIENT\1_SET_HOSTNAME=yes/' /etc/sysconfig/network/dhcp
 }
 
