@@ -87,18 +87,19 @@ let dh_text=LINES-5
 
 usage()
 {
-	echo "Usage: jeos-config [OPTION...] CONFIG_NAME"
-	echo ""
-	echo "	-h		shows these usage help"
-	echo "	locale		Show dialog to configure locale"
-	echo "	keytable	Show dialog to configure locale and keyboard"
-	echo "	timezone	Show dialog to configure timezone"
-	echo "	keytable	Show dialog to configure password"
-	echo "	network		Show dialog to configure network"
-	for module in "${modules[@]}"; do
-		echo "	${module}	Show dialog of module ${module}"
-	done
-	echo ""
+cat <<EOF
+Usage: jeos-config [OPTION...] CONFIG_NAME
+
+	-h		shows these usage help
+	locale		Show dialog to configure locale
+	keytable	Show dialog to configure locale and keyboard
+	timezone	Show dialog to configure timezone
+	keytable	Show dialog to configure password
+	network		Show dialog to configure network
+$(for module in "${modules[@]}"; do
+	echo "	${module}	Show dialog of module ${module}"
+done)
+EOF
 }
 
 if [ $# -eq 0 ]; then
