@@ -90,11 +90,11 @@ usage()
 	echo "Usage: jeos-config [OPTION...] CONFIG_NAME"
 	echo ""
 	echo "	-h		shows these usage help"
-	echo "	locale		Show dialog to configure the system locale"
-	echo "	keytable	Show dialog to configure the system locale and keyboard"
-	echo "	timezone	Show dialog to configure the system timezone"
-	echo "	keytable	Show dialog to configure the system password"
-	echo "	network		Show dialog to configure the system network"
+	echo "	locale		Show dialog to configure locale"
+	echo "	keytable	Show dialog to configure locale and keyboard"
+	echo "	timezone	Show dialog to configure timezone"
+	echo "	keytable	Show dialog to configure password"
+	echo "	network		Show dialog to configure network"
 	for module in "${modules[@]}"; do
 		echo "	${module}	Show dialog of module ${module}"
 	done
