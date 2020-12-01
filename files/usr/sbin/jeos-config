@@ -120,7 +120,7 @@ while getopts ":h" opt; do
 	esac
 done
 
-subcommand=$1; shift  # Remove 'pip' from the argument lis
+subcommand=$1; shift
 
 case "$subcommand" in
 
