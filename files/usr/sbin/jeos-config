@@ -91,14 +91,14 @@ cat <<EOF
 Usage: jeos-config [OPTION...] CONFIG_NAME
 Configure system settings using an interactive dialog
 
-	-h		shows these usage help
-	locale		Show dialog to configure locale
-	keytable	Show dialog to configure locale and keyboard
-	timezone	Show dialog to configure timezone
-	keytable	Show dialog to configure password
-	network		Show dialog to configure network
+	-h		shows this usage help
+	locale		Show configuration for locale
+	keytable	Show configuration for keyboard
+	timezone	Show configuration for timezone
+	keytable	Show configuration for password
+	network		Show configuration for network
 $(for module in "${modules[@]}"; do
-	echo "	${module}	Show dialog of module ${module}"
+	echo "	${module}	Show configuration for ${module}"
 done)
 EOF
 }
