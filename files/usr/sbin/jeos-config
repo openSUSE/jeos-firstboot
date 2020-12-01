@@ -89,6 +89,7 @@ usage()
 {
 cat <<EOF
 Usage: jeos-config [OPTION...] CONFIG_NAME
+Configure system settings using an interactive dialog
 
 	-h		shows these usage help
 	locale		Show dialog to configure locale
