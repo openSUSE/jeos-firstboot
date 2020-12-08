@@ -1,3 +1,4 @@
+#!/bin/bash
 stty_size() {
 	set -- `stty size`; LINES=$1; COLUMNS=$2
 	# stty size can return zero when not ready or
