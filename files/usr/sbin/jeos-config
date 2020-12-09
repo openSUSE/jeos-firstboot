@@ -85,10 +85,16 @@ password=''
 let dh_menu=LINES-15
 let dh_text=LINES-5
 
+select_config()
+{
+	modules_order=("locale" '' "keytable" '' "timezone" '' "password" '' "network" '')
+	d --menu "escolha o modulo" 0 0 $dh_menu "${modules_order[@]}"
+}
+
 usage()
 {
 cat <<EOF
-Usage: jeos-config [OPTION...] CONFIG_NAME
+Usage: jeos-config [OPTION...] [CONFIG_NAME]
 Configure system settings using an interactive dialog
 
 	-h		shows this usage help
@@ -102,11 +108,6 @@ $(for module in "${modules[@]}"; do
 done)
 EOF
 }
-
-if [ $# -eq 0 ]; then
-	usage
-	exit 1
-fi
 
 while getopts ":h" opt; do
 	case ${opt} in
@@ -122,7 +123,12 @@ while getopts ":h" opt; do
 	esac
 done
 
-subcommand=$1; shift
+if [ $# -eq 0 ]; then
+	select_config
+	subcommand=${result}
+else
+	subcommand=$1; shift
+fi
 
 case "$subcommand" in
 
