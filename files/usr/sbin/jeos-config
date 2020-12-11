@@ -45,15 +45,6 @@ else
 	}
 fi
 
-call_module_config() {
-	local module="$1"
-	module_function="${module}_jeos_config"
-	[ "$(type -t "${module_function}")" = "function" ] || return 1
-	"${module_function}" && true # To not trigger errexit
-	ret=$?
-	[ $ret -eq 0 ] || return $ret
-}
-
 if pushd "/usr/share/jeos-firstboot/modules" &>/dev/null; then
 	for module in *; do
 		if [ -f "${module}" ] && source "${module}"; then
