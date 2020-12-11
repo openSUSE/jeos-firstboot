@@ -79,6 +79,10 @@ let dh_text=LINES-5
 select_config()
 {
 	modules_order=("locale" '' "keytable" '' "timezone" '' "password" '' "network" '')
+	for module in "${modules[@]}"; do
+		modules_order+=("${module}" '')
+	done
+
 	d --menu "escolha o modulo" 0 0 $dh_menu "${modules_order[@]}"
 }
 
