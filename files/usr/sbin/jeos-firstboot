@@ -91,7 +91,12 @@ cleanup() {
 	echo .oOo.oOo.oOo. > $dialog_out
 	rm -f "$dialog_out"
 	# reenable systemd and kernel logs
-	run kill -s SIGRTMAX-10 1
+	# Try the race-free DBus method first
+	if ! run dbus-send --system --print-reply --dest=org.freedesktop.systemd1 /org/freedesktop/systemd1 \
+	     org.freedesktop.systemd1.Manager.SetShowStatus string: &>/dev/null; then
+		# Fall back to using signals
+		run kill -s SIGRTMAX-10 1
+	fi
 	run setterm -msg on 2>/dev/null || true
 }
 trap cleanup EXIT
@@ -99,9 +104,14 @@ trap cleanup EXIT
 # avoid kernel messages spamming our console
 run setterm -msg off 2>/dev/null || true
 # Avoid systemd messages spamming our console
-run kill -s SIGRTMAX-9 1
-# sleep to avoid systemd bug, bsc#1119382
-sleep 1
+# Try the race-free DBus method first
+if ! run dbus-send --system --print-reply --dest=org.freedesktop.systemd1 /org/freedesktop/systemd1 \
+     org.freedesktop.systemd1.Manager.SetShowStatus string:off &>/dev/null; then
+	# Fall back to using signals
+	run kill -s SIGRTMAX-9 1
+	# sleep to avoid systemd bug, bsc#1119382
+	sleep 1
+fi
 
 systemd_firstboot_args=('--setup-machine-id')
 
