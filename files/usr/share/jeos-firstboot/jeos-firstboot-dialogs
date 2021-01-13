@@ -55,9 +55,9 @@ dialog_timezone()
 		'BEGIN{print "UTC"; sort="sort"}/^#/{next;}{print $3|sort}END{close(sort)}' \
 		/usr/share/zoneinfo/zone.tab \
 		&& d --default-item "$default" --menu $"Select time zone" 0 0 $dh_menu "${list[@]}"; then
-	if [ -n "$result" ]; then
-		JEOS_TIMEZONE="$result"
-	fi
+			if [ -n "$result" ]; then
+				JEOS_TIMEZONE="$result"
+			fi
 	else
 		d --msgbox $"Error setting timezone" 5 26
 	fi
