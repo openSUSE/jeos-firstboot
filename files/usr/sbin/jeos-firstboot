@@ -53,29 +53,6 @@ else
 	}
 fi
 
-modules=()
-
-call_module_hook() {
-	local hook="$1"
-	for module in "${modules[@]}"; do
-		hook_function="${module}_${hook}"
-		[ "$(type -t "${hook_function}")" = "function" ] || continue
-		"${hook_function}" && true # To not trigger errexit
-		ret=$?
-		[ $ret -eq 0 ] || return $ret
-	done
-	return 0
-}
-
-if pushd "/usr/share/jeos-firstboot/modules" &>/dev/null; then
-	for module in *; do
-		if [ -f "${module}" ] && source "${module}"; then
-			modules+=("${module}")
-		fi
-	done
-	popd &>/dev/null
-fi
-
 cleanup() {
 	call_module_hook cleanup
 	echo .oOo.oOo.oOo. > $dialog_out
