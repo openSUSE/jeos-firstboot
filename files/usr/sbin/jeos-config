@@ -133,5 +133,5 @@ case "$subcommand" in
 		apply_password
 		;;
 	*)
-		call_module "$subcommand" "jeos_config"|| echo "Unknown option"
+		call_module "$subcommand" "jeos_config" || echo "Unknown option"
 esac
