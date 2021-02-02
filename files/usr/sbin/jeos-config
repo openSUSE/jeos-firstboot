@@ -55,11 +55,6 @@ cleanup() {
 }
 trap cleanup EXIT
 
-# If the configuration is not loaded and we are in the first terminal
-# instance, make sure that the variables are declared.
-JEOS_LOCALE=${JEOS_LOCALE-}
-JEOS_KEYTABLE=${JEOS_KEYTABLE-}
-
 select_config()
 {
 	modules_order=("locale" '' "keytable" '' "timezone" '' "password" '' "network" '')
