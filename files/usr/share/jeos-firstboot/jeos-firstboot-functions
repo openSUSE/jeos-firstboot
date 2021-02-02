@@ -127,7 +127,9 @@ findlocales()
 
 get_current_locale()
 {
-	JEOS_LOCALE=`awk -F= '$1 == "LANG" { print $2; exit }' /etc/locale.conf`
+	cur_locale=`awk -F= '$1 == "LANG" { print $2; exit }' /etc/locale.conf`
+	[ -n "$cur_locale" ] && cur_locale="en_US"
+	echo ${cur_locale}
 }
 
 apply_locale()

@@ -116,7 +116,7 @@ case "$subcommand" in
         	;;
 	keytable)
 		dialog_keytable
-		get_current_locale
+		JEOS_LOCALE="$(get_current_locale)"
 		apply_locale_and_keytable
 		;;	
 	timezone)
