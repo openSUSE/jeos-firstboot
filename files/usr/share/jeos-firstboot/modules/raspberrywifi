@@ -43,8 +43,7 @@ raspberrywifi_get_wlan_networks()
 
 raspberrywifi_wlan_error()
 {
-	d --title $"Error" --msgbox "$1" 0 0
-	dialog --yesno $"Do you want to retry?" 0 0
+	dialog --title $"Error" --yesno $"$1\n\nDo you want to retry?" 0 0
 }
 
 is_raspberry()
