@@ -51,6 +51,7 @@ cleanup() {
 	rm -f "$dialog_out"
 	# reenable systemd and kernel logs
 	run setterm -msg on 2>/dev/null || true
+	echo
 }
 trap cleanup EXIT
 
