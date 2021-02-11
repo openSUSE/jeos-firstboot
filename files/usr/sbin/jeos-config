@@ -50,7 +50,6 @@ cleanup() {
 	echo .oOo.oOo.oOo. > $dialog_out
 	rm -f "$dialog_out"
 	# reenable systemd and kernel logs
-	run kill -s SIGRTMAX-10 1
 	run setterm -msg on 2>/dev/null || true
 }
 trap cleanup EXIT
