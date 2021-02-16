@@ -97,11 +97,11 @@ while getopts ":h" opt; do
 	esac
 done
 
-if [ $# -eq 0 ]; then
+if [ ${OPTIND} -gt $# ]; then
 	select_config
 	subcommand=${result}
 else
-	subcommand=$1; shift
+	subcommand=${!OPTIND}; shift
 fi
 
 case "$subcommand" in
