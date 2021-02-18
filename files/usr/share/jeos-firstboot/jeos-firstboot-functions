@@ -30,7 +30,7 @@ call_module() {
 	local module="$1"
 	local module_func="$2"
 	module_function="${module}_${module_func}"
-	[ "$(type -t "${module_function}")" = "function" ] || return 1
+	[ "$(type -t -- "${module_function}")" = "function" ] || return 1
 	"${module_function}" && true # To not trigger errexit
 	ret=$?
 	[ $ret -eq 0 ] || return $ret
