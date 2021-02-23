@@ -125,7 +125,8 @@ case "$subcommand" in
 		timedatectl set-timezone "$JEOS_TIMEZONE"
 		;;	
 	network)
-		if ! d --yesno $"Network will be restarted\nDo you want to continue?" 6 30; then
+		if ! d --yesno $"This will create a new network configuration from scratch, \
+all connections will be lost.\nDo you want to continue?" 7 50; then
 			exit 0
 		fi
 		dialog_network
