@@ -1,0 +1,142 @@
+#!/bin/bash
+# Copyright (c) 2020 SUSE LLC
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+. /etc/os-release
+. "/usr/share/jeos-firstboot/jeos-firstboot-functions"
+. "/usr/share/jeos-firstboot/jeos-firstboot-dialogs"
+
+# for testing we may run as non root
+if [ -w /run ]; then
+	export TMPDIR=/run
+	# debugging
+	if [ -n "$FIRSTBOOT_DEBUG" ]; then
+		set -x
+		exec 2>/var/log/firstboot-debug
+	fi
+else
+	dry=1
+fi
+
+if [ -n "$dry" ]; then
+	run() {
+		echo "$@"
+	}
+else
+	run() {
+		"$@"
+	}
+fi
+
+cleanup() {
+	#call_module_hook cleanup
+	echo .oOo.oOo.oOo. > $dialog_out
+	rm -f "$dialog_out"
+	# reenable systemd and kernel logs
+	echo
+}
+trap cleanup EXIT
+
+select_config()
+{
+	modules_order=("locale" '' "keytable" '' "timezone" '' "password" '' "network" '')
+	for module in "${modules[@]}"; do
+		modules_order+=("${module}" '')
+	done
+
+	d --menu $"Select configuration module" 0 0 $dh_menu "${modules_order[@]}"
+}
+
+usage()
+{
+cat <<EOF
+Usage: jeos-config [OPTION...] [CONFIG_NAME]
+Configure system settings using an interactive dialog
+
+	-h		shows this usage help
+	locale		Show configuration for locale
+	keytable	Show configuration for keyboard
+	timezone	Show configuration for timezone
+	password	Show configuration for password
+	network		Show configuration for network
+$(for module in "${modules[@]}"; do
+	echo "	${module}	Show configuration for ${module}"
+done)
+EOF
+}
+
+while getopts ":h" opt; do
+	case ${opt} in
+		h) 
+			usage
+			exit 0
+			;;
+		\?) 
+			echo "Invalid Option: -$OPTARG" 1>&2
+			usage
+     			exit 1
+			;;
+	esac
+done
+
+if [ ${OPTIND} -gt $# ]; then
+	select_config
+	subcommand=${result}
+else
+	subcommand=${!OPTIND}; shift
+fi
+
+case "$subcommand" in
+	locale)
+		list=() # Set by findlocales
+        	if ! findlocales; then
+                	d --msgbox $"No locales found" 0 0
+        	elif [ "${#list[@]}" -eq 2 ]; then # Only a single entry
+			d --msgbox $"Locale set to ${list[0]}, no more locales available" 5 50
+		else
+			dialog_locale
+			apply_locale
+		fi
+        	;;
+	keytable)
+		dialog_keytable
+		JEOS_LOCALE="$(get_current_locale)"
+		apply_locale_and_keytable
+		;;	
+	timezone)
+		dialog_timezone
+		timedatectl set-timezone "$JEOS_TIMEZONE"
+		;;	
+	network)
+		if ! d --yesno $"This will create a new network configuration from scratch,
+all connections will be lost.\nDo you want to continue?" 7 50; then
+			exit 0
+		fi
+		dialog_network
+		d --infobox $"Restarting network ..." 3 26 || true
+		systemctl restart network
+		;;
+	password)
+		dialog_password
+		apply_password
+		;;
+	*)
+		call_module "$subcommand" "jeos_config" || echo "Unknown option '$subcommand'"
+esac

@@ -1,0 +1,156 @@
+stty_size() {
+	set -- `stty size`; LINES=$1; COLUMNS=$2
+	# stty size can return zero when not ready or
+	# its a serial console
+	if [ "$COLUMNS" = "0" -o "$LINES" = "0" ]; then
+		LINES=24
+		COLUMNS=80
+	fi
+}
+stty_size
+
+result=
+list=
+password=''
+modules=()
+
+let dh_menu=LINES-15
+let dh_text=LINES-5
+
+if pushd "/usr/share/jeos-firstboot/modules" &>/dev/null; then
+        for module in *; do
+                if [ -f "${module}" ] && source "${module}"; then
+                        modules+=("${module}")
+                fi
+        done
+        popd &>/dev/null
+fi
+
+call_module() {
+	local module="$1"
+	local module_func="$2"
+	module_function="${module}_${module_func}"
+	[ "$(type -t -- "${module_function}")" = "function" ] || return 1
+	"${module_function}" && true # To not trigger errexit
+	ret=$?
+	[ $ret -eq 0 ] || return $ret
+}
+
+call_module_hook() {
+        local hook="$1"
+        for module in "${modules[@]}"; do
+		call_module ${module} ${hook} || continue
+        done
+        return 0
+}
+
+kmscon_available() {
+	# kmscon itself is installed
+	kmscon --help >/dev/null 2>&1 || return 1
+	# At least one monospace font is available
+	[ -n "$(fc-match "monospace" 2>/dev/null)" ] || return 1
+
+	return 0
+}
+
+fbiterm_available() {
+	# fbiterm itself is installed
+	fbiterm --help >/dev/null 2>&1 || return 1
+	# fbiterm comes with its own fallback font
+
+	return 0
+}
+
+dialog_out=`mktemp -qt 'firstboot-XXXXXX'`
+d(){
+	retval=
+	while true
+	do
+		retval=0
+		dialog --backtitle "$PRETTY_NAME" --output-fd 3 "$@" 3>"${dialog_out}" || retval=$?
+		case $retval in
+		  0)
+			# need || true as dialog doesn't write newlines
+			read result < $dialog_out || true
+			return 0
+			;;
+		  1)
+			echo "$(xargs -a "$dialog_out")" >/var/log/jeos
+			dialog --yesno $"Do you really want to quit?" 0 0 && exit 1
+			continue
+			;;
+		  255)
+			# xargs to remove whitespaces
+			echo "$(xargs -a "$dialog_out")" >/var/log/jeos
+			result_error="$(xargs -a "$dialog_out")"
+			if [ -z "$result_error" ]; then
+				dialog --yesno $"Do you really want to quit?" 0 0 && exit 1
+				continue
+			fi
+			logger -p err -t jeos-firstboot "$result_error"
+			dialog --msgbox $"Exiting due to error, please check the system log" 0 0
+			exit 2
+			;;
+		esac
+	done
+}
+
+warn(){
+	d --title $"Warning" --msgbox "$1" 6 40
+}
+
+# localectl --no-pager list-keymaps does not list aliases (symlinks), but those are used
+# by YaST/langset.sh, so we need to show them.
+findkeymaps()
+{
+        list=()
+        local line
+        while read line; do
+                list+=("${line%.map.gz}" '')
+        done < <(find /usr/share/kbd/keymaps -name '*.map.gz' -printf "%f\n" | sort -u)
+        [ -n "$list" ]
+}
+
+findlocales()
+{
+        list=()
+        local l locale
+        # List only locales which are both in live-langset-data and glibc-locale(-base)
+        for l in /usr/share/langset/*; do
+                locale="${l#/usr/share/langset/}"
+                [ -d "/usr/lib/locale/${locale}.utf8" ] || continue
+                list+=("${locale}" '')
+        done
+        [ -n "$list" ]
+}
+
+get_current_locale()
+{
+	cur_locale=`awk -F= '$1 == "LANG" { print $2; exit }' /etc/locale.conf`
+	[ -z "$cur_locale" ] && cur_locale="en_US"
+	echo ${cur_locale}
+}
+
+apply_locale()
+{
+	if [ ! -z "$JEOS_LOCALE" ]; then
+		run langset.sh $JEOS_LOCALE || warn $"Setting the locale failed"
+	fi
+}
+
+apply_locale_and_keytable()
+{
+	if [ ! -z "$JEOS_LOCALE" -a ! -z "$JEOS_KEYTABLE" ]; then
+		# Activate the selected keyboard layout
+		run langset.sh "$JEOS_LOCALE" "$JEOS_KEYTABLE" || warn $"Setting the keyboard layout failed"
+	fi
+}
+
+apply_password()
+{
+	# FIXME: systemd-firstboot doesn't set password if shadow present
+	if [ -n "$password" ]; then
+		run echo "root:$password" | run /usr/sbin/chpasswd
+	fi
+}
+# vim: syntax=sh
