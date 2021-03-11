@@ -68,11 +68,11 @@ do
     if [ "${#list[@]}" -eq "2" ]; then
         wlan_device="${list[0]}"
     else
-        d --menu  $"Select wireless card to configure" 0 0 $dh_menu "${list[@]}"
+        d --menu  $"Select wireless card to configure" 0 0 "$(menuheight ${#list[@]})" "${list[@]}"
         wlan_device="${result}"
     fi
 
-    if raspberrywifi_get_wlan_networks && d --menu  $"Select wireless network to connect" 0 0 $dh_menu "${list[@]}"; then
+    if raspberrywifi_get_wlan_networks && d --menu  $"Select wireless network to connect" 0 0 "$(menuheight ${#list[@]})" "${list[@]}"; then
         wlan_network="$result"
     else
         if raspberrywifi_wlan_error $"Error listing wireless networks"; then
@@ -81,7 +81,8 @@ do
         break
     fi
 
-    d --menu $"Select authentication mode" 0 0 $dh_menu $"WPA-PSK" '' $"WPA-EAP" '' $"Open" ''
+    list=($"WPA-PSK" '' $"WPA-EAP" '' $"Open" '')
+    d --menu $"Select authentication mode" 0 0 "$(menuheight ${#list[@]})" "${list[@]}"
     wlan_auth_mode="$result"
 
     wlan_auth_mode_conf=
