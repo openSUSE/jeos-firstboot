@@ -41,7 +41,7 @@ raspberrywifi_get_wlan_networks()
         else
 		list+=("${line}" '')
 	fi
-	done < <(ip link set $wlan_device up && iwlist $wlan_device scan|grep ESSID|cut -d':' -f2|cut -d'"' -f2|sort -u)
+	done < <(ip link set $wlan_device up && iwlist $wlan_device scan|grep ESSID|cut -d':' -f2|cut -d'"' -f2)
 	[ -n "${list[*]}" ]
 }
 
