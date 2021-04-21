@@ -99,6 +99,13 @@ warn(){
 	d --title $"Warning" --msgbox "$1" 6 40
 }
 
+# Given the number of total item pairs, outputs the number of items to display at once
+menuheight() {
+	local height=$(($1 / 2))
+	[ "$height" -le "$dh_menu" ] || height="$dh_menu"
+	echo $height
+}
+
 # localectl --no-pager list-keymaps does not list aliases (symlinks), but those are used
 # by YaST/langset.sh, so we need to show them.
 findkeymaps()
