@@ -47,7 +47,7 @@ raspberrywifi_get_wlan_networks()
 
 raspberrywifi_wlan_error()
 {
-	dialog --title $"Error" --yesno $"$1\n\nDo you want to retry?" 0 0
+	dialog --backtitle "$PRETTY_NAME" --title $"Error" --yesno $"$1\n\nDo you want to retry?" 0 0
 }
 
 is_raspberry()
@@ -136,7 +136,7 @@ EOF
 
     run ifdown $wlan_device &>/dev/null || true
     if ! run ifup $wlan_device &>/dev/null; then
-        if dialog --yesno $"Connection failed, do you wish to retry?" 0 0; then
+        if dialog --backtitle "$PRETTY_NAME" --yesno $"Connection failed, do you wish to retry?" 0 0; then
             continue
         fi
     fi
@@ -149,7 +149,7 @@ done
 raspberrywifi_systemd_firstboot()
 {
 	if is_raspberry && stat -t /sys/class/net/*/wireless &> /dev/null; then
-		if dialog --yesno $"Configure wireless network?" 0 0; then
+		if dialog --backtitle "$PRETTY_NAME" --yesno $"Configure wireless network?" 0 0; then
 			config_wireless=true
 		fi
 	fi
