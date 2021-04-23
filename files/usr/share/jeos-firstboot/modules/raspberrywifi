@@ -35,13 +35,17 @@ raspberrywifi_get_wlan_networks()
 {
 	list=()
 	local line
+	local has_hidden=false
 	while read line; do
 	if [ -z $line ]; then
-                list+=("()" '')
-        else
+		has_hidden=true
+	else
 		list+=("${line}" '')
 	fi
 	done < <(ip link set $wlan_device up && iwlist $wlan_device scan|grep ESSID|cut -d':' -f2|cut -d'"' -f2)
+	if $has_hidden; then
+                list+=("Hidden" "Enter SSID manually")
+	fi
 	[ -n "${list[*]}" ]
 }
 
@@ -84,11 +88,11 @@ do
         fi
         break
     fi
-    if [ "$wlan_network" == "()" ]; then
-	if d --inputbox $"SSID of hidden network" 0 0; then
-		wlan_network="$result"
+	if [ "$wlan_network" == "Hidden" ]; then
+		if d --inputbox $"SSID of hidden network" 0 0; then
+			wlan_network="$result"
+		fi
 	fi
-    fi
     list=($"WPA-PSK" '' $"WPA-EAP" '' $"Open" '')
     d --menu $"Select authentication mode" 0 0 "$(menuheight ${#list[@]})" "${list[@]}"
     wlan_auth_mode="$result"
@@ -157,3 +161,5 @@ raspberrywifi_systemd_firstboot()
 
 	raspberrywifi_jeos_config
 }
+
+# vim: syntax=sh
