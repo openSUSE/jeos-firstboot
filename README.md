@@ -1,8 +1,9 @@
 # jeos-firstboot
 ## Description
-jeos-firstboot is a lightweight, dialog based firstboot wizard that replaces systemd's line based firstboot program. It can show the license and prompt for language, keyboard, timezone, root passsword and network configuration.
+jeos-firstboot is a lightweight and customisable dialog based firstboot wizard that allows to set basic system settings during and after the first boot of an image.
+It can show the license and prompt for language, keyboard, timezone, root passsword and network configuration..
 
-This was mainly developed to work with openSUSE JeOS images, more information visit [JeOS wiki](https://en.opensuse.org/Portal:JeOS)
+This was mainly developed to work with openSUSE JeOS and SUSE Linux Enterprise Server JeOS images, more information visit [JeOS wiki](https://en.opensuse.org/Portal:JeOS)
 
 ## Getting Started
 jeos-firstboot can be extended using separate modules, writing a script with the appropriate format and have it installed under `/usr/lib/share/jeos-firstboot/modules` will make this module be executed.
