@@ -35,16 +35,16 @@ raspberrywifi_get_wlan_networks()
 {
 	list=()
 	local line
-	local has_hidden=false
+	local has_hidden=
 	while read line; do
 	if [ -z $line ]; then
-		has_hidden=true
+		has_hidden=1
 	else
-		list+=("${line}" '')
+		list+=("SSID=${line}" "${line}")
 	fi
 	done < <(ip link set $wlan_device up && iwlist $wlan_device scan|grep ESSID|cut -d':' -f2|cut -d'"' -f2)
-	if $has_hidden; then
-                list+=("Hidden" "Enter SSID manually")
+	if [[ ${has_hidden} ]]; then
+                list+=("manual" "Enter SSID manually")
 	fi
 	[ -n "${list[*]}" ]
 }
@@ -80,7 +80,7 @@ do
         wlan_device="${result}"
     fi
 
-    if raspberrywifi_get_wlan_networks && d --menu  $"Select wireless network to connect" 0 0 "$(menuheight ${#list[@]})" "${list[@]}"; then
+    if raspberrywifi_get_wlan_networks && d --no-tags --menu  $"Select wireless network to connect" 0 0 "$(menuheight ${#list[@]})" "${list[@]}"; then
         wlan_network="$result"
     else
         if raspberrywifi_wlan_error $"Error listing wireless networks"; then
@@ -88,10 +88,12 @@ do
         fi
         break
     fi
-	if [ "$wlan_network" == "Hidden" ]; then
+	if [ "$wlan_network" == "manual" ]; then
 		if d --inputbox $"SSID of hidden network" 0 0; then
 			wlan_network="$result"
 		fi
+	else
+		wlan_network="$(cut -d "=" -f2- <<< $wlan_network)"
 	fi
     list=($"WPA-PSK" '' $"WPA-EAP" '' $"Open" '')
     d --menu $"Select authentication mode" 0 0 "$(menuheight ${#list[@]})" "${list[@]}"
