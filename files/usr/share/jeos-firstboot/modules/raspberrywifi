@@ -35,17 +35,12 @@ raspberrywifi_get_wlan_networks()
 {
 	list=()
 	local line
-	local has_hidden=
 	while read line; do
-	if [ -z $line ]; then
-		has_hidden=1
-	else
+	if [ -n "${line}" ]; then
 		list+=("SSID=${line}" "${line}")
 	fi
 	done < <(ip link set $wlan_device up && iwlist $wlan_device scan|grep ESSID|cut -d':' -f2|cut -d'"' -f2)
-	if [[ ${has_hidden} ]]; then
-                list+=("manual" "Enter SSID manually")
-	fi
+        list+=("manual" "Enter SSID manually")
 	[ -n "${list[*]}" ]
 }
 
