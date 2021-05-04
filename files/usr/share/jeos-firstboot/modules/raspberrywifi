@@ -89,9 +89,8 @@ do
         break
     fi
 	if [ "$wlan_network" == "manual" ]; then
-		if d --inputbox $"SSID of hidden network" 0 0; then
-			wlan_network="$result"
-		fi
+		d --inputbox $"SSID of hidden network" 0 0
+		wlan_network="$result"
 	else
 		wlan_network="$(cut -d "=" -f2- <<< $wlan_network)"
 	fi
