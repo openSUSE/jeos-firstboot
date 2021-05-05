@@ -75,7 +75,8 @@ do
         wlan_device="${result}"
     fi
 
-    if raspberrywifi_get_wlan_networks && d --no-tags --menu  $"Select wireless network to connect" 0 0 "$(menuheight ${#list[@]})" "${list[@]}"; then
+    if raspberrywifi_get_wlan_networks; then
+        d --no-tags --menu $"Select wireless network to connect" 0 0 "$(menuheight ${#list[@]})" "${list[@]}"
         wlan_network="$result"
     else
         if raspberrywifi_wlan_error $"Error listing wireless networks"; then
