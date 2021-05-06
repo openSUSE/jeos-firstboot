@@ -4,7 +4,7 @@ jeos-firstboot allows initial configuration and adjustments of a Linux system us
 
 It is a lightweight and customisable firstboot wizard that allows to set basic system settings during and after the first boot of an image. Including showing the license and prompt for language, keyboard, timezone, root passsword and network configuration..
 
-This was mainly developed for openSUSE and SUSE Linux Enterprise Server JeOS images. For more information visit the [JeOS wiki](https://en.opensuse.org/Portal:JeOS).
+This is mainly developed for openSUSE and SUSE Linux Enterprise Server JeOS images. For more information visit the [JeOS wiki](https://en.opensuse.org/Portal:JeOS).
 
 ## Getting Started
 jeos-firstboot can be extended using separate modules, writing a script with the appropriate format and have it installed under `/usr/lib/share/jeos-firstboot/modules` will make this module be executed.
