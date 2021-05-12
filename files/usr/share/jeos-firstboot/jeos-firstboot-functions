@@ -6,6 +6,9 @@ stty_size() {
 		LINES=24
 		COLUMNS=80
 	fi
+
+	let dh_menu=LINES-15
+	let dh_text=LINES-5
 }
 stty_size
 
@@ -13,9 +16,6 @@ result=
 list=
 password=''
 modules=()
-
-let dh_menu=LINES-15
-let dh_text=LINES-5
 
 if pushd "/usr/share/jeos-firstboot/modules" &>/dev/null; then
         for module in *; do
@@ -42,23 +42,6 @@ call_module_hook() {
 		call_module ${module} ${hook} || continue
         done
         return 0
-}
-
-kmscon_available() {
-	# kmscon itself is installed
-	kmscon --help >/dev/null 2>&1 || return 1
-	# At least one monospace font is available
-	[ -n "$(fc-match "monospace" 2>/dev/null)" ] || return 1
-
-	return 0
-}
-
-fbiterm_available() {
-	# fbiterm itself is installed
-	fbiterm --help >/dev/null 2>&1 || return 1
-	# fbiterm comes with its own fallback font
-
-	return 0
 }
 
 dialog_out=`mktemp -qt 'firstboot-XXXXXX'`
@@ -160,4 +143,19 @@ apply_password()
 		run echo "root:$password" | run /usr/sbin/chpasswd
 	fi
 }
+
+# Resolves /dev/console and /dev/tty0
+resolve_tty() {
+        local tty="$1"
+        if [ "$tty" = "/dev/console" ]; then
+                tty=$(awk '{printf "/dev/%s", $NF}' /sys/class/tty/console/active)
+        fi
+
+        if [ "$tty" = "/dev/tty0" ]; then
+                printf "/dev/%s" "$(cat /sys/class/tty/tty0/active)"
+        else
+                echo -n "$tty"
+        fi
+}
+
 # vim: syntax=sh

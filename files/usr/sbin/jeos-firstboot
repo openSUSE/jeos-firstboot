@@ -26,6 +26,7 @@ TEXTDOMAIN='jeos-firstboot'
 . /etc/os-release
 . "/usr/share/jeos-firstboot/jeos-firstboot-functions"
 . "/usr/share/jeos-firstboot/jeos-firstboot-dialogs"
+. "/usr/share/jeos-firstboot/welcome-screen"
 
 # Read the optional configuration file
 [ -f /usr/share/defaults/jeos-firstboot.conf ] && . /usr/share/defaults/jeos-firstboot.conf
@@ -89,6 +90,7 @@ JEOS_LOCALE=${JEOS_LOCALE-}
 JEOS_KEYTABLE=${JEOS_KEYTABLE-}
 
 if [ -z "$JEOS_LOCALE" ]; then
+    welcome_screen_with_console_switch
     dialog_locale
 fi
 
@@ -98,6 +100,7 @@ apply_locale
 systemd_firstboot_args+=("--locale=$JEOS_LOCALE")
 
 if [ -z "$JEOS_KEYTABLE" ]; then
+    welcome_screen_with_console_switch
     dialog_keytable
 fi 
 
@@ -125,7 +128,7 @@ fbiterm_available() {
         return 0
 }
 
-if [[ "$(ps h -o tty -p $$)" = tty[0-9]* ]]; then
+if [[ "$(resolve_tty "$(tty)")" =~ /dev/tty[0-9]+ ]]; then
 	# Those languages can't be displayed in the console
 	declare -A start_kmscon
 	start_kmscon["cs"]=1
@@ -151,6 +154,8 @@ if [[ "$(ps h -o tty -p $$)" = tty[0-9]* ]]; then
 fi
 
 if [ -z "$JEOS_EULA_ALREADY_AGREED" ]; then
+	welcome_screen_with_console_switch
+
 	# Find the location of the EULA
 	# An EULA in /etc takes precedence
 	EULA_FILE=/etc/YaST2/licenses/base/license.txt
@@ -179,6 +184,7 @@ if [ -z "$JEOS_EULA_ALREADY_AGREED" ]; then
 fi
 
 if [ -z "$JEOS_TIMEZONE" ]; then
+    welcome_screen_with_console_switch
     dialog_timezone
 fi
 
@@ -189,12 +195,14 @@ run rm -f /etc/localtime
 run systemd-firstboot "${systemd_firstboot_args[@]}"
 
 if [ -z "$JEOS_PASSWORD_ALREADY_SET" ]; then
+    welcome_screen_with_console_switch
     dialog_password
 fi
 
 # Do not show the register on non SLE based distributions or if is
 # globally disabled
 if [ -x /usr/bin/SUSEConnect -a -z "${ID##sle*}" -a -z "${JEOS_HIDE_SUSECONNECT}" ]; then
+	welcome_screen_with_console_switch
 	d --msgbox $"Please register this image using your existing SUSE entitlement.
 
 As \"root\" use the following command:
