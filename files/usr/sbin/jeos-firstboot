@@ -83,26 +83,13 @@ fi
 
 systemd_firstboot_args=('--setup-machine-id')
 
-# If the configuration is not loaded and we are in the first terminal
-# instance, make sure that the variables are declared.
-JEOS_LOCALE=${JEOS_LOCALE-}
-JEOS_KEYTABLE=${JEOS_KEYTABLE-}
+load_modules
 
-if [ -z "$JEOS_LOCALE" ]; then
-    dialog_locale
-fi
-
-# Activate the locale selected
-apply_locale
-# also add to systemd-firstboot parameters
-systemd_firstboot_args+=("--locale=$JEOS_LOCALE")
-
-if [ -z "$JEOS_KEYTABLE" ]; then
-    dialog_keytable
-fi 
-
-# langset.sh needs locale to set keytable
-apply_locale_and_keytable
+for module in "${modules_names[@]}"; do
+	call_module ${module} "jeos_module_init"
+	call_module ${module} "jeos_module_show"
+	call_module ${module} "jeos_module_apply"
+done
 
 [ -n "$JEOS_LOCALE" ] && language="${JEOS_LOCALE%%_*}" || language="en"
 force_english_license=0
@@ -178,19 +165,7 @@ if [ -z "$JEOS_EULA_ALREADY_AGREED" ]; then
 	done
 fi
 
-if [ -z "$JEOS_TIMEZONE" ]; then
-    dialog_timezone
-fi
-
-systemd_firstboot_args+=("--timezone=$JEOS_TIMEZONE")
-
-# systemd-firstboot does not set the timezone if it exists, langset.sh created it
-run rm -f /etc/localtime
 run systemd-firstboot "${systemd_firstboot_args[@]}"
-
-if [ -z "$JEOS_PASSWORD_ALREADY_SET" ]; then
-    dialog_password
-fi
 
 # Do not show the register on non SLE based distributions or if is
 # globally disabled
@@ -207,14 +182,7 @@ Without registration this instance does not have access to updates and
 security fixes." 0 0 || true
 fi
 
-## Configure initial network settings
-dialog_network
-
-call_module_hook systemd_firstboot
-
 d --infobox $"Applying firstboot settings ..." 3 40 || true
-
-apply_password
 
 # Look for EFI dir to see if the machine is booted in UEFI mode
 EFI_SYSTAB="/sys/firmware/efi/systab"
