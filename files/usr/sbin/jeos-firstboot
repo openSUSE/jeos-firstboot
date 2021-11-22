@@ -228,8 +228,9 @@ fi
 
 # Test if snapper is available
 if [ -x /usr/bin/snapper -a "$(stat --format=%T -f /)" = "btrfs" ]; then
-	if ! btrfs qgroup show / &>/dev/null; then
-		# Run snapper to setup quota for btrfs
+	# Search for non-empty QGROUP value in the config, if not found ...
+	if ! grep -qE 'QGROUP="[^"]' /etc/snapper/configs/root; then
+		# ... run snapper to setup quota for btrfs
 		run /usr/bin/snapper --no-dbus setup-quota || warn $"Could not setup quota for btrfs"
 	fi
 fi
