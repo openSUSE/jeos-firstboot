@@ -1,0 +1,116 @@
+# Function to allow showing dialogs (or other stuff) on all consoles.
+# At its core, it works by spawning processes with the given command on each
+# console and waits for them to finish. If any exits with an exit status other
+# than 254, the others are killed and the status returned.
+#
+# The inner workings are a bit complex, mostly to workaround bash not being
+# able to wait for any process to exit, returning pid + status. It can either
+# wait for multiple processes (PIDs) to exit or return the exit status of any
+# process, but not the corresponding PID. There is no way to deal with
+# background processes which exit before "wait" was called. In the case that
+# there is no background process anymore, "wait" simply returns 0.
+# As a workaround, the spawned background processes stay alive until killed
+# explicitly and report their exit status and console through a FIFO.
+
+# Directory the fifo for IPC is stored in. Managed by on_all_consoles.
+fifodir=
+# Console of the successful console_subproc
+console=
+
+# Internal helper used by on_all_consoles.
+# This function is called for each console and basically runs "$@" on the
+# console given in $1 and writes its exit status into the fifo.
+# Bash doesn't forward signals to its child processes, instead that needs
+# to be done explicitly. This is necessary for "dialog" to restore the tty.
+# Note: When passing a function as parameter, make sure to not spawn
+# subprocesses, i.e. use exec when possible.
+console_subproc() {
+	local console="$1"
+	shift
+	"$@" <>"$console" >&0 &
+	pid=$!
+	trap 'set +e; kill $pid; wait $pid; dialog --clear <>"$console" >&0; exit 0' SIGTERM
+	ret=0
+	wait $pid || ret=$?
+	# Undo the trap to not kill the already dead process and also
+	# avoid waiting for the current process (sleep 1) before handling it.
+	trap - SIGTERM
+	echo "$ret $console" > "${fifodir}/fifo"
+	# Stay around until explicitly killed.
+	while :; do sleep 1; done
+}
+
+on_all_consoles() {
+	# Needed to tell apart errors and escape
+	export DIALOG_ERROR=254
+	# The linux fbcon uses this, most serial consoles should be fine too
+	export TERM=linux
+
+	# Create a FIFO for communicating the status
+	fifodir="$(mktemp -d)"
+	mkfifo "${fifodir}/fifo"
+
+	# For every active console, create a background process
+	local pids=()
+	local currenttty="$(resolve_tty "$(tty)")"
+	for console in $(cat /sys/class/tty/console/active); do
+		console="/dev/${console}"
+		[ -r "$console" ] || continue
+		# Skip current tty
+		[ "$(resolve_tty "$console")" = "$currenttty" ] && continue
+		console_subproc "$console" "$@" &
+		pids+=($!)
+	done
+
+	# Also for the current tty
+	console_subproc "$currenttty" "$@" &
+	pids+=($!)
+
+	# Wait for either all processes to fail or one to succeed
+	local finished=0
+	while read status console < "${fifodir}/fifo"; do
+		((finished++)) || :
+		[ $finished -eq ${#pids[@]} ] && break
+		[ $status -eq 254 ] || break
+	done
+
+	# All done, kill remaining processes
+	kill "${pids[@]}" || :
+	wait "${pids[@]}" || :
+
+	rm -r "$fifodir"
+	fifodir=
+
+	return $status
+}
+
+# If JEOS_ASK_CONSOLE is not 0, show the "welcome" screen and switch to the
+# console where it was acked on.
+welcome_screen_with_console_switch() {
+	[ "${JEOS_ASK_CONSOLE-0}" -eq "0" ] && return 0
+
+	# Only ask once
+	[ "${JEOS_CONSOLE_ASKED-0}" -eq "1" ] && return 0
+	export JEOS_CONSOLE_ASKED=1
+
+	while true; do
+		ret=0
+		on_all_consoles dialog --backtitle "$PRETTY_NAME" --title $"JeOS Firstboot" --ok-label $"Start" --msgbox $"Welcome to $PRETTY_NAME"'!\nThe initial configuration takes just a few steps.' 0 0 || ret=$?
+		if [ "$ret" -eq 0 ]; then
+			break;
+		elif [ "$ret" -eq 254 ]; then
+			# Error? Just continue and fail later
+			return;
+		else
+			if on_all_consoles dialog --backtitle "$PRETTY_NAME" --yesno $"Do you really want to quit?" 0 0; then
+				exit 1
+			fi
+		fi
+	done
+
+	# Move stdio to the console
+	if [ "$console" != "$(tty)" ]; then
+		exec 0<>"$console" 1>&0
+		stty_size
+	fi
+}
