@@ -22,7 +22,7 @@
 
 set -euo pipefail
 
-if ! mountpoint /.snapshots &>/dev/null; then
+if ! mountpoint -q /.snapshots &>/dev/null; then
     echo "Snapshots not enabled, skipping"
     exit 0
 fi
