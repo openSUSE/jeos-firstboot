@@ -27,6 +27,11 @@ if ! mountpoint -q /.snapshots &>/dev/null; then
     exit 0
 fi
 
+if mountpoint -q /etc; then
+    echo "/etc is not part of the snapshot, skipping"
+    exit 0
+fi
+
 if [ ! -e /.snapshots/2 ]; then
     snapper -v create -d "After jeos-firstboot configuration" --userdata "important=yes"
 fi
