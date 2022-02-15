@@ -56,6 +56,9 @@ on_all_consoles() {
 	for console in $(cat /sys/class/tty/console/active); do
 		console="/dev/${console}"
 		[ -r "$console" ] || continue
+		# Skip consoles which aren't ready, e.g. return EIO.
+		# For those, dialog would switch to /dev/tty as fallback.
+		stty size <>"$console" &>/dev/null || continue
 		# Skip current tty
 		[ "$(resolve_tty "$console")" = "$currenttty" ] && continue
 		console_subproc "$console" "$@" &
