@@ -58,13 +58,10 @@ d(){
 			return 0
 			;;
 		  1)
-			echo "$(xargs -a "$dialog_out")" >/var/log/jeos
 			dialog --backtitle "$PRETTY_NAME" --yesno $"Do you really want to quit?" 0 0 && exit 1
 			continue
 			;;
 		  255)
-			# xargs to remove whitespaces
-			echo "$(xargs -a "$dialog_out")" >/var/log/jeos
 			result_error="$(xargs -a "$dialog_out")"
 			if [ -z "$result_error" ]; then
 				dialog --backtitle "$PRETTY_NAME" --yesno $"Do you really want to quit?" 0 0 && exit 1
