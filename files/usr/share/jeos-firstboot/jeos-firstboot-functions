@@ -64,19 +64,9 @@ d(){
 			read result < $dialog_out || true
 			return 0
 			;;
-		  1)
+		  1|255)
 			dialog --backtitle "$PRETTY_NAME" --yesno $"Do you really want to quit?" 0 0 && exit 1
 			continue
-			;;
-		  255)
-			result_error="$(xargs -a "$dialog_out")"
-			if [ -z "$result_error" ]; then
-				dialog --backtitle "$PRETTY_NAME" --yesno $"Do you really want to quit?" 0 0 && exit 1
-				continue
-			fi
-			logger -p err -t jeos-firstboot "$result_error"
-			dialog --backtitle "$PRETTY_NAME" --msgbox $"Exiting due to error, please check the system log" 0 0
-			exit 2
 			;;
 		esac
 	done
