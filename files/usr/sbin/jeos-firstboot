@@ -215,11 +215,6 @@ Without registration this instance does not have access to updates and
 security fixes." 0 0 || true
 fi
 
-## Configure initial network settings
-if [ "$(current_network_service)" != "NetworkManager" ]; then
-	dialog_network
-fi
-
 call_module_hook systemd_firstboot
 
 d --infobox $"Applying firstboot settings ..." 3 40 || true
