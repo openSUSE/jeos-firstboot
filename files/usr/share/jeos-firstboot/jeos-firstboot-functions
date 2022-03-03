@@ -26,6 +26,13 @@ if pushd "/usr/share/jeos-firstboot/modules" &>/dev/null; then
         popd &>/dev/null
 fi
 
+module_has_hook() {
+	local module="$1"
+	local module_func="$2"
+	module_function="${module}_${module_func}"
+	[ "$(type -t -- "${module_function}")" = "function" ]
+}
+
 call_module() {
 	local module="$1"
 	local module_func="$2"

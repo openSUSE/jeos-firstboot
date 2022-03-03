@@ -54,10 +54,18 @@ cleanup() {
 }
 trap cleanup EXIT
 
+# Get a list of all config modules
+config_modules=()
+for module in "${modules[@]}"; do
+	if module_has_hook "$module" "jeos_config"; then
+		config_modules+=("${module}")
+	fi
+done
+
 select_config()
 {
 	modules_order=("locale" '' "keytable" '' "timezone" '' "password" '')
-	for module in "${modules[@]}"; do
+	for module in "${config_modules[@]}"; do
 		modules_order+=("${module}" '')
 	done
 
@@ -75,7 +83,7 @@ Configure system settings using an interactive dialog
 	keytable	Show configuration for keyboard
 	timezone	Show configuration for timezone
 	password	Show configuration for password
-$(for module in "${modules[@]}"; do
+$(for module in "${config_modules[@]}"; do
 	echo "	${module}	Show configuration for ${module}"
 done)
 EOF
