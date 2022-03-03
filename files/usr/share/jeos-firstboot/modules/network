@@ -1,0 +1,76 @@
+# Copyright (c) 2022 SUSE LLC
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+do_wicked_autoconfig()
+{
+	d --infobox $"Collecting network info ..." 3 33
+
+	shopt -s nullglob
+
+	for net_path in /sys/class/net/*; do
+		[ -d "$net_path" ] || continue # skip bonding_masters file
+
+		net_device=${net_path##*/}
+
+		[ "$net_device" = "lo" ] && continue
+
+		# Only devices having ID_NET_NAME.* attrs
+		# Ignore errors if udev not available
+		udevadm info -q property -p "$net_path" 2>/dev/null | grep -qs ID_NET_NAME || continue
+		# But don't touch WLAN interfaces
+		udevadm info -q property -p "$net_path" | grep -qs "DEVTYPE=wlan" && continue
+
+		unset IPADDR
+		eval `wicked test dhcp4 "$net_device" 2>/dev/null | grep -E "^IPADDR="`
+		ip link set down "$net_device" # set link down after probe once done
+
+		# Create a configuration file for each interface that provides
+		# an IPADDR
+		if [ -n "$IPADDR" ]; then
+			printf "STARTMODE=auto\nBOOTPROTO=dhcp\n" \
+				> "/etc/sysconfig/network/ifcfg-$net_device"
+		fi
+	done
+
+	run sed -i -E 's/^DHCLIENT(6?)_SET_HOSTNAME=.*$/DHCLIENT\1_SET_HOSTNAME=yes/' /etc/sysconfig/network/dhcp
+}
+
+network_jeos_config()
+{
+	if [ "$(current_network_service)" = "NetworkManager" ]; then
+		nmtui
+		exit 0
+	fi
+
+	if ! d --yesno $"This will create a new network configuration from scratch,
+all connections will be lost.\nDo you want to continue?" 7 50; then
+		return
+	fi
+	do_wicked_autoconfig
+	d --infobox $"Restarting network ..." 3 26 || true
+	systemctl restart network
+}
+
+network_systemd_firstboot()
+{
+	if [ "$(current_network_service)" != "NetworkManager" ]; then
+		do_wicked_autoconfig
+	fi
+}
