@@ -216,7 +216,9 @@ security fixes." 0 0 || true
 fi
 
 ## Configure initial network settings
-dialog_network
+if [ "$(current_network_service)" != "NetworkManager" ]; then
+	dialog_network
+fi
 
 call_module_hook systemd_firstboot
 
