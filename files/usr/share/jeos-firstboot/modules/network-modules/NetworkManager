@@ -18,16 +18,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# Returns the basename of the target of network.service,
-# e.g. "wicked" or "NetworkManager"
-current_network_service()
+network_jeos_config()
 {
-	systemctl show -P Id network.service | cut -d. -f1
+	nmtui
 }
 
-network_service="$(current_network_service)"
-if [ -e "/usr/share/jeos-firstboot/modules/network-modules/${network_service}" ]; then
-	. "/usr/share/jeos-firstboot/modules/network-modules/${network_service}"
-else
-	echo "No network configuration module for ${network_service} found" >&2
-fi
+network_systemd_firstboot()
+{
+}
