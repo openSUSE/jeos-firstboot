@@ -162,11 +162,4 @@ resolve_tty() {
         fi
 }
 
-# Returns the basename of the target of network.service,
-# e.g. "wicked" or "NetworkManager"
-current_network_service()
-{
-	systemctl show -P Id network.service | cut -d. -f1
-}
-
 # vim: syntax=sh
