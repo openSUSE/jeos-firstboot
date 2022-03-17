@@ -54,7 +54,7 @@ do_wicked_autoconfig()
 
 network_jeos_config()
 {
-	if ! d --yesno $"This will create a new network configuration from scratch,
+	if ! dialog --backtitle "$PRETTY_NAME" --yesno $"This will create a new network configuration from scratch,
 all connections will be lost.\nDo you want to continue?" 7 50; then
 		return
 	fi
