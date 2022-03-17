@@ -25,4 +25,19 @@ network_jeos_config()
 
 network_systemd_firstboot()
 {
+	if [ "$(nmcli networking connectivity)" = "none" ]; then
+		welcome_screen_with_console_switch
+
+		# Note: Dialog also flushes the input queue here. Without that,
+		# nmtui would react to what is typed before it shows up.
+		if dialog --backtitle "$PRETTY_NAME" --yesno $"No active network connection detected.\nDo you want to configure network connections?" 0 0; then
+			# nmtui (resp. libslang used by newt) uses /dev/tty,
+			# so setsid is required to set it to the current one.
+			setsid -wc nmtui
+			# setsid steals our tty connection, reopen it
+			if [ "$console" != "$(tty)" ]; then
+				exec 0<>"$console" 1>&0
+			fi
+		fi
+	fi
 }
