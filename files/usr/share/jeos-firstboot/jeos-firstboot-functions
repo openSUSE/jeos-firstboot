@@ -76,7 +76,7 @@ d(){
 }
 
 warn(){
-	d --title $"Warning" --msgbox "$1" 6 40
+	d --title $"Warning" --msgbox "$1" 0 0
 }
 
 # Given the number of total item pairs, outputs the number of items to display at once
