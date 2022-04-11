@@ -75,7 +75,7 @@ dialog_password()
 		if [ -z "$password" ]; then
 			warn $"Warning: No root password set.
 
-You cannot log in that way. A debug shell will be started on tty9 just this time. Use it to e.g. import your ssh key." 0 0 || true
+You cannot log in that way. A debug shell will be started on tty9 just this time. Use it to e.g. import your ssh key." || true
 		run systemctl start debug-shell.service
 		fi
 		break
