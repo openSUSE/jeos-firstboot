@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: Copyright 2015-2022 SUSE LLC
+
 # Function to allow showing dialogs (or other stuff) on all consoles.
 # At its core, it works by spawning processes with the given command on each
 # console and waits for them to finish. If any exits with an exit status other
