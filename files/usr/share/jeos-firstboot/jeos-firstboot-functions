@@ -26,7 +26,7 @@ list=
 password=''
 modules=()
 
-if pushd "/usr/share/jeos-firstboot/modules" &>/dev/null; then
+if pushd "${jeos_prefix?}/share/jeos-firstboot/modules" &>/dev/null; then
         for module in *; do
                 if [ -f "${module}" ] && source "${module}"; then
                         modules+=("${module}")

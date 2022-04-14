@@ -9,8 +9,8 @@ current_network_service()
 }
 
 network_service="$(current_network_service)"
-if [ -e "/usr/share/jeos-firstboot/modules/network-modules/${network_service}" ]; then
-	. "/usr/share/jeos-firstboot/modules/network-modules/${network_service}"
+if [ -e "${jeos_prefix?}/share/jeos-firstboot/modules/network-modules/${network_service}" ]; then
+	. "${jeos_prefix?}/share/jeos-firstboot/modules/network-modules/${network_service}"
 else
 	echo "No network configuration module for ${network_service} found" >&2
 fi

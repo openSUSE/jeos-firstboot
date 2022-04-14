@@ -2,8 +2,10 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: Copyright 2015-2022 SUSE LLC
 
-. "/usr/share/jeos-firstboot/jeos-firstboot-functions"
-. "/usr/share/jeos-firstboot/jeos-firstboot-dialogs"
+jeos_prefix="$(realpath "$(dirname "${BASH_SOURCE[0]}")/../")"
+
+. "${jeos_prefix}/share/jeos-firstboot/jeos-firstboot-functions"
+. "${jeos_prefix}/share/jeos-firstboot/jeos-firstboot-dialogs"
 
 # for testing we may run as non root
 if [ -w /run ]; then
