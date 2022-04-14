@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: Copyright 2015-2022 SUSE LLC
+# shellcheck shell=bash
 
 # Returns the basename of the target of network.service,
 # e.g. "wicked" or "NetworkManager"
@@ -10,6 +11,7 @@ current_network_service()
 
 network_service="$(current_network_service)"
 if [ -e "${jeos_prefix?}/share/jeos-firstboot/modules/network-modules/${network_service}" ]; then
+	# shellcheck source=SCRIPTDIR/network-modules/NetworkManager
 	. "${jeos_prefix?}/share/jeos-firstboot/modules/network-modules/${network_service}"
 else
 	echo "No network configuration module for ${network_service} found" >&2

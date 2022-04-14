@@ -8,12 +8,17 @@ jeos_prefix="$(realpath "$(dirname "${BASH_SOURCE[0]}")/../")"
 
 TEXTDOMAIN='jeos-firstboot'
 
+# shellcheck source-path=SCRIPTDIR/../
 . "${jeos_prefix}/share/jeos-firstboot/jeos-firstboot-functions"
+# shellcheck source-path=SCRIPTDIR/../
 . "${jeos_prefix}/share/jeos-firstboot/jeos-firstboot-dialogs"
+# shellcheck source-path=SCRIPTDIR/../
 . "${jeos_prefix}/share/jeos-firstboot/welcome-screen"
 
 # Read the optional configuration file
+# shellcheck source-path=SCRIPTDIR/../
 [ -f "${jeos_prefix}/share/defaults/jeos-firstboot.conf" ] && . "${jeos_prefix}/share/defaults/jeos-firstboot.conf"
+# shellcheck source=/dev/null
 [ -f /etc/jeos-firstboot.conf ] && . /etc/jeos-firstboot.conf
 
 # for testing we may run as non root
