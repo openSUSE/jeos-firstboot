@@ -4,7 +4,9 @@
 
 jeos_prefix="$(realpath "$(dirname "${BASH_SOURCE[0]}")/../")"
 
+# shellcheck source-path=SCRIPTDIR/../
 . "${jeos_prefix}/share/jeos-firstboot/jeos-firstboot-functions"
+# shellcheck source-path=SCRIPTDIR/../
 . "${jeos_prefix}/share/jeos-firstboot/jeos-firstboot-dialogs"
 
 # for testing we may run as non root
