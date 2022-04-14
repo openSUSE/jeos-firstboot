@@ -9,7 +9,7 @@ else
 fi
 
 stty_size() {
-	set -- `stty size`; LINES=$1; COLUMNS=$2
+	set -- $(stty size); LINES=$1; COLUMNS=$2
 	# stty size can return zero when not ready or
 	# its a serial console
 	if [ "$COLUMNS" = "0" -o "$LINES" = "0" ]; then
@@ -34,7 +34,7 @@ if pushd "${jeos_prefix?}/share/jeos-firstboot/modules" &>/dev/null; then
                         modules+=("${module}")
                 fi
         done
-        popd &>/dev/null
+        popd &>/dev/null || exit
 fi
 
 module_has_hook() {
@@ -57,7 +57,7 @@ call_module() {
 call_module_hook() {
         local hook="$1"
         for module in "${modules[@]}"; do
-		call_module ${module} ${hook} || continue
+		call_module "${module}" "${hook}" || continue
         done
         return 0
 }
@@ -122,15 +122,15 @@ findlocales()
 
 get_current_locale()
 {
-	cur_locale=`awk -F= '$1 == "LANG" { print $2; exit }' /etc/locale.conf`
+	cur_locale=$(awk -F= '$1 == "LANG" { print $2; exit }' /etc/locale.conf)
 	[ -z "$cur_locale" ] && cur_locale="en_US"
-	echo ${cur_locale}
+	echo "${cur_locale}"
 }
 
 apply_locale()
 {
 	if [ ! -z "$JEOS_LOCALE" ]; then
-		run langset.sh $JEOS_LOCALE || warn $"Setting the locale failed"
+		run langset.sh "$JEOS_LOCALE" || warn $"Setting the locale failed"
 	fi
 }
 
