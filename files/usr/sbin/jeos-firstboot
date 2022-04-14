@@ -4,14 +4,16 @@
 
 set -e
 
+jeos_prefix="$(realpath "$(dirname "${BASH_SOURCE[0]}")/../")"
+
 TEXTDOMAIN='jeos-firstboot'
 
-. "/usr/share/jeos-firstboot/jeos-firstboot-functions"
-. "/usr/share/jeos-firstboot/jeos-firstboot-dialogs"
-. "/usr/share/jeos-firstboot/welcome-screen"
+. "${jeos_prefix}/share/jeos-firstboot/jeos-firstboot-functions"
+. "${jeos_prefix}/share/jeos-firstboot/jeos-firstboot-dialogs"
+. "${jeos_prefix}/share/jeos-firstboot/welcome-screen"
 
 # Read the optional configuration file
-[ -f /usr/share/defaults/jeos-firstboot.conf ] && . /usr/share/defaults/jeos-firstboot.conf
+[ -f "${jeos_prefix}/share/defaults/jeos-firstboot.conf" ] && . "${jeos_prefix}/share/defaults/jeos-firstboot.conf"
 [ -f /etc/jeos-firstboot.conf ] && . /etc/jeos-firstboot.conf
 
 # for testing we may run as non root
