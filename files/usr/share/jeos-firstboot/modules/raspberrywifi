@@ -22,7 +22,7 @@ raspberrywifi_get_wlan_networks()
 	if [ -n "${line}" ]; then
 		list+=("SSID=${line}" "${line}")
 	fi
-	done < <(ip link set $wlan_device up && iwlist $wlan_device scan|grep ESSID|cut -d':' -f2|cut -d'"' -f2)
+	done < <(ip link set $wlan_device up && iwlist $wlan_device scan|grep ESSID|cut -d':' -f2|cut -d'"' -f2|sort -u)
         list+=("manual" "Enter SSID manually")
 	[ -n "${list[*]}" ]
 }
