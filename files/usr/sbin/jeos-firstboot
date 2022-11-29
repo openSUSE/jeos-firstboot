@@ -6,7 +6,6 @@ set -e
 
 TEXTDOMAIN='jeos-firstboot'
 
-. /etc/os-release
 . "/usr/share/jeos-firstboot/jeos-firstboot-functions"
 . "/usr/share/jeos-firstboot/jeos-firstboot-dialogs"
 . "/usr/share/jeos-firstboot/welcome-screen"

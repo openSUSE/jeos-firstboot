@@ -1,6 +1,12 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: Copyright 2015-2022 SUSE LLC
 
+if [ -e /etc/os-release ]; then
+	. /etc/os-release
+else
+	. /usr/lib/os-release
+fi
+
 stty_size() {
 	set -- `stty size`; LINES=$1; COLUMNS=$2
 	# stty size can return zero when not ready or

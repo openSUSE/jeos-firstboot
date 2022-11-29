@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: Copyright 2015-2022 SUSE LLC
 
-. /etc/os-release
 . "/usr/share/jeos-firstboot/jeos-firstboot-functions"
 . "/usr/share/jeos-firstboot/jeos-firstboot-dialogs"
 
