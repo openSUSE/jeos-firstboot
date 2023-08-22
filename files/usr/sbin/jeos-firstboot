@@ -62,7 +62,7 @@ if ! run dbus-send --system --print-reply --dest=org.freedesktop.systemd1 /org/f
 	sleep 1
 fi
 
-systemd_firstboot_args=('--setup-machine-id')
+systemd_firstboot_args=()
 
 # If the configuration is not loaded and we are in the first terminal
 # instance, make sure that the variables are declared.
