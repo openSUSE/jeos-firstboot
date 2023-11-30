@@ -7,7 +7,7 @@ It is a lightweight and customisable firstboot wizard that allows to set basic s
 This is mainly developed for openSUSE and SUSE Linux Enterprise Server JeOS images. For more information visit the [JeOS wiki](https://en.opensuse.org/Portal:JeOS).
 
 ## Getting Started
-jeos-firstboot can be extended using separate modules, writing a script with the appropriate format and have it installed under `/usr/lib/share/jeos-firstboot/modules` will make this module be executed.
+jeos-firstboot can be extended using separate modules, writing a script with the appropriate format and have it installed under `/usr/lib/share/jeos-firstboot/modules` or `/etc/jeos-firstboot/modules` will make this module be executed.
 For more information on modules format please check [jeos-firstboot extensions](https://en.opensuse.org/Portal:JeOS:Documentation)
 
 ### Installation
