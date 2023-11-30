@@ -27,15 +27,29 @@ list=
 password=''
 modules=()
 
-if pushd "${jeos_prefix?}/share/jeos-firstboot/modules" &>/dev/null; then
-        for module in *; do
+_find_modules() {
+	local d f
+	for d in "/etc/jeos-firstboot/modules" "${jeos_prefix?}/share/jeos-firstboot/modules"; do
+		for f in "$d"/*; do
+			if [ -L "$f" ] || [ -f "$f" ]; then
+				echo "${f##*/}" "$f"
+			fi
+		done
+	done
+}
+
+init_modules() {
+	[ -z "$modules" ] || return 0
+	local module f
+	while read -r module f; do
+		if [ -L "$f" ] && [ "$(readlink "$f")" = "/dev/null" ]; then
+			continue
+		fi
 		# shellcheck source=/dev/null
-                if [ -f "${module}" ] && source "${module}"; then
-                        modules+=("${module}")
-                fi
-        done
-        popd &>/dev/null || exit
-fi
+		source "$f" || continue
+		modules+=("${module}")
+	done < <(_find_modules|sort -k 1,1 -u)
+}
 
 module_has_hook() {
 	local module="$1"

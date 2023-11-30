@@ -37,6 +37,8 @@ cleanup() {
 }
 trap cleanup EXIT
 
+init_modules
+
 # Get a list of all config modules
 config_modules=()
 for module in "${modules[@]}"; do
