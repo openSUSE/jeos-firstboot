@@ -1,0 +1,97 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: Copyright 2024 SUSE LLC
+# shellcheck shell=bash
+
+# This also gets the password as value, so make sure not to leak that in the process list
+status_mail_set_config_option()
+{
+	key="$1"
+	value="$2"
+
+	# Create the config file in /etc if necessary
+	[ -e /etc/default/systemd-status-mail ] || touch /etc/default/systemd-status-mail
+
+	# Ensure the permissions are correct
+	chown systemd-status-mail:systemd-journal /etc/default/systemd-status-mail
+	chmod 600 /etc/default/systemd-status-mail
+
+	# Escape string for the file itself
+	value="${value@Q}"
+	# awk only supports " quoting, so \ and " need to be escaped
+	# Escape backslash for awk
+	value="${value//\\/\\\\}"
+	# Escape double quotes for awk
+	value="${value//\"/\\\"}"
+
+	# Replace existing assignment(s) or append at the end
+	awk -i inplace -F= -f - /etc/default/systemd-status-mail <<EOF
+		\$1 == "${key}" { \$0="${key}=${value}"; replaced=1 }
+		1 { print }
+		ENDFILE { if (!replaced) { print "${key}=${value}" } }
+EOF
+}
+
+status_mail_do_config()
+{
+	if [ -e /usr/etc/default/systemd-status-mail ]; then
+		. /usr/etc/default/systemd-status-mail
+	fi
+	if [ -e /etc/default/systemd-status-mail ]; then
+		. /etc/default/systemd-status-mail
+	fi
+
+	# Add a (fake) placeholder to demonstrate the smtps:// syntax
+	if [ -z "${RELAY_HOST}" ]; then
+		RELAY_HOST="smtps://server:port"
+	fi
+
+	# If a password is set, don't pass it to dialog as default value
+	# to not leak it to ps
+	pw_placeholder="${MAILX_AUTH_PASSWORD}"
+	if [ -n "${pw_placeholder}" ]; then
+		pw_placeholder="^^^"
+	fi
+
+	d --title $"E-Mail Notifications" \
+		--insecure \
+		--mixedform $"If desired, enter a mail address to receive system status notifications:" 8 0 8 \
+		$"Destination" 1 0 "$ADDRESS" 1 18 35 0 0 \
+		$"Sender address" 2 0 "$FROM" 2 18 35 0 0 \
+		$"SMTP configuration (optional):" 4 0 "" 4 35 0 0 2 \
+		$"Server" 5 0 "$RELAY_HOST" 5 18 35 0 0 \
+		$"Authentication (if needed):" 6 0 "" 6 35 0 0 2 \
+		$"Username" 7 0 "$MAILX_AUTH_USER" 7 18 35 0 0 \
+		$"Password" 8 0 "$pw_placeholder" 8 18 35 0 1
+	readarray -t input <<<"$result"
+
+	# Undo the placeholder
+	if [ "${input[3]}" = "smtps://server:port" ]; then
+		input[3]=
+	fi
+
+	if [ "${input[0]}" != "${ADDRESS}" ]; then
+		status_mail_set_config_option ADDRESS "${input[0]}"
+	fi
+	if [ "${input[1]}" != "${FROM}" ]; then
+		status_mail_set_config_option FROM "${input[1]}"
+	fi
+	if [ "${input[2]}" != "${RELAY_HOST}" ]; then
+		status_mail_set_config_option RELAY_HOST "${input[2]}"
+	fi
+	if [ "${input[3]}" != "${MAILX_AUTH_USER}" ]; then
+		status_mail_set_config_option MAILX_AUTH_USER "${input[3]}"
+	fi
+	if [ "${input[4]}" != "${pw_placeholder}" ] && [ "${input[4]}" != "${MAILX_AUTH_PASSWORD}" ]; then
+		status_mail_set_config_option MAILX_AUTH_PASSWORD "${input[4]}"
+	fi
+
+	return 0
+}
+
+# Only show the configuration if the package is installed
+if [ -e /usr/lib/systemd/system/systemd-status-mail@.service ]; then
+	status_mail_jeos_config()
+	{
+		status_mail_do_config
+	}
+fi
