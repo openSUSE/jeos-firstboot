@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: Copyright 2024 SUSE LLC
+# shellcheck shell=bash
+
+# Only show the configuration if the package is installed
+if command -v ssh-pairing >/dev/null; then
+	ssh_enroll_jeos_config()
+	{
+		DIALOGOPTS="--backtitle \"$PRETTY_NAME\"" ssh-pairing || :
+	}
+
+	ssh_enroll_systemd_firstboot()
+	{
+		if d_styled --title $"SSH Key Enrollment" --yesno $"Do you want to enroll keys for SSH access?" 0 0; then
+			while ! DIALOGOPTS="--backtitle \"$PRETTY_NAME\"" ssh-pairing; do
+				if ! d_styled --title $"SSH Key Enrollment" --yesno $"No keys enrolled. Try again?" 0 0; then
+					return 0
+				fi
+			done
+		fi
+	}
+fi
