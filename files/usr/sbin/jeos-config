@@ -52,7 +52,7 @@ select_config()
 		modules_order+=("${module}" '')
 	done
 
-	d --menu $"Select configuration module" 0 0 "$(menuheight ${#modules_order[@]})" "${modules_order[@]}"
+	d_with_result --menu $"Select configuration module" 0 0 "$(menuheight ${#modules_order[@]})" "${modules_order[@]}" || exit 0
 }
 
 usage()
