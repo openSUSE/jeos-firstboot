@@ -41,8 +41,8 @@ status_mail_do_config()
 	fi
 
 	# Add a (fake) placeholder to demonstrate the smtps:// syntax
-	if [ -z "${RELAY_HOST}" ]; then
-		RELAY_HOST="smtps://server:port"
+	if [ -z "${RELAYHOST}" ]; then
+		RELAYHOST="smtps://server:port"
 	fi
 
 	# If a password is set, don't pass it to dialog as default value
@@ -58,7 +58,7 @@ status_mail_do_config()
 		$"Destination" 1 0 "$ADDRESS" 1 18 35 0 0 \
 		$"Sender address" 2 0 "$FROM" 2 18 35 0 0 \
 		$"SMTP configuration (optional):" 4 0 "" 4 35 0 0 2 \
-		$"Server" 5 0 "$RELAY_HOST" 5 18 35 0 0 \
+		$"Server" 5 0 "$RELAYHOST" 5 18 35 0 0 \
 		$"Authentication (if needed):" 6 0 "" 6 35 0 0 2 \
 		$"Username" 7 0 "$MAILX_AUTH_USER" 7 18 35 0 0 \
 		$"Password" 8 0 "$pw_placeholder" 8 18 35 0 1
@@ -75,8 +75,8 @@ status_mail_do_config()
 	if [ "${input[1]}" != "${FROM}" ]; then
 		status_mail_set_config_option FROM "${input[1]}"
 	fi
-	if [ "${input[2]}" != "${RELAY_HOST}" ]; then
-		status_mail_set_config_option RELAY_HOST "${input[2]}"
+	if [ "${input[2]}" != "${RELAYHOST}" ]; then
+		status_mail_set_config_option RELAYHOST "${input[2]}"
 	fi
 	if [ "${input[3]}" != "${MAILX_AUTH_USER}" ]; then
 		status_mail_set_config_option MAILX_AUTH_USER "${input[3]}"
