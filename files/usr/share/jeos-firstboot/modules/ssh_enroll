@@ -6,7 +6,7 @@ ssh_enroll_handle_pubkeys()
 {
 	filename="$1"
 	if ! [ -s "$filename" ]; then
-		d --msgbox $"No public keys received!" 0 0
+		d_styled --msgbox $"No public keys received!" 0 0
 		return 0
 	fi
 
@@ -20,7 +20,7 @@ ssh_enroll_handle_pubkeys()
 	done <"$filename"
 
 	text="$(printf $"Received %d public keys from %s. Select the key(s) to import." "$(wc -l <"$filename")" "$(awk '{print $3; exit}' "$filename")")"
-	d --title $"SSH Key Enrollment" --separate-output --no-tags --checklist "$text" 12 60 10 "${items[@]}"
+	d_with_result --title $"SSH Key Enrollment" --separate-output --no-tags --checklist "$text" 12 60 10 "${items[@]}"
 
 	readarray -t input <<<"$result"
 	# readarray converts an empty string to ("")
@@ -34,12 +34,12 @@ ssh_enroll_handle_pubkeys()
 	done
 
 	text="$(printf $"Imported %d keys" "${#input[@]}")"
-	d --title $"SSH Key Enrollment" --msgbox "$text" 0 0
+	d_styled --title $"SSH Key Enrollment" --msgbox "$text" 0 0
 }
 
 ssh_enroll_do_config()
 {
-	if ! dialog --backtitle "$PRETTY_NAME" --title $"SSH Key Enrollment" --yesno $"Do you want to enroll keys for SSH access?" 0 0; then
+	if ! d_styled --title $"SSH Key Enrollment" --yesno $"Do you want to enroll keys for SSH access?" 0 0; then
 		return 0
 	fi
 
@@ -80,6 +80,7 @@ ssh_enroll_do_config()
 	} >"${tmpdir}/msg"
 
 	(
+		# Have to use dialog directly here, no subprocesses allowed
 		dialog --backtitle "$PRETTY_NAME" --title $"SSH Key Enrollment" --exit-label $"Cancel" --textbox "${tmpdir}/msg" 12 70 &
 		pid=$!; trap 'kill $pid' SIGTERM; echo dialog >"${tmpdir}/dialogfifo"; wait $pid; echo dialog $? >>"${tmpdir}/exitfifo"
 	) &
@@ -107,9 +108,9 @@ ssh_enroll_do_config()
 	if [ "$who" = "server" ] && [ "$exitcode" -eq 0 ]; then
 		ssh_enroll_handle_pubkeys "${tmpdir}/pubkeys"
 	elif [ "$who" = "server" ]; then
-		dialog --backtitle "$PRETTY_NAME" --title $"SSH Key Enrollment" --msgbox $"ssh-pairing-server exited with ${exitcode}" 0 0
+		d_styled --title $"SSH Key Enrollment" --msgbox $"ssh-pairing-server exited with ${exitcode}" 0 0
 	else
-		dialog --backtitle "$PRETTY_NAME" --title $"SSH Key Enrollment" --msgbox $"Key enrollment cancelled by user request" 0 0
+		d_styled --title $"SSH Key Enrollment" --msgbox $"Key enrollment cancelled by user request" 0 0
 	fi
 
 	rm -r "$tmpdir"
