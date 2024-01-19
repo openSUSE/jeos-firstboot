@@ -62,26 +62,45 @@ call_module_hook() {
         return 0
 }
 
-d(){
+# Run dialog with jeos-firstboot style options applied
+d_styled() {
+	dialog --backtitle "$PRETTY_NAME" "$@"
+}
+
+# Run d_styled and save the output into $result
+d_with_result() {
+	local retval=0
+	local stdoutfd
+	# Bash makes it a bit annoying to read the output of a different FD into a variable, it
+	# only supports reading stdout by itself. So redirect 3 to stdout and 1 to the real stdout.
+	exec {stdoutfd}>&1
+	result="$(d_styled --output-fd 3 "$@" 3>&1 1>&${stdoutfd})" || retval=$?
+	# Word splitting makes it necessary to use eval here.
+	eval "exec ${stdoutfd}>&-"
+	return "$retval"
+}
+
+# Run d_with_result but exit if cancelled (ESC or Cancel/No button pressed)
+d_with_exit_on_fail() {
 	while true
 	do
 		retval=0
-		# Bash makes it a bit annoying to read the output of a different FD into a variable, it
-		# only supports reading stdout by itself. So redirect 3 to stdout and 1 to the real stdout.
-		exec {stdoutfd}>&1
-		result="$(dialog --backtitle "$PRETTY_NAME" --output-fd 3 "$@" 3>&1 1>&${stdoutfd})" || retval=$?
-		# Word splitting makes it necessary to use eval here.
-		eval "exec ${stdoutfd}>&-"
+		d_with_result "$@" || retval=$?
 		case $retval in
 		  0)
 			return 0
 			;;
 		  1|255)
-			dialog --backtitle "$PRETTY_NAME" --yesno $"Do you really want to quit?" 0 0 && exit 1
+			d_styled --yesno $"Do you really want to quit?" 0 0 && exit 1
 			continue
 			;;
 		esac
 	done
+}
+
+# Run d_with_exit_on_fail, just with the previous unclear name for backwards compat
+d() {
+	d_with_exit_on_fail "$@"
 }
 
 warn(){
