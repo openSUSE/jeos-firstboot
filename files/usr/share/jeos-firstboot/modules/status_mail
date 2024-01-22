@@ -90,6 +90,9 @@ status_mail_do_config()
 		status_mail_set_config_option MAILX_OPTIONS "${input[5]}"
 	fi
 
+	# The config file impacts the generator, run it again.
+	systemctl daemon-reload
+
 	return 0
 }
 
