@@ -54,14 +54,16 @@ status_mail_do_config()
 
 	d --title $"E-Mail Notifications" \
 		--insecure \
-		--mixedform $"If desired, enter a mail address to receive system status notifications:" 8 0 8 \
+		--mixedform $"If desired, enter a mail address to receive system status notifications:" 8 0 10 \
 		$"Destination" 1 0 "$ADDRESS" 1 18 35 0 0 \
 		$"Sender address" 2 0 "$FROM" 2 18 35 0 0 \
 		$"SMTP configuration (optional):" 4 0 "" 4 35 0 0 2 \
 		$"Server" 5 0 "$RELAYHOST" 5 18 35 0 0 \
 		$"Authentication (if needed):" 6 0 "" 6 35 0 0 2 \
 		$"Username" 7 0 "$MAILX_AUTH_USER" 7 18 35 0 0 \
-		$"Password" 8 0 "$pw_placeholder" 8 18 35 0 1
+		$"Password" 8 0 "$pw_placeholder" 8 18 35 0 1 \
+		$"Additional mailx options (if needed):" 9 0 "" 6 35 0 0 2 \
+		$"" 10 0 "$MAILX_OPTIONS" 10 0 52 0 0
 	readarray -t input <<<"$result"
 
 	# Undo the placeholder
@@ -83,6 +85,9 @@ status_mail_do_config()
 	fi
 	if [ "${input[4]}" != "${pw_placeholder}" ] && [ "${input[4]}" != "${MAILX_AUTH_PASSWORD}" ]; then
 		status_mail_set_config_option MAILX_AUTH_PASSWORD "${input[4]}"
+	fi
+	if [ "${input[5]}" != "${MAILX_OPTIONS}" ]; then
+		status_mail_set_config_option MAILX_OPTIONS "${input[5]}"
 	fi
 
 	return 0
