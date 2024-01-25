@@ -51,7 +51,7 @@ ssh_enroll_do_config()
 	# Make sure host keys exist
 	sshd-gen-keys-start &>/dev/null
 
-	tmpdir=$(umask 077; mktemp -d)
+	tmpdir="$(mktemp -d)"
 
 	# Start the server in the background and show a dialog with information while it's running
 	# and offer the option to cancel the process. Unfortunately bash doesn't have a way to wait for
