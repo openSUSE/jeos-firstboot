@@ -12,11 +12,9 @@ ssh_enroll_handle_pubkeys()
 
 	items=()
 	lineno=1
-	state=on
 	while read -r type key comment; do
-		items+=("$lineno" "${type} ${key:0:8}...${key: -20:20}" "$state")
+		items+=("$lineno" "${type} ${key:0:8}...${key: -20:20}" "off")
 		lineno=$((lineno+1))
-		state=off # Only import the first key by default
 	done <"$filename"
 
 	text="$(printf $"Received %d public keys from %s. Select the key(s) to import." "$(wc -l <"$filename")" "$(awk '{print $3; exit}' "$filename")")"
