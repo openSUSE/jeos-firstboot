@@ -77,11 +77,23 @@ ssh_enroll_do_config()
 		echo
 		echo $"Please verify that the host key matches:"
 		for i in /etc/ssh/ssh_host_*key.pub; do ssh-keygen -l -f "$i"; done | awk '{ print $2" "$4 }'
+		echo
+
+		echo $"Randomart for ssh -o \"VisualHostKey yes\":"
+		# Display the randomart for all key types next to each other
+                allartlines=()
+                for i in /etc/ssh/ssh_host_*key.pub; do
+                        readarray -t artlines < <(ssh-keygen -l -v -f "$i" | tail -n+2)
+                        for (( j=0; j < "${#artlines[@]}"; j++ )); do
+                                allartlines[$j]="${allartlines[$j]}${artlines[$j]} "
+                        done
+                done
+                ( IFS=$'\n'; echo -n "${allartlines[*]}" )
 	} >"${tmpdir}/msg"
 
 	(
 		# Have to use dialog directly here, no subprocesses allowed
-		dialog --backtitle "$PRETTY_NAME" --title $"SSH Key Enrollment" --exit-label $"Cancel" --textbox "${tmpdir}/msg" 12 70 &
+		dialog --backtitle "$PRETTY_NAME" --title $"SSH Key Enrollment" --exit-label $"Cancel" --textbox "${tmpdir}/msg" 0 0 &
 		pid=$!; trap 'kill $pid' SIGTERM; echo dialog >"${tmpdir}/dialogfifo"; wait $pid; echo dialog $? >>"${tmpdir}/exitfifo"
 	) &
 	dialogpid=$!
