@@ -18,7 +18,9 @@ ssh_enroll_handle_pubkeys()
 	done <"$filename"
 
 	text="$(printf $"Received %d public keys from %s. Select the key(s) to import." "$(wc -l <"$filename")" "$(awk '{print $3; exit}' "$filename")")"
-	d_with_result --title $"SSH Key Enrollment" --separate-output --no-tags --checklist "$text" 12 60 10 "${items[@]}"
+	if ! d_with_result --title $"SSH Key Enrollment" --separate-output --no-tags --checklist "$text" 12 60 10 "${items[@]}"; then
+		return 0
+	fi
 
 	readarray -t input <<<"$result"
 	# readarray converts an empty string to ("")
