@@ -56,21 +56,7 @@ ssh_enroll_do_config()
 	tmpdir="$(mktemp -d)"
 
 	# Start the server in the background and show a dialog with information while it's running
-	# and offer the option to cancel the process. Unfortunately bash doesn't have a way to wait for
-	# one of multiple processes to exit and get information about which process exited and how.
-	# To work around that, use subprocesses with FIFOs: One to signal once they're up and can handle
-	# SIGTERM properly and one to signal that it exited and how.
-	# See also the welcome-screen implementation.
-	mkfifo "${tmpdir}/serverfifo"
-	mkfifo "${tmpdir}/dialogfifo"
-	mkfifo "${tmpdir}/exitfifo"
-
-	(
-		ssh-pairing-server >"${tmpdir}/pubkeys" 2>"${tmpdir}/serverror" &
-		pid=$!; trap 'kill $pid' SIGTERM; echo server >"${tmpdir}/serverfifo"; wait $pid; echo server $? >>"${tmpdir}/exitfifo"
-	) &
-	serverpid=$!
-
+	# and offer the option to cancel the process.
 	{
 		echo $"Please connect to one of the addresses with ssh:"
 		hostname -I
@@ -91,35 +77,31 @@ ssh_enroll_do_config()
                 ( IFS=$'\n'; echo -n "${allartlines[*]}" )
 	} >"${tmpdir}/msg"
 
-	(
-		# Have to use dialog directly here, no subprocesses allowed
-		dialog --backtitle "$PRETTY_NAME" --title $"SSH Key Enrollment" --exit-label $"Cancel" --textbox "${tmpdir}/msg" 0 0 &
-		pid=$!; trap 'kill $pid' SIGTERM; echo dialog >"${tmpdir}/dialogfifo"; wait $pid; echo dialog $? >>"${tmpdir}/exitfifo"
-	) &
+	ssh-pairing-server >"${tmpdir}/pubkeys" &
+	serverpid=$!
+
+	# Have to use dialog directly here, a shell in between would eat signals
+	dialog --backtitle "$PRETTY_NAME" --title $"SSH Key Enrollment" --exit-label $"Cancel" --textbox "${tmpdir}/msg" 0 0 &
 	dialogpid=$!
 
-	# Wait for both processes to be ready
-	read -r <"${tmpdir}/serverfifo"
-	read -r <"${tmpdir}/dialogfifo"
-
 	# Wait for either the server or dialog to exit
-	read -r who exitcode <"${tmpdir}/exitfifo"
-	if [ "$who" = "server" ]; then
+	exitcode=0
+	wait -n -p who "$serverpid" "$dialogpid" || exitcode=$?
+	if [ "$who" -eq "$serverpid" ]; then
 		kill "$dialogpid" # Server exited, kill the dialog
+		wait "$dialogpid"
 	else
 		kill "$serverpid" # Dialog exited, kill the server
+		wait "$serverpid"
 	fi
-	# Wait for the other process to exit
-	read -r <"${tmpdir}/exitfifo"
-	wait "$serverpid" "$dialogpid"
 
 	if [ "$start_sshd_again" != "0" ]; then
 		systemctl start sshd.service
 	fi
 
-	if [ "$who" = "server" ] && [ "$exitcode" -eq 0 ]; then
+	if [ "$who" -eq "$serverpid" ] && [ "$exitcode" -eq 0 ]; then
 		ssh_enroll_handle_pubkeys "${tmpdir}/pubkeys"
-	elif [ "$who" = "server" ]; then
+	elif [ "$who" -eq "$serverpid" ]; then
 		d_styled --title $"SSH Key Enrollment" --msgbox $"ssh-pairing-server exited with ${exitcode}" 0 0
 	else
 		d_styled --title $"SSH Key Enrollment" --msgbox $"Key enrollment cancelled by user request" 0 0
