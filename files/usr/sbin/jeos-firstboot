@@ -191,9 +191,22 @@ fi
 
 # Do not show the register on non SLE based distributions or if is
 # globally disabled
-if [ -x /usr/bin/SUSEConnect -a -z "${ID##sle*}" -a -z "${JEOS_HIDE_SUSECONNECT}" ]; then
-	welcome_screen_with_console_switch
-	d --msgbox $"Please register this image using your existing SUSE entitlement.
+if [ -z "${ID##sle*}" ] && [ -z "${JEOS_HIDE_SUSECONNECT}" ]; then
+	if [ -x /usr/bin/SUSEConnect ] && [ -x /usr/sbin/transactional-update ]; then
+		welcome_screen_with_console_switch
+		d --msgbox $"Please register this image using your existing SUSE entitlement.
+
+As \"root\" use the following command:
+
+ transactional-update register -e company@example.com -r YOUR_CODE
+
+to register the instance with SCC
+
+Without registration this instance does not have access to updates and
+security fixes." 0 0 || true
+	elif [ -x /usr/bin/SUSEConnect ]; then
+		welcome_screen_with_console_switch
+		d --msgbox $"Please register this image using your existing SUSE entitlement.
 
 As \"root\" use the following command:
 
@@ -203,6 +216,7 @@ to register the instance with SCC
 
 Without registration this instance does not have access to updates and
 security fixes." 0 0 || true
+	fi
 fi
 
 call_module_hook systemd_firstboot
