@@ -33,6 +33,11 @@ else
 	dry=1
 fi
 
+if [ -e /run/cloud-init/enabled ] && ! grep -qw none /run/cloud-init/cloud-id; then
+	echo $"System configured with cloud-init, skipping jeos-firstboot"
+	exit 0
+fi
+
 if [ -n "$dry" ]; then
 	run() {
 		echo "$@"

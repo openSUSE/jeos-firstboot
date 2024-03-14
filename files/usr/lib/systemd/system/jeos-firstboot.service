@@ -18,9 +18,9 @@ Before=wicked.service systemd-user-sessions.service
 # For NM it uses nmcli, so NM needs to be running
 After=NetworkManager.service
 
-# The existence of this file reflects whether cloud-init's systemd-generator enables cloud-init.
-# If it does not exist, cloud-init won't run, so it's our turn.
-ConditionPathExists=!/run/cloud-init/enabled
+# If cloud-init is used on the system, wait until it's done to be able
+# to check whether it performed any configuration.
+After=cloud-config.target
 
 # jeos-firstboot-snapshot.service deletes the flag file, but starts after us
 Wants=jeos-firstboot-snapshot.service
