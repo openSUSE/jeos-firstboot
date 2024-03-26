@@ -36,6 +36,11 @@ StandardInput=tty
 #StandardError=tty
 # enable accessing global keyring to get data from eg. initrd
 KeyringMode=shared
+# not all credentials are supported yet
+ImportCredential=passwd.hashed-password.root
+ImportCredential=passwd.plaintext-password.root
+ImportCredential=passwd.shell.root
+ImportCredential=firstboot.*
 
 [Install]
 WantedBy=default.target

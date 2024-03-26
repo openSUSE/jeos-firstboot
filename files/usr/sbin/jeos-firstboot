@@ -83,7 +83,7 @@ systemd_firstboot_args=()
 JEOS_LOCALE=${JEOS_LOCALE-}
 JEOS_KEYTABLE=${JEOS_KEYTABLE-}
 
-if [ -z "$JEOS_LOCALE" ]; then
+if [ -z "$JEOS_LOCALE" ] && ! get_credential JEOS_LOCALE firstboot.locale; then
     welcome_screen_with_console_switch
     dialog_locale
 fi
@@ -93,7 +93,7 @@ apply_locale
 # also add to systemd-firstboot parameters
 systemd_firstboot_args+=("--locale=$JEOS_LOCALE")
 
-if [ -z "$JEOS_KEYTABLE" ]; then
+if [ -z "$JEOS_KEYTABLE" ] && ! get_credential JEOS_KEYTABLE firstboot.keymap; then
     welcome_screen_with_console_switch
     dialog_keytable
 fi 
@@ -147,7 +147,7 @@ if [[ "$(resolve_tty "$(tty)")" =~ /dev/tty[0-9]+ ]]; then
 	fi
 fi
 
-if [ -z "$JEOS_EULA_ALREADY_AGREED" ]; then
+if [ -z "$JEOS_EULA_ALREADY_AGREED" ] && ! get_credential JEOS_EULA_ALREADY_AGREED firstboot.license-agreed; then
 	welcome_screen_with_console_switch
 
 	# Find the location of the EULA
@@ -180,7 +180,7 @@ if [ -z "$JEOS_EULA_ALREADY_AGREED" ]; then
 	done
 fi
 
-if [ -z "$JEOS_TIMEZONE" ]; then
+if [ -z "$JEOS_TIMEZONE" ] && ! get_credential JEOS_TIMEZONE firstboot.timezone; then
     welcome_screen_with_console_switch
     dialog_timezone
 fi
@@ -191,7 +191,7 @@ systemd_firstboot_args+=("--timezone=$JEOS_TIMEZONE")
 run rm -f /etc/localtime
 run systemd-firstboot "${systemd_firstboot_args[@]}"
 
-if [ -z "$JEOS_PASSWORD_ALREADY_SET" ]; then
+if [ -z "$JEOS_PASSWORD_ALREADY_SET" ] && ! get_credential password passwd.plaintext-password.root; then
     welcome_screen_with_console_switch
     dialog_password
 fi
