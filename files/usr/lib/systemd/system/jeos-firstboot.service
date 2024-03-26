@@ -36,6 +36,8 @@ StandardInput=tty
 #StandardError=tty
 # enable accessing global keyring to get data from eg. initrd
 KeyringMode=shared
+ImportCredential=passwd.plaintext-password.root
+ImportCredential=firstboot.*
 
 [Install]
 WantedBy=default.target

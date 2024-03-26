@@ -197,4 +197,15 @@ resolve_tty() {
         fi
 }
 
+# get systemd credential
+# https://systemd.io/CREDENTIALS/
+get_credential()
+{
+	local var="${1:?}"
+	local name="${2:?}"
+	[ -n "$CREDENTIALS_DIRECTORY" ] || return 1
+	[ -e "$CREDENTIALS_DIRECTORY/$name" ] || return 1
+	read -r "$var" < "$CREDENTIALS_DIRECTORY/$name" || [ -n "${!var}" ]
+}
+
 # vim: syntax=sh
