@@ -62,3 +62,15 @@ Feel free to create any [Issues](https://github.com/openSUSE/jeos-firstboot/issu
 ## License
 
 Distributed under the MIT License. See [LICENSE](https://github.com/openSUSE/jeos-firstboot/blob/master/LICENSE) for more information.
+
+## Credentials
+
+jeos-firstboot supports [systemd credentials](https://systemd.io/CREDENTIALS/)
+to pre-configure systems. The wizard does not prompt for settings
+defined by credentials.
+
+* firstboot.keymap
+* firstboot.license-agreed
+* firstboot.locale
+* firstboot.timezone
+* passwd.plaintext-password.root
