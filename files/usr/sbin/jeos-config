@@ -37,10 +37,15 @@ cleanup() {
 }
 trap cleanup EXIT
 
+init_modules
+
 # Get a list of all config modules
 config_modules=()
 for module in "${modules[@]}"; do
 	if module_has_hook "$module" "jeos_config"; then
+		if module_has_hook "$module" "jeos_config_probe"; then
+			call_module "$module" "jeos_config_probe" || continue
+		fi
 		config_modules+=("${module}")
 	fi
 done
