@@ -43,6 +43,9 @@ init_modules
 config_modules=()
 for module in "${modules[@]}"; do
 	if module_has_hook "$module" "jeos_config"; then
+		if module_has_hook "$module" "jeos_config_probe"; then
+			call_module "$module" "jeos_config_probe" || continue
+		fi
 		config_modules+=("${module}")
 	fi
 done
