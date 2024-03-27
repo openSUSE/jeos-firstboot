@@ -194,9 +194,9 @@ if [ -z "$JEOS_PASSWORD_ALREADY_SET" ]; then
     dialog_password
 fi
 
-# Do not show the register on non SLE based distributions or if is
-# globally disabled
-if [ -z "${ID##sle*}" ] && [ -z "${JEOS_HIDE_SUSECONNECT}" ]; then
+# Only show the registration prompt on commercial distros and if it's not
+# globally disabled. Can't use /etc/products.d/ for that, even TW has a register target.
+if [ -z "${CPE_NAME##cpe:*o:suse:*}" ] && [ -z "${JEOS_HIDE_SUSECONNECT}" ]; then
 	if [ -x /usr/bin/SUSEConnect ] && [ -x /usr/sbin/transactional-update ]; then
 		welcome_screen_with_console_switch
 		d --msgbox $"Please register this image using your existing SUSE entitlement.
