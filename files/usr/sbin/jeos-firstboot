@@ -74,6 +74,8 @@ if ! run dbus-send --system --print-reply --dest=org.freedesktop.systemd1 /org/f
 	sleep 1
 fi
 
+init_modules
+
 systemd_firstboot_args=()
 
 # If the configuration is not loaded and we are in the first terminal
