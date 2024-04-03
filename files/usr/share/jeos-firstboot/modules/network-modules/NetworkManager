@@ -14,7 +14,7 @@ network_systemd_firstboot()
 
 		# Note: Dialog also flushes the input queue here. Without that,
 		# nmtui would react to what is typed before it shows up.
-		if dialog --backtitle "$PRETTY_NAME" --yesno $"No active network connection detected.\nDo you want to configure network connections?" 0 0; then
+		if d_styled --yesno $"No active network connection detected.\nDo you want to configure network connections?" 0 0; then
 			# nmtui (resp. libslang used by newt) uses /dev/tty,
 			# so setsid is required to set it to the current one.
 			setsid -wc nmtui
