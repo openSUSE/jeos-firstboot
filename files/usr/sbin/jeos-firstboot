@@ -175,8 +175,8 @@ if [ -z "$JEOS_EULA_ALREADY_AGREED" ] && ! get_credential JEOS_EULA_ALREADY_AGRE
 	while true; do
 		d --exit-label $"Continue" --textbox "$EULA_FILE" $dh_text 85
 		[ -e "${EULA_FILE%/*}/no-acceptance-needed" ] && break
-		dialog --yesno $"Do you agree with the terms of the license?" 0 0 && break
-		dialog --msgbox $"Can not continue without agreement" 6 40 || :
+		d_styled --yesno $"Do you agree with the terms of the license?" 0 0 && break
+		d_styled --msgbox $"Can not continue without agreement" 6 40 || :
 	done
 fi
 
