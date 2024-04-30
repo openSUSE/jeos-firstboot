@@ -20,7 +20,7 @@ After=NetworkManager.service
 
 # If cloud-init is used on the system, wait until it's done to be able
 # to check whether it performed any configuration.
-After=cloud-config.target
+After=cloud-init-local.service
 
 # jeos-firstboot-snapshot.service deletes the flag file, but starts after us
 Wants=jeos-firstboot-snapshot.service
