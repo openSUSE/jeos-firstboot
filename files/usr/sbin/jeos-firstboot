@@ -83,9 +83,18 @@ systemd_firstboot_args=()
 JEOS_LOCALE=${JEOS_LOCALE-}
 JEOS_KEYTABLE=${JEOS_KEYTABLE-}
 
+# If there is only a single locale on the system, don't use its
+# default timezone but UTC instead.
+use_utc_as_default_tz=0
+
 if [ -z "$JEOS_LOCALE" ] && ! get_credential JEOS_LOCALE firstboot.locale; then
     welcome_screen_with_console_switch
     dialog_locale
+
+    # Same check as inside dialog_locale
+    if [ "${#list[@]}" -eq 2 ]; then
+        use_utc_as_default_tz=1
+    fi
 fi
 
 # Activate the locale selected
@@ -100,6 +109,12 @@ fi
 
 # langset.sh needs locale to set keytable
 apply_locale_and_keytable
+
+# apply_locale(_and_keytable) also sets the TZ, override it here
+if [ "$use_utc_as_default_tz" -eq "1" ]; then
+	rm -f /etc/localtime
+	ln -s /usr/share/zoneinfo/UTC /etc/localtime
+fi
 
 [ -n "$JEOS_LOCALE" ] && language="${JEOS_LOCALE%%_*}" || language="en"
 force_english_license=0
