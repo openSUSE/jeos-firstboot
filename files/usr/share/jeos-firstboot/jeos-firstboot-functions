@@ -36,17 +36,35 @@ _find_modules() {
 	done
 }
 
+# Echos the value of the module variable or a fallback if unset.
+# Usage: module_get_prop modulename varname defaultvalue
+module_get_prop() {
+	local module="$1"
+	local varname="$2"
+	local default="${3-}"
+	local fullname="${module}_${varname}"
+	echo -n "${!fullname-"${default}"}"
+}
+
 init_modules() {
 	[ -z "$modules" ] || return 0
-	local module f
+	local module f _prio
+	local unordered_modules=()
 	while read -r module f; do
 		if [ -L "$f" ] && [ "$(readlink "$f")" = "/dev/null" ]; then
 			continue
 		fi
 		# shellcheck source=/dev/null
 		source "$f" || continue
-		modules+=("${module}")
+		unordered_modules+=("${module}")
 	done < <(_find_modules|sort -k 1,1 -u)
+
+	# Sort modules by priority
+	while read -r _prio module; do
+		modules+=("${module}")
+	done < <(for module in "${unordered_modules[@]}"; do
+			module_get_prop "$module" "priority" 50; echo " $module"
+		done | sort -n)
 }
 
 module_has_hook() {

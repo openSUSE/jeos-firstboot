@@ -49,12 +49,12 @@ done
 
 select_config()
 {
-	modules_order=("locale" '' "keytable" '' "timezone" '' "password" '')
+	local modules_order=("locale" $"Locale" "keytable" $"Keyboard Layout" "timezone" $"Timezone" "password" $"Password")
 	for module in "${config_modules[@]}"; do
-		modules_order+=("${module}" '')
+		modules_order+=("$module" "$(module_get_prop "${module}" "title" "${module}")")
 	done
 
-	d_with_result --menu $"Select configuration module" 0 0 "$(menuheight ${#modules_order[@]})" "${modules_order[@]}" || exit 0
+	d_with_result --no-tags --menu $"Select configuration module" 0 0 "$(menuheight ${#modules_order[@]})" "${modules_order[@]}" || exit 0
 }
 
 usage()
@@ -68,10 +68,11 @@ Configure system settings using an interactive dialog
 	keytable	Show configuration for keyboard
 	timezone	Show configuration for timezone
 	password	Show configuration for password
-$(for module in "${config_modules[@]}"; do
-	echo "	${module}	Show configuration for ${module}"
-done)
 EOF
+	for module in "${config_modules[@]}"; do
+		local fallbackdescription="$(printf $"Show configuration for %s" "${module}")"
+		printf "\t%-8s\t%s\n" "${module}" "$(module_get_prop "$module" "description" "$fallbackdescription")"
+	done
 }
 
 while getopts ":h" opt; do
