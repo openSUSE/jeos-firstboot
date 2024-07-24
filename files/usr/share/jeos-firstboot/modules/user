@@ -1,0 +1,105 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: Copyright 2024 SUSE LLC
+# shellcheck shell=bash
+
+user_title=$"User Creation"
+user_description=$"Create an unprivileged user account"
+user_priority=60
+
+user_do_config()
+{
+	local username=""
+	local fullname=""
+	local errmsg
+
+	# Loop until cancelled or successfully completed.
+	while true; do
+		local msg="$(
+			echo $"If desired, create an additional user account."
+			echo $"This is necessary for password-based SSH login and the Cockpit Web UI."
+		)"
+
+		d_with_result --title $"User Creation" \
+			--insecure \
+			--cancel-label $"Skip" \
+			--mixedform "${msg}" 9 0 5 \
+			$"Username" 1 0 "$username" 1 18 35 0 0 \
+			$"Full name" 2 0 "$fullname" 2 18 35 0 0 \
+			$"Password" 4 0 "" 4 18 35 0 1 \
+			$"Password (again)" 5 0 "" 5 18 35 0 1
+
+		local ret=$?
+		if [ "$ret" -eq 1 ]; then
+			# Skip button pressed
+			return 0
+		elif [ "$ret" -eq 255 ]; then
+			# ESC
+			if d_styled --yesno $"Do you really want to quit?" 0 0; then
+				exit 1
+			fi
+			continue
+		fi
+
+		readarray -t input <<<"$result"
+
+		# Collect input
+		username="${input[0]}"
+		fullname="${input[1]}"
+		# Make sure not to pass those as parameters to processes!
+		local password="${input[2]}"
+		local password_repeat="${input[3]}"
+
+		# Input handling and validation
+		if ! [[ "$username" =~ ^[a-z][-_a-z0-9]*$ ]]; then
+			d_styled --title $"User Creation" --msgbox $"Invalid username.\nMake sure it starts with a 
+				lowercase letter and only contains -, _, digits and lowercase letters." 8 45
+			continue
+		fi
+
+		if [ -z "$password" ]; then
+			d_styled --title $"User Creation" --msgbox $"You have to enter a password" 8 45
+			continue
+		fi
+
+		if [ "$password" != "$password_repeat" ]; then
+			d_styled --title $"User Creation" --msgbox $"Passwords do not match." 8 45
+			continue
+		fi
+
+		# Password strength check
+		errmsg="$(printf "%s" "$password" | cracklib-check 2>&1)"
+		# For some reason cracklib-check includes the password in the message.
+		# https://github.com/cracklib/cracklib/pull/78 improves this, but it's too new.
+		errmsg="${errmsg/*: /}"
+		if [ "$errmsg" != "OK" ]; then
+			d_styled --title $"User Creation" --msgbox "$(printf $"cracklib-check failed: %s" "$errmsg")" 8 45
+			continue
+		fi
+
+		errmsg="$(useradd "$username" -c "$fullname" 2>&1)"
+		if [ "$?" -ne 0 ]; then
+			d_styled --title $"User Creation" --msgbox "$(printf $"useradd failed: %s" "$errmsg")" 8 45
+			continue
+		fi
+
+		# Set the requested password
+		if ! printf "%s:%s" "$username" "$password" | chpasswd; then
+			d_styled --title $"User Creation" --msgbox "$(printf $"chpasswd failed, leaving account locked: %s" "$errmsg")" 8 45
+			# Nothing we can do here, admin can fix this locally as root
+		fi
+
+		break
+	done
+
+	return 0
+}
+
+user_systemd_firstboot()
+{
+	user_do_config
+}
+
+user_jeos_config()
+{
+	user_do_config
+}
