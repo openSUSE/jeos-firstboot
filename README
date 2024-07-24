@@ -1,3 +1,0 @@
-This is a lightweight, dialog based firstboot wizard that replaces
-systemd's line based firstboot program. It can show the license and
-prompt for language, keyboard and root passsword.
