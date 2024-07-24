@@ -22,6 +22,9 @@ stty_size() {
 }
 stty_size
 
+# Make sure globs and regex are consistent everywhere.
+LC_COLLATE=C.UTF-8
+
 result=
 list=
 password=''
