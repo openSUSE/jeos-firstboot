@@ -28,13 +28,11 @@ password=''
 modules=()
 
 _find_modules() {
-	local d f
-	for d in "/etc/jeos-firstboot/modules" "${jeos_prefix?}/share/jeos-firstboot/modules"; do
-		for f in "$d"/*; do
-			if [ -L "$f" ] || [ -f "$f" ]; then
-				echo "${f##*/}" "$f"
-			fi
-		done
+	local f
+	for f in /etc/jeos-firstboot/modules/* "${jeos_prefix?}/share/jeos-firstboot/modules"/*; do
+		if [ -L "$f" ] || [ -f "$f" ]; then
+			echo "${f##*/}" "$f"
+		fi
 	done
 }
 
