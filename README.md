@@ -25,12 +25,12 @@ You can check the example in the RPM package for installation.
 The service is controlled by a file, so after installing it you should be sure that your system is configured appropriately
 
 ```sh
-        # Enable jeos-firstboot
-        mkdir -p /var/lib/YaST2
-        touch /var/lib/YaST2/reconfig_system
+# Enable jeos-firstboot
+mkdir -p /var/lib/YaST2
+touch /var/lib/YaST2/reconfig_system
 
-        systemctl mask systemd-firstboot.service
-        systemctl enable jeos-firstboot.service
+systemctl mask systemd-firstboot.service
+systemctl enable jeos-firstboot.service
 ```
 Beside the service that runs on firstboot there is also a tool to change configuration in a running system, this will also be installed and available as `jeos-config`
 
@@ -39,13 +39,13 @@ jeos-config usage:
 Usage: jeos-config [OPTION...] [CONFIG_NAME]
 Configure system settings using an interactive dialog
 
-        -h              shows this usage help
-        locale          Show configuration for locale
-        keytable        Show configuration for keyboard
-        timezone        Show configuration for timezone
-        password        Show configuration for password
-        network         Show configuration for network
-        raspberrywifi   Show configuration for raspberrywifi
+	-h              shows this usage help
+	locale          Show configuration for locale
+	keytable        Show configuration for keyboard
+	timezone        Show configuration for timezone
+	password        Show configuration for password
+	network         Show configuration for network
+	raspberrywifi   Show configuration for raspberrywifi
 ```     
 Additional modules (like raspberrywifi) are shown if present.
 
