@@ -1,0 +1,136 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: Copyright 2024 SUSE LLC
+# shellcheck shell=bash
+
+otp_title=$"TOTP for Cockpit Login"
+otp_description=$"Set up TOTP for cockpit user authentication"
+otp_priority=70
+
+_otp_do_config_for_user()
+{
+	local user="$1"
+
+	# Generate secret in base32 (most common format). Length 32 -> 160 bits -> 20 bytes.
+	local totp_secret
+	if ! totp_secret="$(LC_ALL=C tr -dc "A-Z2-7" </dev/urandom | head -c 32)"; then
+		d_styled --title "$otp_title" --msgbox $"Failed to generate TOTP secret" 6 45 || :
+		return 1
+	fi
+
+	# oath-toolkit prefers to work with the hex format.
+	local totp_secret_hex
+	totp_secret_hex="$(base32 -d <<<"$totp_secret" | hexdump -ve '1/1 "%.2x"')"
+
+	local url="otpauth://totp/${user}@$(hostname)?secret=${totp_secret}"
+	local msg="$(
+		printf $"Configuring time-based one-time password (TOTP) authentication for the user '%s'.\n\n" "$user"
+		printf $"Enroll with your desired TOTP application by scanning the QR code or entering the secret manually, then enter the generated 6 digit code below to confirm successful enrollment. "
+		printf $"Once confirmed, the Cockpit Web UI will ask for an OTP value on each login.\n\n"
+		printf $"TOTP Secret: %s\n\n" "${totp_secret}"
+		qrencode -t UTF8i -m 1 <<<"$url"
+	)"
+
+	while true; do
+		d_with_result --title "$otp_title" \
+			--cancel-label $"Skip" \
+			--no-nl-expand --no-collapse \
+			--mixedform "${msg}" 35 60 1 \
+			$"OTP value:" 1 0 "" 1 15 45 0 0
+
+		local ret=$?
+		if [ "$ret" -eq 1 ]; then
+			# Skip button pressed
+			return 0
+		elif [ "$ret" -eq 255 ]; then
+			# ESC
+			if d_styled --yesno $"Do you really want to quit?" 0 0; then
+				exit 1
+			fi
+			continue
+		fi
+
+		readarray -t input <<<"$result"
+		if ! echo "${totp_secret_hex}" | oathtool --totp -d 6 -w 3 - "${input[0]}" >/dev/null; then
+			d_styled --title "$otp_title" --msgbox $"TOTP did not match" 6 45 || :
+			continue
+		fi
+
+		# Replace or create token in ~/.pam_oath.
+		# Use su to run as the target user (not root) if necessary.
+		local run_as_user=("su" "$user" "-c")
+		if [ "$(whoami)" = "${user}" ]; then
+			run_as_user=("sh" "-e" "-c")
+		fi
+		# Iterate all lines, find the matching entry to modify or append a new one.
+		# FIXME: Use file used by the PAM configuration?
+		if "${run_as_user[@]}" "set -e; umask 077; touch ~/.pam_oath_usersfile; awk -i inplace -f - ~/.pam_oath_usersfile" <<EOF; then
+			\$2 == "${user}" { \$1 = "HOTP/T30/6"; \$4="${totp_secret_hex}"; replaced=1 }
+			1 { print }
+			ENDFILE { if (!replaced) { print "HOTP/T30/6 ${user} - ${totp_secret_hex}" } }
+EOF
+			break
+		fi
+
+		d_styled --title "$otp_title" --msgbox $"Failed to configure pam_oath" 6 45 || :
+		continue
+	done
+}
+
+# There might be multiple user accounts, ask if necessary.
+# Accepts an option --msg-if-no-users to show a dialog if no users found.
+_otp_do_config()
+{
+	# If not root, only allow configuration for the calling user
+	if [ "$(id -u)" != "0" ]; then
+		_otp_do_config_for_user "$(whoami)"
+		return
+	fi
+
+	# Otherwise allow configuring it for all users
+	local users
+	# Technically this should read login.defs for the UID range but that's not trivial.
+	readarray -t users < <(getent passwd | awk -F: '$3 >= 1000 && $3 <= 60000 { print $1; print $5; }')
+
+	if [ "${#users[@]}" -eq 0 ]; then
+		# No user to configure found
+		if [ "${1-}" = "--msg-if-no-users" ]; then
+			d_styled --title "$otp_title" --msgbox $"No users for TOTP configuration found" 6 45 || :
+		fi
+		return 0
+	elif [ "${#users[@]}" -eq 2 ]; then
+		_otp_do_config_for_user "${users[0]}"
+	else
+		while true; do
+			d_with_result --title "$otp_title" \
+				--cancel-label $"Skip" \
+				--menu $"Select user to configure" 0 0 "$(menuheight ${#users[@]})" "${users[@]}"
+
+			local ret=$?
+			if [ "$ret" -eq 1 ]; then
+				# Skip button pressed
+				return 0
+			elif [ "$ret" -eq 255 ]; then
+				# ESC
+				if d_styled --yesno $"Do you really want to quit?" 0 0; then
+					exit 1
+				fi
+				continue
+			fi
+
+			_otp_do_config_for_user "$result"
+		done
+	fi
+}
+
+# Only show the configuration if necessary packages are installed.
+if command -v oathtool >/dev/null && command -v qrencode >/dev/null; then
+	otp_systemd_firstboot()
+	{
+		_otp_do_config
+	}
+
+	otp_jeos_config()
+	{
+		_otp_do_config --msg-if-no-users
+	}
+fi
