@@ -6,11 +6,7 @@ It is a lightweight and customisable firstboot wizard that allows to set basic s
 
 This is mainly developed for openSUSE and SUSE Linux Enterprise Server JeOS images. For more information visit the [JeOS wiki](https://en.opensuse.org/Portal:JeOS).
 
-## Getting Started
-jeos-firstboot can be extended using separate modules, writing a script with the appropriate format and have it installed under `/usr/lib/share/jeos-firstboot/modules` or `/etc/jeos-firstboot/modules` will make this module be executed.
-For more information on modules format please check [jeos-firstboot extensions](https://en.opensuse.org/Portal:JeOS:Documentation)
-
-### Installation
+## Installation
 
 The RPM package is developed in openSUSE OBS [devel package](https://build.opensuse.org/package/show/devel:openSUSE:Factory/jeos-firstboot)
 
@@ -50,6 +46,38 @@ Configure system settings using an interactive dialog
 Additional modules (like raspberrywifi) are shown if present.
 
 If no parameter is given it shows a dialog for selection.
+
+## Writing modules
+
+jeos-firstboot can be extended using modules written in bash placed in `/usr/share/jeos-firstboot/modules/` or `/etc/jeos-firstboot/modules/`. Modules in `/etc/jeos-firstboot/modules/` will be preferred. If a link to `/dev/null` is encountered, the module is skipped.
+
+The basename of the module file is its name. It is used as prefix of properties and hooks. It is also used as argument to jeos-config when calling the module directly.
+
+### Properties
+
+```sh
+# Shown in jeos-config for module selection
+yourmodule_title="Title of your module"
+# Shown in jeos-config --help
+yourmodule_description="Show an awesome dialog with a nice button"
+# Priority of the module. Modules with higher priority are run later in jeos-firstboot and shown below in jeos-config.
+# The default is 50.
+yourmodule_priority=50
+```
+
+### Hooks
+
+```sh
+# Runs if called by jeos-firstboot, currently after systemd-firstboot is called
+# (that should probably be changed)
+yourmodule_systemd_firstboot() { }
+# Runs if called by jeos-firstboot, after all systemd_firstboot hooks.
+yourmodule_post() { }
+# Runs if called by jeos-config
+yourmodule_jeos_config() { }
+# Runs at the end of jeos-firstboot just before exiting.
+yourmodule_cleanup() { }
+```
 
 <!-- CONTRIBUTING -->
 ## Contributing
