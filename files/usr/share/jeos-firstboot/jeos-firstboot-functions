@@ -69,11 +69,11 @@ call_module() {
 }
 
 call_module_hook() {
-        local hook="$1"
-        for module in "${modules[@]}"; do
+	local hook="$1"
+	for module in "${modules[@]}"; do
 		call_module "${module}" "${hook}" || continue
-        done
-        return 0
+	done
+	return 0
 }
 
 # Run dialog with jeos-firstboot style options applied
@@ -132,25 +132,25 @@ menuheight() {
 # by YaST/langset.sh, so we need to show them.
 findkeymaps()
 {
-        list=()
-        local line
-        while read line; do
-                list+=("${line%.map.gz}" '')
-        done < <(find /usr/share/kbd/keymaps -name '*.map.gz' -printf "%f\n" | sort -u)
-        [ -n "$list" ]
+	list=()
+	local line
+	while read line; do
+		list+=("${line%.map.gz}" '')
+	done < <(find /usr/share/kbd/keymaps -name '*.map.gz' -printf "%f\n" | sort -u)
+	[ -n "$list" ]
 }
 
 findlocales()
 {
-        list=()
-        local l locale
-        # List only locales which are both in live-langset-data and glibc-locale(-base)
-        for l in /usr/share/langset/*; do
-                locale="${l#/usr/share/langset/}"
-                [ -d "/usr/lib/locale/${locale}.utf8" ] || continue
-                list+=("${locale}" '')
-        done
-        [ -n "$list" ]
+	list=()
+	local l locale
+	# List only locales which are both in live-langset-data and glibc-locale(-base)
+	for l in /usr/share/langset/*; do
+		locale="${l#/usr/share/langset/}"
+		[ -d "/usr/lib/locale/${locale}.utf8" ] || continue
+		list+=("${locale}" '')
+	done
+	[ -n "$list" ]
 }
 
 get_current_locale()
@@ -185,16 +185,16 @@ apply_password()
 
 # Resolves /dev/console and /dev/tty0
 resolve_tty() {
-        local tty="$1"
-        if [ "$tty" = "/dev/console" ]; then
-                tty=$(awk '{printf "/dev/%s", $NF}' /sys/class/tty/console/active)
-        fi
+	local tty="$1"
+	if [ "$tty" = "/dev/console" ]; then
+		tty=$(awk '{printf "/dev/%s", $NF}' /sys/class/tty/console/active)
+	fi
 
-        if [ "$tty" = "/dev/tty0" ]; then
-                printf "/dev/%s" "$(cat /sys/class/tty/tty0/active)"
-        else
-                echo -n "$tty"
-        fi
+	if [ "$tty" = "/dev/tty0" ]; then
+		printf "/dev/%s" "$(cat /sys/class/tty/tty0/active)"
+	else
+		echo -n "$tty"
+	fi
 }
 
 # get systemd credential

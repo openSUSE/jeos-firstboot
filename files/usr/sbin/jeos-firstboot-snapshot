@@ -5,21 +5,21 @@
 set -euo pipefail
 
 if ! mountpoint -q /.snapshots &>/dev/null; then
-    echo "Snapshots not enabled, skipping"
-    exit 0
+	echo "Snapshots not enabled, skipping"
+	exit 0
 fi
 
 if mountpoint -q /etc; then
-    echo "/etc is not part of the snapshot, skipping"
-    exit 0
+	echo "/etc is not part of the snapshot, skipping"
+	exit 0
 fi
 
 if [ ! -e /.snapshots/2 ]; then
-    snapper -v create -d "After jeos-firstboot configuration" --userdata "important=yes"
+	snapper -v create -d "After jeos-firstboot configuration" --userdata "important=yes"
 fi
 
 if [ -x /usr/lib/snapper/plugins/grub ]; then
-    /usr/lib/snapper/plugins/grub --refresh
+	/usr/lib/snapper/plugins/grub --refresh
 fi
 
 exit 0

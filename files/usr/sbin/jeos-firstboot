@@ -88,13 +88,13 @@ JEOS_KEYTABLE=${JEOS_KEYTABLE-}
 use_utc_as_default_tz=0
 
 if [ -z "$JEOS_LOCALE" ] && ! get_credential JEOS_LOCALE firstboot.locale; then
-    welcome_screen_with_console_switch
-    dialog_locale
+	welcome_screen_with_console_switch
+	dialog_locale
 
-    # Same check as inside dialog_locale
-    if [ "${#list[@]}" -eq 2 ]; then
-        use_utc_as_default_tz=1
-    fi
+	# Same check as inside dialog_locale
+	if [ "${#list[@]}" -eq 2 ]; then
+		use_utc_as_default_tz=1
+	fi
 fi
 
 # Activate the locale selected
@@ -103,8 +103,8 @@ apply_locale
 systemd_firstboot_args+=("--locale=$JEOS_LOCALE")
 
 if [ -z "$JEOS_KEYTABLE" ] && ! get_credential JEOS_KEYTABLE firstboot.keymap; then
-    welcome_screen_with_console_switch
-    dialog_keytable
+	welcome_screen_with_console_switch
+	dialog_keytable
 fi 
 
 # langset.sh needs locale to set keytable
@@ -121,20 +121,20 @@ force_english_license=0
 export LANG="$JEOS_LOCALE"
 
 kmscon_available() {
-        # kmscon itself is installed
-        kmscon --help >/dev/null 2>&1 || return 1
-        # At least one monospace font is available
-        [ -n "$(fc-match "monospace" 2>/dev/null)" ] || return 1
+	# kmscon itself is installed
+	kmscon --help >/dev/null 2>&1 || return 1
+	# At least one monospace font is available
+	[ -n "$(fc-match "monospace" 2>/dev/null)" ] || return 1
 
-        return 0
+	return 0
 }
 
 fbiterm_available() {
-        # fbiterm itself is installed
-        fbiterm --help >/dev/null 2>&1 || return 1
-        # fbiterm comes with its own fallback font
+	# fbiterm itself is installed
+	fbiterm --help >/dev/null 2>&1 || return 1
+	# fbiterm comes with its own fallback font
 
-        return 0
+	return 0
 }
 
 if [[ "$(resolve_tty "$(tty)")" =~ /dev/tty[0-9]+ ]]; then
@@ -196,8 +196,8 @@ if [ -z "$JEOS_EULA_ALREADY_AGREED" ] && ! get_credential JEOS_EULA_ALREADY_AGRE
 fi
 
 if [ -z "$JEOS_TIMEZONE" ] && ! get_credential JEOS_TIMEZONE firstboot.timezone; then
-    welcome_screen_with_console_switch
-    dialog_timezone
+	welcome_screen_with_console_switch
+	dialog_timezone
 fi
 
 systemd_firstboot_args+=("--timezone=$JEOS_TIMEZONE")
@@ -207,8 +207,8 @@ run rm -f /etc/localtime
 run systemd-firstboot "${systemd_firstboot_args[@]}"
 
 if [ -z "$JEOS_PASSWORD_ALREADY_SET" ] && ! get_credential password passwd.plaintext-password.root; then
-    welcome_screen_with_console_switch
-    dialog_password
+	welcome_screen_with_console_switch
+	dialog_password
 fi
 
 # Only show the registration prompt on commercial distros and if it's not

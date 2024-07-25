@@ -83,7 +83,7 @@ while getopts ":h" opt; do
 		\?) 
 			echo "Invalid Option: -$OPTARG" 1>&2
 			usage
-     			exit 1
+			exit 1
 			;;
 	esac
 done
@@ -98,15 +98,15 @@ fi
 case "$subcommand" in
 	locale)
 		list=() # Set by findlocales
-        	if ! findlocales; then
-                	d --msgbox $"No locales found" 0 0
-        	elif [ "${#list[@]}" -eq 2 ]; then # Only a single entry
+		if ! findlocales; then
+			d --msgbox $"No locales found" 0 0
+		elif [ "${#list[@]}" -eq 2 ]; then # Only a single entry
 			d --msgbox $"Locale set to ${list[0]}, no more locales available" 5 50
 		else
 			dialog_locale
 			apply_locale
 		fi
-        	;;
+		;;
 	keytable)
 		dialog_keytable
 		JEOS_LOCALE="$(get_current_locale)"
