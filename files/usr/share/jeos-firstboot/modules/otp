@@ -23,7 +23,7 @@ _otp_do_config_for_user()
 	local totp_secret_hex
 	totp_secret_hex="$(base32 -d <<<"$totp_secret" | hexdump -ve '1/1 "%.2x"')"
 
-	local url="otpauth://totp/${user}@$(hostname)?secret=${totp_secret}"
+	local url="otpauth://totp/${user}?secret=${totp_secret}&issuer=$(uname -n)"
 	local msg="$(
 		printf $"Configuring time-based one-time password (TOTP) authentication for the user '%s'.\n\n" "$user"
 		printf $"Enroll with your desired TOTP application by scanning the QR code or entering the secret manually, then enter the generated 6 digit code below to confirm successful enrollment. "
@@ -36,7 +36,7 @@ _otp_do_config_for_user()
 		d_with_result --title "$otp_title" \
 			--cancel-label $"Skip" \
 			--no-nl-expand --no-collapse \
-			--mixedform "${msg}" 35 60 1 \
+			--mixedform "${msg}" 37 60 1 \
 			$"OTP value:" 1 0 "" 1 15 45 0 0
 
 		local ret=$?
