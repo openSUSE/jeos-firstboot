@@ -10,9 +10,11 @@ _otp_do_config_for_user()
 {
 	local user="$1"
 
-	# Generate secret in base32 (most common format). Length 32 -> 160 bits -> 20 bytes.
+	# Generate secret in base32 (most common format).
+	# 20 bytes (-> 160 bits) result in 32 base32 characters (5 bits each) and
+	# 40 hex digits (4 bits each), so no padding is necessary.
 	local totp_secret
-	if ! totp_secret="$(LC_ALL=C tr -dc "A-Z2-7" </dev/urandom | head -c 32)"; then
+	if ! totp_secret="$(dd if=/dev/urandom bs=1 count=20 status=none | base32)"; then
 		d_styled --title "$otp_title" --msgbox $"Failed to generate TOTP secret" 6 45 || :
 		return 1
 	fi
