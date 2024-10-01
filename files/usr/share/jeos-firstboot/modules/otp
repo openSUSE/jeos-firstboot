@@ -28,21 +28,36 @@ _otp_do_config_for_user()
 		printf $"Configuring time-based one-time password (TOTP) authentication for the user '%s'.\n\n" "$user"
 		printf $"Enroll with your desired TOTP application by scanning the QR code or entering the secret manually, then enter the generated 6 digit code below to confirm successful enrollment. "
 		printf $"Once confirmed, the Cockpit Web UI will ask for an OTP value on each login.\n\n"
-		printf $"TOTP Secret: %s\n\n" "${totp_secret}"
-		qrencode -t UTF8i -m 1 <<<"$url"
+		printf $"TOTP Secret: %s" "${totp_secret}"
 	)"
-
+	local qrcode="$(qrencode -t UTF8i -m 1 <<<"$url")"
+	local msg_with_qr="$(printf "%s\n\n%s" "${msg}" "${qrcode}")"
 	while true; do
-		d_with_result --title "$otp_title" \
-			--cancel-label $"Skip" \
-			--no-nl-expand --no-collapse \
-			--mixedform "${msg}" 37 60 1 \
-			$"OTP value:" 1 0 "" 1 15 45 0 0
+		# If the screen is to small to fit the text and QR code at once,
+		# show only the text but add a button to show the QR code.
+		if [ "$LINES" -ge 37 ] && [ "$COLUMNS" -ge 24 ]; then
+			d_with_result --title "$otp_title" \
+				--cancel-label $"Skip" \
+				--no-nl-expand --no-collapse \
+				--mixedform "${msg_with_qr}" 37 60 1 \
+				$"OTP value:" 1 0 "" 1 15 45 0 0
+		else
+			d_with_result --title "$otp_title" \
+				--cancel-label $"Skip" \
+				--no-nl-expand --no-collapse \
+				--extra-button --extra-label $"QR Code" \
+				--mixedform "${msg}" 17 60 1 \
+				$"OTP value:" 1 0 "" 1 15 45 0 0
+		fi
 
 		local ret=$?
 		if [ "$ret" -eq 1 ]; then
 			# Skip button pressed
 			return 0
+		elif [ "$ret" -eq 3 ]; then
+			# QR code button pressed
+			d_styled --title "$otp_title" --no-nl-expand --no-collapse --msgbox "${qrcode}" 23 50 || :
+			continue
 		elif [ "$ret" -eq 255 ]; then
 			# ESC
 			if d_styled --yesno $"Do you really want to quit?" 0 0; then
