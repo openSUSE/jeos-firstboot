@@ -6,10 +6,12 @@ user_title=$"User Creation"
 user_description=$"Create an unprivileged user account"
 user_priority=60
 
+# First parameter is default list of supplemental groups
 user_do_config()
 {
 	local username=""
 	local fullname=""
+	local groups="$1"
 	local errmsg
 
 	# Loop until cancelled or successfully completed.
@@ -22,11 +24,12 @@ user_do_config()
 		d_with_result --title $"User Creation" \
 			--insecure \
 			--cancel-label $"Skip" \
-			--mixedform "${msg}" 9 0 5 \
+			--mixedform "${msg}" 9 0 6 \
 			$"Username" 1 0 "$username" 1 18 35 0 0 \
 			$"Full name" 2 0 "$fullname" 2 18 35 0 0 \
-			$"Password" 4 0 "" 4 18 35 0 1 \
-			$"Password (again)" 5 0 "" 5 18 35 0 1
+			$"Groups" 3 0 "$groups" 3 18 35 0 0 \
+			$"Password" 5 0 "" 5 18 35 0 1 \
+			$"Password (again)" 6 0 "" 6 18 35 0 1
 
 		local ret=$?
 		if [ "$ret" -eq 1 ]; then
@@ -45,9 +48,10 @@ user_do_config()
 		# Collect input
 		username="${input[0]}"
 		fullname="${input[1]}"
+		groups="${input[2]}"
 		# Make sure not to pass those as parameters to processes!
-		local password="${input[2]}"
-		local password_repeat="${input[3]}"
+		local password="${input[3]}"
+		local password_repeat="${input[4]}"
 
 		# Input handling and validation
 		if ! [[ "$username" =~ ^[a-z][-_a-z0-9]*$ ]]; then
@@ -88,6 +92,15 @@ user_do_config()
 			# Nothing we can do here, admin can fix this locally as root
 		fi
 
+		local group=""
+		for group in $groups; do
+			errmsg="$(usermod -a -G "$group" "$username" 2>&1)"
+			if [ "$?" -ne 0 ]; then
+				d_styled --title $"User Creation" --msgbox "$(printf $"Failed to add the user to the %s group: %s" "$group" "$errmsg")" 8 45
+				# Nothing we can do here, admin can fix this locally as root
+			fi
+		done
+
 		break
 	done
 
@@ -96,10 +109,16 @@ user_do_config()
 
 user_systemd_firstboot()
 {
-	user_do_config
+	# Add the user created during initial setup to the wheel group by default
+	local defaultgroups=""
+	if getent group wheel >/dev/null; then
+		defaultgroups="wheel"
+	fi
+
+	user_do_config "$defaultgroups"
 }
 
 user_jeos_config()
 {
-	user_do_config
+	user_do_config ""
 }
