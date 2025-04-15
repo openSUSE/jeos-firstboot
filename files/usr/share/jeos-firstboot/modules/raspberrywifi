@@ -2,6 +2,9 @@
 # SPDX-FileCopyrightText: Copyright 2015-2022 SUSE LLC
 # shellcheck shell=bash
 
+raspberrywifi_title=$"WiFi Network (RaspberryPi)"
+raspberrywifi_description=$"Connect to a WiFi network"
+
 config_wireless=false
 
 # Raspberry pi Wi-fi functions

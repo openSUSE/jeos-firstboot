@@ -4,6 +4,9 @@
 
 # Only show the configuration if the package is installed
 if command -v ssh-pairing >/dev/null; then
+	ssh_enroll_title=$"SSH Key Enrollment"
+	ssh_enroll_description=$"Enroll public keys for root login over SSH"
+
 	ssh_enroll_jeos_config()
 	{
 		DIALOGOPTS="--backtitle \"$PRETTY_NAME\"" ssh-pairing || :
