@@ -2,6 +2,9 @@
 # SPDX-FileCopyrightText: Copyright 2015-2022 SUSE LLC
 # shellcheck shell=bash
 
+network_title=$"Network (Wicked)"
+network_description=$"Create a DHCP config for all interfaces"
+
 do_wicked_autoconfig()
 {
 	d --infobox $"Collecting network info ..." 3 33

@@ -2,6 +2,9 @@
 # SPDX-FileCopyrightText: Copyright 2015-2022 SUSE LLC
 # shellcheck shell=bash
 
+network_title=$"Network (NetworkManager)"
+network_description=$"Configure networking using nmtui"
+
 network_jeos_config()
 {
 	nmtui
