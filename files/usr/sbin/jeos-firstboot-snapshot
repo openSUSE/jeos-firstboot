@@ -9,7 +9,9 @@ if ! mountpoint -q /.snapshots &>/dev/null; then
 	exit 0
 fi
 
-if mountpoint -q /etc; then
+if mountpoint -q /etc && [ "$(findmnt -nrvo FSTYPE /etc)" = "overlay" ]; then
+	# In case of overlayfs (older t-u), only t-u/tukit snapshot /etc,
+	# but not snapper create. So just don't bother.
 	echo "/etc is not part of the snapshot, skipping"
 	exit 0
 fi
