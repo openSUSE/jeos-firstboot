@@ -109,9 +109,9 @@ user_do_config()
 
 user_systemd_firstboot()
 {
-	# Add the user created during initial setup to the wheel group by default
-	local defaultgroups=""
-	if getent group wheel >/dev/null; then
+	# Use custom groups from configuration if defined, otherwise fallback to wheel
+	local defaultgroups="${JEOS_USER_GROUPS-}"
+	if [ -z "$defaultgroups" ] && getent group wheel >/dev/null; then
 		defaultgroups="wheel"
 	fi
 
