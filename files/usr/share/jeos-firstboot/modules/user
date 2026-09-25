@@ -109,13 +109,16 @@ user_do_config()
 
 user_systemd_firstboot()
 {
-	# Use custom groups from configuration if defined, otherwise fallback to wheel
-	local defaultgroups="${JEOS_USER_GROUPS-}"
-	if [ -z "$defaultgroups" ] && getent group wheel >/dev/null; then
-		defaultgroups="wheel"
-	fi
+	local defaultgroups=()
 
-	user_do_config "$defaultgroups"
+	# Filter for existing groups from the configuration option
+	for group in ${JEOS_USER_GROUPS-}; do
+		if getent group -- "$group" >/dev/null; then
+			defaultgroups+=("$group")
+		fi
+	done
+
+	user_do_config "${defaultgroups[*]}"
 }
 
 user_jeos_config()
