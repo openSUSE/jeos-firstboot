@@ -38,6 +38,16 @@ if [ -e /run/cloud-init/enabled ] && ! grep -qw none /run/cloud-init/cloud-id; t
 	exit 0
 fi
 
+if [ -e /etc/.ignition-result.json ] && grep -q '"userConfigProvided":.*true' /etc/.ignition-result.json; then
+	echo $"System configured with ignition, skipping jeos-firstboot"
+	exit 0
+fi
+
+if [ -e /etc/.combustion-result.json ]; then
+	echo $"System configured with combustion, skipping jeos-firstboot"
+	exit 0
+fi
+
 if [ -n "$dry" ]; then
 	run() {
 		echo "$@"

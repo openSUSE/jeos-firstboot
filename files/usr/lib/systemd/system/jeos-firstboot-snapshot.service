@@ -9,7 +9,8 @@ After=apparmor.service local-fs.target plymouth-start.service YaST2-Second-Stage
 Conflicts=plymouth-start.service
 Before=getty@tty1.service serial-getty@ttyS0.service serial-getty@ttyS1.service serial-getty@ttyS2.service
 Before=display-manager.service
-ConditionPathExists=/var/lib/YaST2/reconfig_system
+ConditionPathExists=|/var/lib/YaST2/reconfig_system
+ConditionFirstBoot=|yes
 # The configuration is already done - so this doesn't make much sense
 #OnFailure=poweroff.target
 
